@@ -119,7 +119,7 @@ export default function CardsCascade() {
         <h2 className="mt-3 text-[clamp(2.15rem,5.5vw,4rem)] font-extrabold leading-[1.02] tracking-[-0.02em] text-black">
           What I can take off your plate.
         </h2>
-        <p className="mt-2 text-base text-black/75 max-w-xl sm:text-lg">
+        <p className="mt-2 text-base font-bold text-black max-w-xl sm:text-lg">
           Fixed monthly scope, zero hourly meter. Four dedicated disciplines engineered to keep your financial operations clean and audit-safe.
         </p>
       </div>
@@ -149,28 +149,28 @@ export default function CardsCascade() {
               >
                 <div>
                   {/* Top Bar */}
-                  <div className="flex flex-wrap items-center justify-between gap-3 border-b border-black/15 pb-5">
+                  <div className="flex flex-wrap items-center justify-between gap-3 border-b-2 border-black/20 pb-5">
                     <span
-                      className={`rounded-full border border-black px-3 py-0.5 text-xs font-bold ${item.accentBg} ${item.accentText}`}
+                      className={`rounded-full border-2 border-black px-3 py-0.5 text-xs font-black uppercase tracking-wider ${item.accentBg} ${item.accentText}`}
                     >
                       {item.tagline}
                     </span>
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-black bg-white/20 text-current">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl border-2 border-black bg-white/20 text-current">
                       <Icon size={22} weight="bold" />
                     </div>
                   </div>
 
                   {/* Title & Description */}
-                  <h3 className="mt-5 text-2xl sm:text-3xl font-bold tracking-tight">
+                  <h3 className="mt-5 text-2xl sm:text-3xl font-black tracking-tight">
                     {item.title}
                   </h3>
-                  <p className="mt-3 text-sm sm:text-base leading-relaxed opacity-85">
+                  <p className="mt-3 text-sm sm:text-base leading-relaxed font-bold">
                     {item.desc}
                   </p>
 
                   {/* Deliverables Checklist */}
-                  <div className="mt-6 rounded-xl border border-black/10 bg-black/5 p-4">
-                    <p className="text-xs font-bold uppercase tracking-wider opacity-75">
+                  <div className="mt-6 rounded-xl border-2 border-black/20 bg-black/10 p-4">
+                    <p className="text-xs font-black uppercase tracking-wider">
                       What&apos;s Included:
                     </p>
                     <ul className="mt-2 space-y-2 text-xs sm:text-sm">
@@ -181,7 +181,7 @@ export default function CardsCascade() {
                             weight="fill"
                             className="shrink-0 text-emerald-600 mt-0.5"
                           />
-                          <span className="opacity-90">{del}</span>
+                          <span className="font-bold">{del}</span>
                         </li>
                       ))}
                     </ul>
@@ -192,7 +192,7 @@ export default function CardsCascade() {
                     {item.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="rounded-md border border-black/30 bg-black/5 px-2.5 py-1 text-xs font-semibold"
+                        className="rounded-md border-2 border-black bg-black/10 px-2.5 py-1 text-xs font-black"
                       >
                         {tag}
                       </span>
@@ -201,8 +201,8 @@ export default function CardsCascade() {
                 </div>
 
                 {/* Footer Action */}
-                <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-black/15 pt-5">
-                  <span className="text-xs font-bold tracking-wide opacity-80">
+                <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t-2 border-black/20 pt-5">
+                  <span className="text-xs font-black tracking-wide">
                     ✦ {item.metrics}
                   </span>
                   <Link

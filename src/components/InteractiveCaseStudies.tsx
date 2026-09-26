@@ -153,7 +153,7 @@ export default function InteractiveCaseStudies() {
           <h2 className="mt-4 text-3xl font-black tracking-tight text-black sm:text-4xl lg:text-5xl">
             Real Financial Bottlenecks. Engineered Solutions.
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-base text-neutral-700 sm:text-lg">
+          <p className="mx-auto mt-4 max-w-2xl text-base font-bold text-black sm:text-lg">
             Explore how mathematical rigor, automated Python workflows, and precision accounting transform chaotic books into high-margin growth engines.
           </p>
 
@@ -210,7 +210,7 @@ export default function InteractiveCaseStudies() {
                 <h3 className="text-2xl font-black text-black sm:text-3xl lg:text-4xl">
                   {currentCase.title}
                 </h3>
-                <p className="mt-3 text-base text-neutral-700 sm:text-lg">
+                <p className="mt-3 text-base font-bold text-black sm:text-lg">
                   {currentCase.summary}
                 </p>
 
@@ -222,7 +222,7 @@ export default function InteractiveCaseStudies() {
                       <WarningCircle size={18} weight="fill" />
                       <span>The Initial Bottleneck</span>
                     </div>
-                    <p className="mt-3 text-sm leading-relaxed text-neutral-700">
+                    <p className="mt-3 text-sm leading-relaxed font-bold text-black">
                       {currentCase.challenge}
                     </p>
                   </div>
@@ -246,7 +246,7 @@ export default function InteractiveCaseStudies() {
 
                 {/* Verified Metrics Row */}
                 <div className="mt-8">
-                  <p className="text-xs font-black uppercase tracking-wider text-neutral-500">
+                  <p className="text-xs font-black uppercase tracking-wider text-black">
                     Verified Performance Metrics
                   </p>
                   <div className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -261,7 +261,7 @@ export default function InteractiveCaseStudies() {
                         <p className="mt-1 text-sm font-black text-black">
                           {m.label}
                         </p>
-                        <p className="mt-0.5 text-xs text-neutral-600">
+                        <p className="mt-0.5 text-xs font-bold text-black">
                           {m.subtext}
                         </p>
                       </div>
@@ -273,10 +273,10 @@ export default function InteractiveCaseStudies() {
                 {currentCase.quote && (
                   <div className="mt-8 flex flex-col items-center justify-between gap-6 rounded-[16px] border-2 border-black bg-[#f4f4f0] p-6 sm:flex-row">
                     <div className="space-y-1 text-center sm:text-left">
-                      <p className="text-sm font-bold italic text-neutral-800">
+                      <p className="text-sm font-bold italic text-black">
                         &ldquo;{currentCase.quote}&rdquo;
                       </p>
-                      <p className="text-xs font-black uppercase tracking-wider text-neutral-600">
+                      <p className="text-xs font-black uppercase tracking-wider text-black">
                         — {currentCase.quoteAuthor}
                       </p>
                     </div>

@@ -56,7 +56,7 @@ export default function Portfolio() {
             <h2 className="mt-3 text-3xl font-black tracking-tight text-black sm:text-4xl lg:text-5xl">
               Real Work. Real Spreadsheets. Real Impact.
             </h2>
-            <p className="mt-3 max-w-2xl text-base text-neutral-700 sm:text-lg">
+            <p className="mt-3 max-w-2xl text-base font-bold text-black sm:text-lg">
               Explore 12 interactive financial deliverables built for actual clients. Anonymized data, real formulas, automated reconciliation pipelines, and audit-ready reports.
             </p>
           </div>
@@ -125,7 +125,7 @@ export default function Portfolio() {
 
                 {/* Card Content */}
                 <div className="flex flex-1 flex-col p-5 sm:p-6">
-                  <div className="flex items-center justify-between text-xs text-neutral-500 font-bold uppercase tracking-wider">
+                  <div className="flex items-center justify-between text-xs text-black font-black uppercase tracking-wider">
                     <span>{item.subtitle}</span>
                     <ArrowUpRight size={16} className="text-black transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                   </div>
@@ -134,7 +134,7 @@ export default function Portfolio() {
                     {item.title}
                   </h3>
 
-                  <p className="mt-2 line-clamp-3 text-xs leading-relaxed text-neutral-600 sm:text-sm">
+                  <p className="mt-2 line-clamp-3 text-xs leading-relaxed font-bold text-black sm:text-sm">
                     {item.description}
                   </p>
 
@@ -143,7 +143,7 @@ export default function Portfolio() {
                     {item.tags.map((t) => (
                       <span
                         key={t}
-                        className="rounded-full border border-black/25 bg-[#fafaf8] px-2.5 py-0.5 text-[10px] font-extrabold text-neutral-800"
+                        className="rounded-md border-2 border-black bg-[#f4f4f0] px-2.5 py-0.5 text-[10px] font-black text-black"
                       >
                         {t}
                       </span>

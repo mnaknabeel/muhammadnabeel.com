@@ -248,7 +248,7 @@ export default function ServicesPage() {
                   </span>
                 </h1>
 
-                <p className="mt-6 max-w-xl text-lg leading-relaxed text-black/90">
+                <p className="mt-6 max-w-xl text-lg leading-relaxed font-bold text-black">
                   I&apos;m <strong>Muhammad Nabeel</strong> — with 10+ years of
                   e-commerce experience across Amazon, Etsy, Shopify, QuickBooks
                   Online, and Xero. Transparent monthly packages, audit-proof
@@ -266,17 +266,17 @@ export default function ServicesPage() {
                     />
                   </div>
                   <div className="text-xs">
-                    <p className="font-bold text-black">
+                    <p className="font-black text-black">
                       Direct 1-on-1 execution by Muhammad Nabeel
                     </p>
-                    <p className="text-black/70">
+                    <p className="font-bold text-black">
                       No junior handoffs · QuickBooks ProAdvisor · 10,000+ returns filed · $4M+ tracked
                     </p>
-                    <p className="mt-0.5 font-medium text-black">
+                    <p className="mt-0.5 font-bold text-black">
                       Contact:{" "}
                       <a
                         href="mailto:mnak.nabeel@gmail.com"
-                        className="underline hover:text-black font-semibold"
+                        className="underline hover:text-black font-black"
                       >
                         mnak.nabeel@gmail.com
                       </a>
@@ -311,10 +311,10 @@ export default function ServicesPage() {
             <div className="lg:col-span-5">
               <ScrollReveal>
                 <div className="rounded-[24px_24px_24px_4px] border-2 border-black bg-white p-6 shadow-[8px_8px_0_#000]">
-                  <p className="text-xs font-bold uppercase tracking-wider text-black/60">
+                  <p className="text-xs font-black uppercase tracking-wider text-black">
                     Directory of Services
                   </p>
-                  <p className="mt-1 text-xl font-bold tracking-tight">
+                  <p className="mt-1 text-xl font-black tracking-tight text-black">
                     What can I take off your desk?
                   </p>
 
@@ -326,8 +326,8 @@ export default function ServicesPage() {
                       <div className="flex items-center gap-2.5">
                         <Receipt size={20} weight="bold" />
                         <div>
-                          <p className="font-bold leading-tight">Monthly Bookkeeping</p>
-                          <p className="text-[11px] text-black/70">From $200/mo · QBO &amp; Xero</p>
+                          <p className="font-black text-black leading-tight">Monthly Bookkeeping</p>
+                          <p className="text-[11px] font-bold text-black">From $200/mo · QBO &amp; Xero</p>
                         </div>
                       </div>
                       <span className="font-bold group-hover:translate-x-0.5 transition">→</span>
@@ -340,8 +340,8 @@ export default function ServicesPage() {
                       <div className="flex items-center gap-2.5">
                         <ChartBar size={20} weight="bold" />
                         <div>
-                          <p className="font-bold leading-tight">Dashboard &amp; BI Development</p>
-                          <p className="text-[11px] text-black/70">Power BI, Excel, SQL automation</p>
+                          <p className="font-black text-black leading-tight">Dashboard &amp; BI Development</p>
+                          <p className="text-[11px] font-bold text-black">Power BI, Excel, SQL automation</p>
                         </div>
                       </div>
                       <span className="font-bold group-hover:translate-x-0.5 transition">→</span>
@@ -354,8 +354,8 @@ export default function ServicesPage() {
                       <div className="flex items-center gap-2.5">
                         <Storefront size={20} weight="bold" />
                         <div>
-                          <p className="font-bold leading-tight">E-Commerce &amp; Marketplace</p>
-                          <p className="text-[11px] text-black/70">Amazon FBA, Shopify, COGS, Payouts</p>
+                          <p className="font-black text-black leading-tight">E-Commerce &amp; Marketplace</p>
+                          <p className="text-[11px] font-bold text-black">Amazon FBA, Shopify, COGS, Payouts</p>
                         </div>
                       </div>
                       <span className="font-bold group-hover:translate-x-0.5 transition">→</span>
@@ -368,8 +368,8 @@ export default function ServicesPage() {
                       <div className="flex items-center gap-2.5">
                         <ShieldCheck size={20} weight="bold" />
                         <div>
-                          <p className="font-bold leading-tight">Pakistan Tax Filing Practice</p>
-                          <p className="text-[11px] text-black/70 group-hover:text-white/80">
+                          <p className="font-black leading-tight">Pakistan Tax Filing Practice</p>
+                          <p className="text-[11px] font-bold text-black group-hover:text-white">
                             FBR Iris · ATL Status · Wealth Statements
                           </p>
                         </div>
@@ -384,8 +384,8 @@ export default function ServicesPage() {
                       <div className="flex items-center gap-2.5">
                         <TrendUp size={20} weight="bold" />
                         <div>
-                          <p className="font-bold leading-tight">FP&amp;A &amp; Cash Flow Modeling</p>
-                          <p className="text-[11px] text-black/70">13-week forecast · Unit economics</p>
+                          <p className="font-black text-black leading-tight">FP&amp;A &amp; Cash Flow Modeling</p>
+                          <p className="text-[11px] font-bold text-black">13-week forecast · Unit economics</p>
                         </div>
                       </div>
                       <span className="font-bold group-hover:translate-x-0.5 transition">→</span>
@@ -415,11 +415,11 @@ export default function ServicesPage() {
                 <h2 className="text-[clamp(2rem,5vw,3.75rem)] font-medium leading-[1.02] tracking-[-0.02em]">
                   Monthly Bookkeeping Services
                 </h2>
-                <p className="mt-3 max-w-2xl text-base text-black/80 sm:text-lg">
+                <p className="mt-3 max-w-2xl text-base font-bold text-black sm:text-lg">
                   Transparent, predictable monthly fees based on your transaction volume. No ticking clocks, no hourly surprise invoices.
                 </p>
               </div>
-              <div className="hidden rounded-lg border border-black bg-white px-4 py-2 sm:block text-xs font-semibold shadow-[3px_3px_0_#000]">
+              <div className="hidden rounded-lg border-2 border-black bg-white px-4 py-2 sm:block text-xs font-black shadow-[3px_3px_0_#000]">
                 QuickBooks Online · Xero · Dedicated Support
               </div>
             </div>
@@ -438,7 +438,7 @@ export default function ServicesPage() {
                 >
                   {plan.badge && (
                     <div
-                      className="absolute -top-3.5 right-6 rounded-md border-2 border-black px-3 py-0.5 text-xs font-bold uppercase tracking-wider text-black shadow-[2px_2px_0_#000]"
+                      className="absolute -top-3.5 right-6 rounded-md border-2 border-black px-3 py-0.5 text-xs font-black uppercase tracking-wider text-black shadow-[2px_2px_0_#000]"
                       style={{ background: lime }}
                     >
                       {plan.badge}
@@ -446,15 +446,15 @@ export default function ServicesPage() {
                   )}
 
                   <div>
-                    <h3 className="text-2xl font-bold tracking-tight">{plan.name}</h3>
-                    <p className="mt-1 text-xs text-black/70">
+                    <h3 className="text-2xl font-black tracking-tight">{plan.name}</h3>
+                    <p className="mt-1 text-xs font-bold text-black">
                       <strong className="text-black">Best for:</strong> {plan.bestFor}
                     </p>
-                    <div className="mt-5 flex items-baseline gap-1.5 border-b border-black/15 pb-5">
+                    <div className="mt-5 flex items-baseline gap-1.5 border-b-2 border-black/20 pb-5">
                       <span className="text-4xl font-extrabold tracking-tight">
                         {plan.price}
                       </span>
-                      <span className="text-sm font-medium text-black/70">
+                      <span className="text-sm font-bold text-black">
                         / {plan.cadence}
                       </span>
                     </div>
@@ -470,7 +470,7 @@ export default function ServicesPage() {
                         >
                           <Check size={11} weight="bold" />
                         </span>
-                        <span className="leading-snug text-black/90">{feat}</span>
+                        <span className="leading-snug font-bold text-black">{feat}</span>
                       </li>
                     ))}
                   </ul>
@@ -480,7 +480,7 @@ export default function ServicesPage() {
                       href={plan.ctaUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`flex w-full items-center justify-center gap-2 rounded-lg border border-black py-3 text-sm font-bold transition hover:-translate-y-0.5 ${
+                      className={`flex w-full items-center justify-center gap-2 rounded-lg border-2 border-black py-3 text-sm font-black transition hover:-translate-y-0.5 ${
                         plan.highlight
                           ? "bg-[#c8f603] hover:bg-black hover:text-white hover:shadow-[3px_3px_0_#000]"
                           : "bg-white hover:bg-[#c8f603] hover:shadow-[3px_3px_0_#000]"
@@ -504,16 +504,16 @@ export default function ServicesPage() {
           <div className="mt-14">
             <ScrollReveal>
               <div className="rounded-[24px_24px_4px_24px] border-2 border-black bg-white p-7 sm:p-10 shadow-[8px_8px_0_#000]">
-                <div className="flex flex-wrap items-center justify-between gap-4 border-b border-black/20 pb-5">
+                <div className="flex flex-wrap items-center justify-between gap-4 border-b-2 border-black/20 pb-5">
                   <div>
-                    <span className="rounded bg-[#ffc900] px-2.5 py-0.5 text-xs font-bold uppercase tracking-wider text-black">
+                    <span className="rounded bg-[#ffc900] px-2.5 py-0.5 text-xs font-black uppercase tracking-wider text-black">
                       Flyer Specials
                     </span>
-                    <h3 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">
+                    <h3 className="mt-2 text-2xl font-black tracking-tight sm:text-3xl">
                       Add-On Services &amp; Catch-Up Bookkeeping
                     </h3>
                   </div>
-                  <p className="text-xs text-black/70 max-w-sm">
+                  <p className="text-xs font-bold text-black max-w-sm">
                     Can be bundled with your monthly plan or booked as a standalone sprint.
                   </p>
                 </div>
@@ -522,25 +522,25 @@ export default function ServicesPage() {
                   {addOnServices.map((addon) => (
                     <div
                       key={addon.title}
-                      className="flex flex-col justify-between rounded-xl border border-black bg-[#f4f4f0] p-5 shadow-[3px_3px_0_#000]"
+                      className="flex flex-col justify-between rounded-xl border-2 border-black bg-[#f4f4f0] p-5 shadow-[3px_3px_0_#000]"
                     >
                       <div>
                         <div className="flex items-baseline justify-between">
-                          <h4 className="text-lg font-bold">{addon.title}</h4>
-                          <span className="text-xs font-semibold text-black/70">
+                          <h4 className="text-lg font-black text-black">{addon.title}</h4>
+                          <span className="text-xs font-black text-black">
                             {addon.cadence}
                           </span>
                         </div>
                         <p className="mt-1 text-2xl font-extrabold text-black">
                           {addon.price}
                         </p>
-                        <p className="mt-3 text-xs leading-relaxed text-black/80">
+                        <p className="mt-3 text-xs leading-relaxed font-bold text-black">
                           {addon.desc}
                         </p>
                       </div>
 
-                      <div className="mt-5 border-t border-black/15 pt-3">
-                        <ul className="space-y-1.5 text-xs font-medium text-black">
+                      <div className="mt-5 border-t-2 border-black/15 pt-3">
+                        <ul className="space-y-1.5 text-xs font-bold text-black">
                           {addon.items.map((item) => (
                             <li key={item} className="flex items-center gap-1.5">
                               <span className="text-[#c8f603]">✦</span>
@@ -586,7 +586,7 @@ export default function ServicesPage() {
                   Executive Financial Dashboards.
                 </h2>
 
-                <p className="mt-4 text-base leading-relaxed text-black/80 sm:text-lg">
+                <p className="mt-4 text-base leading-relaxed font-bold text-black sm:text-lg">
                   Most founders look at their P&amp;L 3 weeks after month-end and try to make decisions in the rearview mirror. I build automated <strong>Power BI, Looker Studio, and dynamic Excel cockpits</strong> that refresh automatically.
                 </p>
 
@@ -596,8 +596,8 @@ export default function ServicesPage() {
                       ✓
                     </div>
                     <div>
-                      <p className="font-bold">Real-Time Gross &amp; Net Margin Tracking</p>
-                      <p className="text-xs text-black/70">
+                      <p className="font-black text-black">Real-Time Gross &amp; Net Margin Tracking</p>
+                      <p className="text-xs font-bold text-black">
                         See true profit after gateway fees, returns, shipping, and ad spend.
                       </p>
                     </div>
@@ -608,8 +608,8 @@ export default function ServicesPage() {
                       ✓
                     </div>
                     <div>
-                      <p className="font-bold">SKU &amp; ASIN Unit Economics Breakdown</p>
-                      <p className="text-xs text-black/70">
+                      <p className="font-black text-black">SKU &amp; ASIN Unit Economics Breakdown</p>
+                      <p className="text-xs font-bold text-black">
                         Identify your cash cows vs. products silently draining capital.
                       </p>
                     </div>
@@ -620,8 +620,8 @@ export default function ServicesPage() {
                       ✓
                     </div>
                     <div>
-                      <p className="font-bold">Automated Data Pipelines (SQL &amp; Python)</p>
-                      <p className="text-xs text-black/70">
+                      <p className="font-black text-black">Automated Data Pipelines (SQL &amp; Python)</p>
+                      <p className="text-xs font-bold text-black">
                         No manual CSV copy-pasting. Direct APIs to QuickBooks, Shopify, and Amazon.
                       </p>
                     </div>
@@ -639,7 +639,7 @@ export default function ServicesPage() {
                     <ChartBar size={18} weight="bold" />
                     <span>Commission a Dashboard</span>
                   </a>
-                  <span className="text-xs text-black/70">
+                  <span className="text-xs font-black text-black">
                     Standalone builds from $500 or bundled with bookkeeping.
                   </span>
                 </div>
@@ -732,7 +732,7 @@ export default function ServicesPage() {
               <h2 className="mt-4 text-[clamp(2.15rem,5.5vw,3.75rem)] font-medium leading-[1.02] tracking-[-0.02em]">
                 Amazon FBA, Shopify &amp; Multi-Channel Reconciliation
               </h2>
-              <p className="mt-4 text-base text-black/80 sm:text-lg">
+              <p className="mt-4 text-base font-bold text-black sm:text-lg">
                 Most general bookkeepers treat Amazon deposits as single lumps of revenue. That is how sellers get blindsided by unexpected taxes or negative cash flow.
               </p>
             </div>
@@ -744,8 +744,8 @@ export default function ServicesPage() {
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-black bg-[#c8f603]">
                   <Receipt size={24} weight="bold" />
                 </div>
-                <h3 className="mt-5 text-xl font-bold">Settlement Report Ingestion</h3>
-                <p className="mt-2.5 text-sm leading-relaxed text-black/80">
+                <h3 className="mt-5 text-xl font-black text-black">Settlement Report Ingestion</h3>
+                <p className="mt-2.5 text-sm leading-relaxed font-bold text-black">
                   Every 14-day Amazon settlement is split into gross sales, promotional rebates, FBA fulfillment fees, storage, refunds, and reserve holds. Everything reconciles down to the penny.
                 </p>
               </div>
@@ -756,8 +756,8 @@ export default function ServicesPage() {
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-black bg-[#ffc900]">
                   <Storefront size={24} weight="bold" />
                 </div>
-                <h3 className="mt-5 text-xl font-bold">Multi-Currency Payout Clearing</h3>
-                <p className="mt-2.5 text-sm leading-relaxed text-black/80">
+                <h3 className="mt-5 text-xl font-black text-black">Multi-Currency Payout Clearing</h3>
+                <p className="mt-2.5 text-sm leading-relaxed font-bold text-black">
                   Shopify Payments, PayPal, Stripe, Wise, and Payoneer clearances. Tracking currency conversion fees and clearing accounts so un-deposited funds match the balance sheet.
                 </p>
               </div>
@@ -768,8 +768,8 @@ export default function ServicesPage() {
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-black bg-white">
                   <Database size={24} weight="bold" />
                 </div>
-                <h3 className="mt-5 text-xl font-bold">Python / SQL Pipeline Automation</h3>
-                <p className="mt-2.5 text-sm leading-relaxed text-black/80">
+                <h3 className="mt-5 text-xl font-black text-black">Python / SQL Pipeline Automation</h3>
+                <p className="mt-2.5 text-sm leading-relaxed font-bold text-black">
                   Custom scripts handle high-volume transaction mapping and automated category assignment, cutting close cycles from 3 weeks to 3 days while boosting accuracy to 98%+.
                 </p>
               </div>
@@ -890,7 +890,7 @@ export default function ServicesPage() {
                 <h2 className="mt-2 text-[clamp(2.15rem,5vw,3.75rem)] font-medium leading-[1.02] tracking-[-0.02em]">
                   FP&amp;A &amp; 13-Week Cash Flow Forecasts.
                 </h2>
-                <p className="mt-3 max-w-2xl text-base text-black/80 sm:text-lg">
+                <p className="mt-3 max-w-2xl text-base font-bold text-black sm:text-lg">
                   Bookkeeping tells you where your money went. FP&amp;A tells you where it is going next so you never wake up to an empty payroll account.
                 </p>
               </div>
@@ -902,8 +902,8 @@ export default function ServicesPage() {
               <div className="flex h-11 w-11 items-center justify-center rounded-lg border border-black bg-[#ffc900]">
                 <Clock size={22} weight="bold" />
               </div>
-              <h3 className="mt-4 text-xl font-bold">13-Week Rolling Cash Flow</h3>
-              <p className="mt-2 text-sm text-black/80 leading-relaxed">
+              <h3 className="mt-4 text-xl font-black text-black">13-Week Rolling Cash Flow</h3>
+              <p className="mt-2 text-sm font-bold text-black leading-relaxed">
                 Direct-method cash model projecting weekly receipts, disbursements, inventory deposits, and tax payments.
               </p>
             </div>
@@ -912,8 +912,8 @@ export default function ServicesPage() {
               <div className="flex h-11 w-11 items-center justify-center rounded-lg border border-black bg-[#c8f603]">
                 <TrendUp size={22} weight="bold" />
               </div>
-              <h3 className="mt-4 text-xl font-bold">Scenario &amp; Hiring Modeling</h3>
-              <p className="mt-2 text-sm text-black/80 leading-relaxed">
+              <h3 className="mt-4 text-xl font-black text-black">Scenario &amp; Hiring Modeling</h3>
+              <p className="mt-2 text-sm font-bold text-black leading-relaxed">
                 Should you hire two reps, increase ad spend by $10K, or purchase container stock? We model the exact break-even timeline.
               </p>
             </div>
@@ -922,8 +922,8 @@ export default function ServicesPage() {
               <div className="flex h-11 w-11 items-center justify-center rounded-lg border border-black bg-white">
                 <FileText size={22} weight="bold" />
               </div>
-              <h3 className="mt-4 text-xl font-bold">Budget vs. Actual Variance</h3>
-              <p className="mt-2 text-sm text-black/80 leading-relaxed">
+              <h3 className="mt-4 text-xl font-black text-black">Budget vs. Actual Variance</h3>
+              <p className="mt-2 text-sm font-bold text-black leading-relaxed">
                 Monthly variance analysis dissecting why revenue missed target or why COGS expanded, with corrective action steps.
               </p>
             </div>
@@ -942,7 +942,7 @@ export default function ServicesPage() {
               <h2 className="mt-3 text-[clamp(2.15rem,5vw,3.75rem)] font-medium leading-[1.02] tracking-[-0.02em]">
                 Estimate Your Custom Bookkeeping Package
               </h2>
-              <p className="mt-3 text-base text-black/80">
+              <p className="mt-3 text-base font-bold text-black">
                 Adjust your transaction volume and account count to see an instant monthly estimate.
               </p>
             </div>
@@ -955,7 +955,7 @@ export default function ServicesPage() {
                 <div>
                   <div className="flex items-center justify-between text-sm font-bold">
                     <label htmlFor={txVolumeId}>Monthly Transaction Volume</label>
-                    <span className="rounded bg-[#c8f603] px-2 py-0.5 font-mono text-sm">
+                    <span className="rounded bg-[#c8f603] px-2 py-0.5 font-mono text-sm font-black text-black">
                       {txVolume} txns/mo
                     </span>
                   </div>
@@ -969,7 +969,7 @@ export default function ServicesPage() {
                     onChange={(e) => setTxVolume(Number(e.target.value))}
                     className="mt-3 w-full accent-black cursor-pointer"
                   />
-                  <div className="flex justify-between text-[11px] text-black/60">
+                  <div className="flex justify-between text-[11px] font-black text-black">
                     <span>&lt; 50 (Micro)</span>
                     <span>100 (Basic)</span>
                     <span>200 (Standard)</span>
@@ -979,14 +979,14 @@ export default function ServicesPage() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label htmlFor={bankAccountsId} className="block text-xs font-bold uppercase text-black/70">
+                    <label htmlFor={bankAccountsId} className="block text-xs font-black uppercase text-black">
                       Bank Accounts
                     </label>
                     <select
                       id={bankAccountsId}
                       value={bankAccounts}
                       onChange={(e) => setBankAccounts(Number(e.target.value))}
-                      className="mt-1.5 w-full rounded-lg border-2 border-black bg-[#f4f4f0] p-2.5 text-sm font-semibold"
+                      className="mt-1.5 w-full rounded-lg border-2 border-black bg-[#f4f4f0] p-2.5 text-sm font-bold text-black"
                     >
                       <option value={1}>1 Bank Account</option>
                       <option value={2}>2 Bank Accounts</option>
@@ -996,14 +996,14 @@ export default function ServicesPage() {
                   </div>
 
                   <div>
-                    <label htmlFor={creditCardsId} className="block text-xs font-bold uppercase text-black/70">
+                    <label htmlFor={creditCardsId} className="block text-xs font-black uppercase text-black">
                       Credit Cards
                     </label>
                     <select
                       id={creditCardsId}
                       value={creditCards}
                       onChange={(e) => setCreditCards(Number(e.target.value))}
-                      className="mt-1.5 w-full rounded-lg border-2 border-black bg-[#f4f4f0] p-2.5 text-sm font-semibold"
+                      className="mt-1.5 w-full rounded-lg border-2 border-black bg-[#f4f4f0] p-2.5 text-sm font-bold text-black"
                     >
                       <option value={0}>0 Credit Cards</option>
                       <option value={1}>1 Credit Card</option>
@@ -1013,12 +1013,12 @@ export default function ServicesPage() {
                   </div>
                 </div>
 
-                <div className="pt-2 border-t border-black/15">
-                  <p className="text-xs font-bold uppercase tracking-wider text-black/70 mb-3">
+                <div className="pt-2 border-t-2 border-black/15">
+                  <p className="text-xs font-black uppercase tracking-wider text-black mb-3">
                     Optional Add-Ons (From Flyer)
                   </p>
 
-                  <label className="flex items-center gap-3 cursor-pointer select-none rounded-lg border border-black/20 p-3 hover:bg-[#f4f4f0]">
+                  <label className="flex items-center gap-3 cursor-pointer select-none rounded-lg border-2 border-black/20 p-3 hover:bg-[#f4f4f0]">
                     <input
                       type="checkbox"
                       checked={needsInventory}
@@ -1026,20 +1026,20 @@ export default function ServicesPage() {
                       className="h-4 w-4 rounded accent-black"
                     />
                     <div className="text-xs">
-                      <p className="font-bold text-black">Inventory &amp; COGS Tracking (+$150/mo)</p>
-                      <p className="text-black/60">For e-commerce sellers managing stock across warehouses.</p>
+                      <p className="font-black text-black">Inventory &amp; COGS Tracking (+$150/mo)</p>
+                      <p className="font-bold text-black">For e-commerce sellers managing stock across warehouses.</p>
                     </div>
                   </label>
 
                   <div className="mt-3">
-                    <label htmlFor={cleanupMonthsId} className="block text-xs font-semibold text-black/80">
+                    <label htmlFor={cleanupMonthsId} className="block text-xs font-black text-black">
                       Historical Books Behind / Cleanup Needed?
                     </label>
                     <select
                       id={cleanupMonthsId}
                       value={cleanupMonths}
                       onChange={(e) => setCleanupMonths(Number(e.target.value))}
-                      className="mt-1.5 w-full rounded-lg border-2 border-black bg-[#f4f4f0] p-2.5 text-xs font-semibold"
+                      className="mt-1.5 w-full rounded-lg border-2 border-black bg-[#f4f4f0] p-2.5 text-xs font-bold text-black"
                     >
                       <option value={0}>No cleanup needed — current books only</option>
                       <option value={3}>1 to 3 Months Behind (+$300 one-time)</option>
@@ -1053,27 +1053,27 @@ export default function ServicesPage() {
               {/* Estimate Result Display */}
               <div className="flex flex-col justify-between rounded-2xl border-2 border-black bg-[#f4f4f0] p-6 lg:col-span-5">
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-wider text-black/60">
+                  <p className="text-xs font-black uppercase tracking-wider text-black">
                     Calculated Estimate
                   </p>
                   <p className="mt-2 text-4xl font-extrabold tracking-tight sm:text-5xl">
                     ${estimatedMonthlyTotal}
-                    <span className="text-base font-medium text-black/70">/mo</span>
+                    <span className="text-base font-bold text-black">/mo</span>
                   </p>
 
                   {cleanupEstimate > 0 && (
-                    <div className="mt-3 rounded-lg border border-black/30 bg-[#fff9d6] p-2.5 text-xs">
-                      <p className="font-bold text-black">
+                    <div className="mt-3 rounded-lg border-2 border-black bg-[#fff9d6] p-2.5 text-xs">
+                      <p className="font-black text-black">
                         + ${cleanupEstimate} one-time historical cleanup
                       </p>
-                      <p className="text-black/70">Covers {cleanupMonths} months of retroactive catch-up.</p>
+                      <p className="font-bold text-black">Covers {cleanupMonths} months of retroactive catch-up.</p>
                     </div>
                   )}
 
-                  <div className="mt-5 space-y-2 border-t border-black/15 pt-4 text-xs">
+                  <div className="mt-5 space-y-2 border-t-2 border-black/15 pt-4 text-xs">
                     <p className="flex justify-between">
-                      <span className="text-black/70">Suggested Tier:</span>
-                      <strong className="font-bold">
+                      <span className="font-bold text-black">Suggested Tier:</span>
+                      <strong className="font-black text-black">
                         {txVolume <= 100
                           ? "Basic ($200)"
                           : txVolume <= 200
@@ -1082,31 +1082,31 @@ export default function ServicesPage() {
                       </strong>
                     </p>
                     <p className="flex justify-between">
-                      <span className="text-black/70">Reconciliation:</span>
-                      <span>{totalAccounts} accounts total</span>
+                      <span className="font-bold text-black">Reconciliation:</span>
+                      <span className="font-bold text-black">{totalAccounts} accounts total</span>
                     </p>
                     <p className="flex justify-between">
-                      <span className="text-black/70">Software:</span>
-                      <span>QuickBooks Online / Xero</span>
+                      <span className="font-bold text-black">Software:</span>
+                      <span className="font-bold text-black">QuickBooks Online / Xero</span>
                     </p>
                     <p className="flex justify-between">
-                      <span className="text-black/70">Reporting:</span>
-                      <span>Monthly P&amp;L + Balance Sheet</span>
+                      <span className="font-bold text-black">Reporting:</span>
+                      <span className="font-bold text-black">Monthly P&amp;L + Balance Sheet</span>
                     </p>
                   </div>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-black/15">
+                <div className="mt-6 pt-4 border-t-2 border-black/15">
                   <a
                     href={calculatorWhatsAppUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex w-full items-center justify-center gap-2 rounded-lg border-2 border-black bg-[#25d366] py-3 text-sm font-bold text-black transition hover:-translate-y-0.5 hover:shadow-[4px_4px_0_#000]"
+                    className="flex w-full items-center justify-center gap-2 rounded-lg border-2 border-black bg-[#25d366] py-3 text-sm font-black text-black transition hover:-translate-y-0.5 hover:shadow-[4px_4px_0_#000]"
                   >
                     <WhatsappLogo size={18} weight="bold" />
                     <span>Inquire This Scope on WhatsApp</span>
                   </a>
-                  <p className="mt-2 text-center text-[10px] text-black/60">
+                  <p className="mt-2 text-center text-[10px] font-bold text-black">
                     Final proposal confirmed after a 15-minute diagnostic review.
                   </p>
                 </div>
@@ -1139,7 +1139,7 @@ export default function ServicesPage() {
                 <span>How do you get access to my financial software?</span>
                 <span className="rounded-full border border-black px-2 py-0.5 text-xs transition group-open:rotate-45" style={{ background: lime }}>+</span>
               </summary>
-              <p className="px-5 pb-5 text-sm leading-relaxed text-black/80">
+              <p className="px-5 pb-5 text-sm leading-relaxed font-bold text-black">
                 You invite me as an external <strong>Accountant User</strong> inside QuickBooks Online or Xero. For bank and credit card accounts, you provide read-only / view-only accountant access. I never have authority or access to disburse funds, write checks, or execute transfers.
               </p>
             </details>
@@ -1151,7 +1151,7 @@ export default function ServicesPage() {
                 <span>How quickly can you catch up messy or overdue books?</span>
                 <span className="rounded-full border border-black px-2 py-0.5 text-xs transition group-open:rotate-45" style={{ background: lime }}>+</span>
               </summary>
-              <p className="px-5 pb-5 text-sm leading-relaxed text-black/80">
+              <p className="px-5 pb-5 text-sm leading-relaxed font-bold text-black">
                 A typical catch-up of 6 to 12 months is usually completed within <strong>5 to 7 business days</strong> once bank feeds or statements are connected. You receive fully reconciled statements ready for your CPA or tax filer immediately.
               </p>
             </details>
@@ -1163,7 +1163,7 @@ export default function ServicesPage() {
                 <span>Can you build a custom Power BI dashboard using my existing QuickBooks?</span>
                 <span className="rounded-full border border-black px-2 py-0.5 text-xs transition group-open:rotate-45" style={{ background: lime }}>+</span>
               </summary>
-              <p className="px-5 pb-5 text-sm leading-relaxed text-black/80">
+              <p className="px-5 pb-5 text-sm leading-relaxed font-bold text-black">
                 Yes. I connect QuickBooks Online directly via API or automated export pipelines into Power BI or interactive Excel. We track gross margin, SKU profitability, overhead trends, and rolling cash flow automatically.
               </p>
             </details>
@@ -1175,7 +1175,7 @@ export default function ServicesPage() {
                 <span>What countries and currencies do you support?</span>
                 <span className="rounded-full border border-black px-2 py-0.5 text-xs transition group-open:rotate-45" style={{ background: lime }}>+</span>
               </summary>
-              <p className="px-5 pb-5 text-sm leading-relaxed text-black/80">
+              <p className="px-5 pb-5 text-sm leading-relaxed font-bold text-black">
                 I support businesses in the <strong>US, UK, Canada, Australia, UAE, and Pakistan</strong>. I regularly handle multi-currency accounts in USD, GBP, EUR, CAD, AED, and PKR with proper foreign exchange realization.
               </p>
             </details>
@@ -1190,7 +1190,7 @@ export default function ServicesPage() {
             <h2 className="text-[clamp(2.25rem,6vw,4.25rem)] font-medium leading-[1.02] tracking-[-0.02em]">
               Ready to fix your numbers once and for all?
             </h2>
-            <p className="mt-4 text-base text-black/80 sm:text-lg">
+            <p className="mt-4 text-base font-bold text-black sm:text-lg">
               Send me a message with a quick note on your current accounting setup. I will review your situation and send you a fixed, transparent quote.
             </p>
 

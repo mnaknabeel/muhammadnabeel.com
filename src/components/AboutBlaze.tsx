@@ -63,7 +63,7 @@ export default function AboutBlaze() {
           <h2 className="mt-4 text-3xl font-black tracking-tight text-black sm:text-4xl lg:text-5xl">
             Finance Engineer. Tax Consultant. Automation Specialist.
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-base text-neutral-700 sm:text-lg">
+          <p className="mx-auto mt-4 max-w-2xl text-base font-bold text-black sm:text-lg">
             No junior account managers, no outsourced offshore mills, no bot responses.
             You work directly with an engineer who understands both ledger math and code.
           </p>
@@ -104,7 +104,7 @@ export default function AboutBlaze() {
 
                 {/* Card Sub-Banner */}
                 <div className="border-t-2 border-black bg-[#f4f4f0] p-4 text-xs font-medium text-black">
-                  <p className="italic text-neutral-800">
+                  <p className="italic font-bold text-black">
                     &ldquo;My philosophy is simple: clean books prevent costly audits, and automation frees you to grow your business.&rdquo;
                   </p>
                   <div className="mt-3 flex items-center justify-between border-t border-black/10 pt-2 text-[11px] font-bold">
@@ -112,7 +112,7 @@ export default function AboutBlaze() {
                       <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse inline-block" />
                       Active on WhatsApp
                     </span>
-                    <span className="text-neutral-600">+92 341 0224988</span>
+                    <span className="text-black font-black">+92 341 0224988</span>
                   </div>
                 </div>
               </div>
@@ -172,7 +172,7 @@ export default function AboutBlaze() {
                       </span>
                     </div>
                     <h4 className="mt-3 text-base font-black text-black">{c.title}</h4>
-                    <p className="text-xs font-black text-neutral-800">{c.org}</p>
+                    <p className="text-xs font-black text-black">{c.org}</p>
                     <p className="mt-2 text-xs leading-relaxed font-bold text-black">
                       {c.desc}
                     </p>

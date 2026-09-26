@@ -90,27 +90,27 @@ export default function Experience() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.55, delay: (i % 2) * 0.08, ease: [0.16, 1, 0.3, 1] }}
-            className={`${role.bg} ${role.radius} border border-black p-5 transition-shadow hover:shadow-[6px_6px_0_#000] sm:p-7`}
+            className={`${role.bg} ${role.radius} border-2 border-black p-5 transition-shadow hover:shadow-[6px_6px_0_#000] sm:p-7`}
           >
-            <div className="mb-4 flex flex-wrap items-center justify-between gap-2 border-b border-black pb-4">
+            <div className="mb-4 flex flex-wrap items-center justify-between gap-2 border-b-2 border-black/20 pb-4">
               <span
-                className="rounded-md px-2 py-1 text-xs font-semibold tabular-nums"
+                className="rounded-md border-2 border-black px-2.5 py-1 text-xs font-black tabular-nums text-black"
                 style={{ background: i === 0 ? lime : yellow }}
               >
                 {role.period}
               </span>
-              <span className="text-xs font-medium uppercase tracking-[0.14em] text-black">
+              <span className="text-xs font-black uppercase tracking-[0.14em] text-black">
                 {role.company}
               </span>
             </div>
-            <h3 className="mb-4 text-xl font-semibold tracking-[-0.01em] sm:text-2xl">
+            <h3 className="mb-4 text-xl font-black tracking-tight text-black sm:text-2xl">
               {role.title}
             </h3>
             <ul className="space-y-2">
               {role.bullets.map((b) => (
-                <li key={b} className="relative pl-4 text-[15px] leading-relaxed text-black">
+                <li key={b} className="relative pl-4 text-[15px] font-bold leading-relaxed text-black">
                   <span
-                    className="absolute left-0 top-[0.55em] h-1.5 w-1.5 rounded-full"
+                    className="absolute left-0 top-[0.55em] h-2 w-2 rounded-full border border-black"
                     style={{ background: lime }}
                   />
                   {b}

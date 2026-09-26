@@ -447,7 +447,7 @@ function ChartCard({
       {/* footer: scroll-driven count-up */}
       <div className="flex items-end justify-between bg-white px-4 py-3">
         <div>
-          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-600">
+          <p className="text-[10px] font-black uppercase tracking-[0.18em] text-black">
             Cumulative managed
           </p>
           <div className="mt-0.5">

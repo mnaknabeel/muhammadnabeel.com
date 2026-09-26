@@ -277,17 +277,17 @@ export default function Home() {
           <ScrollReveal>
             <p className="mb-4 text-[15px]">
               <span
-                className="rounded-md border border-black px-2.5 py-1 text-sm font-semibold"
+                className="rounded-md border-2 border-black px-2.5 py-1 text-sm font-black"
                 style={{ background: lime }}
               >
                 Tools
               </span>{" "}
               — software I&apos;ve built and shipped
             </p>
-            <h2 className="mb-4 text-[clamp(2rem,5.5vw,4rem)] font-medium leading-[1.02] tracking-[-0.02em]">
+            <h2 className="mb-4 text-[clamp(2rem,5.5vw,4rem)] font-extrabold leading-[1.02] tracking-[-0.02em] text-black">
               I build tools, not just reports.
             </h2>
-            <p className="mb-10 max-w-2xl text-lg text-black sm:mb-14">
+            <p className="mb-10 max-w-2xl text-lg font-bold text-black sm:mb-14">
               The same automation mindset that cleans your books also ships
               products. Two are live right now — both free to try.
             </p>
@@ -300,18 +300,18 @@ export default function Home() {
                   href="https://crm.muhammadnabeel.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block border border-black bg-white p-7 transition hover:-translate-y-1 hover:shadow-[6px_6px_0_#000] sm:p-9 rounded-[24px_24px_24px_4px] h-full"
+                  className="block border-2 border-black bg-white p-7 transition hover:-translate-y-1 hover:shadow-[6px_6px_0_#000] sm:p-9 rounded-[24px_24px_24px_4px] h-full"
                 >
-                  <p className="mb-2 text-[13px] uppercase tracking-[0.08em] text-black">SaaS · Live</p>
-                  <h3 className="mb-3 text-2xl font-medium tracking-[-0.01em] sm:text-3xl">
+                  <p className="mb-2 text-[13px] font-black uppercase tracking-[0.08em] text-black">SaaS · Live</p>
+                  <h3 className="mb-3 text-2xl font-black tracking-tight text-black sm:text-3xl">
                     The Little CRM
                   </h3>
-                  <p className="mb-6 max-w-md text-base leading-relaxed text-black">
+                  <p className="mb-6 max-w-md text-base font-bold leading-relaxed text-black">
                     One dashboard for leads, prospects, clients, invoices, and
                     reports. Google Maps lead finder and AI proposal writer built
                     in. Free tier — 50 leads on signup.
                   </p>
-                  <span className="inline-flex items-center gap-1.5 rounded-md border border-black px-4 py-2 text-[15px] font-medium" style={{ background: lime }}>
+                  <span className="inline-flex items-center gap-1.5 rounded-md border-2 border-black px-4 py-2 text-[15px] font-black text-black" style={{ background: lime }}>
                     Try the CRM <span aria-hidden>→</span>
                   </span>
                 </a>
@@ -324,19 +324,19 @@ export default function Home() {
                   href="https://audit.muhammadnabeel.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block border border-black p-7 transition hover:-translate-y-1 hover:shadow-[6px_6px_0_#000] sm:p-9 rounded-[24px_24px_4px_24px] h-full"
+                  className="block border-2 border-black p-7 transition hover:-translate-y-1 hover:shadow-[6px_6px_0_#000] sm:p-9 rounded-[24px_24px_4px_24px] h-full"
                   style={{ background: yellow }}
                 >
-                  <p className="mb-2 text-[13px] uppercase tracking-[0.08em] text-black">AI · Live</p>
-                  <h3 className="mb-3 text-2xl font-medium tracking-[-0.01em] sm:text-3xl">
+                  <p className="mb-2 text-[13px] font-black uppercase tracking-[0.08em] text-black">AI · Live</p>
+                  <h3 className="mb-3 text-2xl font-black tracking-tight text-black sm:text-3xl">
                     Resume IQ
                   </h3>
-                  <p className="mb-6 max-w-md text-base leading-relaxed text-black">
+                  <p className="mb-6 max-w-md text-base font-bold leading-relaxed text-black">
                     Four AI agents score your CV the way an ATS, a recruiter, and a
                     hiring manager would — then rewrite your weakest bullets. Free
                     report in under a minute.
                   </p>
-                  <span className="inline-flex items-center gap-1.5 rounded-md border border-black bg-white px-4 py-2 text-[15px] font-medium">
+                  <span className="inline-flex items-center gap-1.5 rounded-md border-2 border-black bg-white px-4 py-2 text-[15px] font-black text-black">
                     Try Resume IQ <span aria-hidden>→</span>
                   </span>
                 </a>
@@ -370,19 +370,19 @@ export default function Home() {
           {faqs.map((f, i) => (
             <ScrollReveal key={f.q} delay={i * 0.08}>
               <details
-                className="group border border-black bg-white rounded-[16px_16px_16px_4px] open:shadow-[6px_6px_0_#000] transition-shadow"
+                className="group border-2 border-black bg-white rounded-[16px_16px_16px_4px] open:shadow-[6px_6px_0_#000] transition-shadow"
               >
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-5 sm:p-6 text-lg font-medium tracking-[-0.01em]">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-5 sm:p-6 text-lg font-black tracking-tight text-black">
                   {f.q}
                   <span
-                    className="shrink-0 rounded-md border border-black px-2 py-0.5 text-sm font-semibold transition group-open:rotate-45"
+                    className="shrink-0 rounded-md border-2 border-black px-2 py-0.5 text-sm font-black text-black transition group-open:rotate-45"
                     style={{ background: lime }}
                     aria-hidden
                   >
                     +
                   </span>
                 </summary>
-                <p className="px-5 pb-5 sm:px-6 sm:pb-6 text-[15px] leading-relaxed text-black">
+                <p className="px-5 pb-5 sm:px-6 sm:pb-6 text-[15px] font-bold leading-relaxed text-black">
                   {f.a}
                 </p>
               </details>
@@ -395,11 +395,11 @@ export default function Home() {
       <section className="px-5 py-20 sm:py-28 max-w-5xl mx-auto text-center">
         <ScrollReveal>
           <p
-            className="font-medium leading-[1.05] tracking-[-0.02em]"
+            className="font-extrabold leading-[1.05] tracking-[-0.02em] text-black"
             style={{ fontSize: "clamp(2rem, 6vw, 4.5rem)" }}
           >
             &ldquo;I speak finance, Python, and SQL fluently — and I build{" "}
-            <span className="mx-2 inline-block rounded-md px-3 py-0.5" style={{ background: yellow }}>
+            <span className="mx-2 inline-block rounded-md border-2 border-black px-3 py-0.5" style={{ background: yellow }}>
               bridges
             </span>{" "}
             between them.&rdquo;
@@ -410,10 +410,10 @@ export default function Home() {
       {/* ── Final CTA ───────────────────────────────────── */}
       <section className="px-5 pb-24 pt-6 text-center max-w-3xl mx-auto">
         <ScrollReveal>
-          <h2 className="text-[clamp(2.25rem,6.5vw,4.5rem)] font-medium leading-[1.02] tracking-[-0.02em] mb-6">
+          <h2 className="text-[clamp(2.25rem,6.5vw,4.5rem)] font-extrabold leading-[1.02] tracking-[-0.02em] text-black mb-6">
             Your books &amp; taxes, handled.
           </h2>
-          <p className="text-lg text-black mb-8 leading-relaxed">
+          <p className="text-lg font-bold text-black mb-8 leading-relaxed">
             Tell me what&apos;s messy — books behind, reports late, or unfiled FBR taxes.
             I&apos;ll look at your situation and tell you exactly what it takes to solve it.
           </p>
@@ -422,7 +422,7 @@ export default function Home() {
               href="https://wa.me/923410224988?text=Hi%20Nabeel%2C%20I%20would%20like%20to%20talk%20about%20my%20bookkeeping%20or%20Pakistan%20tax%20filing."
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 h-12 px-7 rounded-md border border-black text-base font-medium transition hover:-translate-y-px hover:shadow-[4px_4px_0_#000]"
+              className="inline-flex items-center gap-2 h-12 px-7 rounded-md border-2 border-black text-base font-black text-black transition hover:-translate-y-px hover:shadow-[4px_4px_0_#000]"
               style={{ background: "#25d366" }}
             >
               <WaIcon />
@@ -430,7 +430,7 @@ export default function Home() {
             </a>
             <a
               href="mailto:mnak.nabeel@gmail.com?subject=Inquiry"
-              className="inline-flex items-center gap-2 h-12 px-7 rounded-md border border-black bg-white text-base font-medium transition hover:-translate-y-px hover:shadow-[4px_4px_0_#000]"
+              className="inline-flex items-center gap-2 h-12 px-7 rounded-md border-2 border-black bg-white text-base font-black text-black transition hover:-translate-y-px hover:shadow-[4px_4px_0_#000]"
             >
               Email instead <span aria-hidden>→</span>
             </a>

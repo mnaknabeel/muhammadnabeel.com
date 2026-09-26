@@ -355,7 +355,7 @@ export default function HangingPricingCards() {
             <WhatsappLogo size={22} weight="fill" />
             <span>File my return on WhatsApp</span>
           </a>
-          <div className="mt-3 text-xs text-neutral-500">
+          <div className="mt-3 text-xs font-semibold text-neutral-200">
             WhatsApp: 0341-0224988 &nbsp;·&nbsp; Reply typically within a few hours &nbsp;·&nbsp; Guaranteed FBR CPR
           </div>
         </div>

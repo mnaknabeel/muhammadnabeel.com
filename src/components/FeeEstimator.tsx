@@ -141,7 +141,7 @@ export default function FeeEstimator() {
           <h2 className="mt-4 text-3xl font-black tracking-tight text-black sm:text-4xl lg:text-5xl">
             Instant Scope &amp; Transparent Pricing
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-base text-neutral-700 sm:text-lg">
+          <p className="mx-auto mt-4 max-w-2xl text-base font-bold text-black sm:text-lg">
             No ambiguous quotes or surprise hourly meters. Select your parameters below for an instant, transparent fee estimate.
           </p>
 
@@ -152,7 +152,7 @@ export default function FeeEstimator() {
               className={`flex items-center gap-2 rounded-full px-5 py-2 text-xs font-black uppercase tracking-wider transition ${
                 serviceType === "tax"
                   ? "bg-black text-[#c8f603]"
-                  : "bg-transparent text-black hover:text-neutral-700"
+                  : "bg-transparent text-black hover:bg-neutral-100"
               }`}
             >
               <Receipt size={16} weight="bold" />
@@ -163,7 +163,7 @@ export default function FeeEstimator() {
               className={`flex items-center gap-2 rounded-full px-5 py-2 text-xs font-black uppercase tracking-wider transition ${
                 serviceType === "bookkeeping"
                   ? "bg-black text-[#c8f603]"
-                  : "bg-transparent text-black hover:text-neutral-700"
+                  : "bg-transparent text-black hover:bg-neutral-100"
               }`}
             >
               <CurrencyDollar size={16} weight="bold" />
@@ -182,7 +182,7 @@ export default function FeeEstimator() {
                   <h3 className="text-xl font-black text-black">
                     1. Select Your Taxpayer Category
                   </h3>
-                  <p className="mt-1 text-xs text-neutral-600 sm:text-sm">
+                  <p className="mt-1 text-xs font-bold text-black sm:text-sm">
                     FBR Tax Year 2026 filings (Period: 1 July 2025 to 30 June 2026).
                   </p>
 
@@ -213,7 +213,7 @@ export default function FeeEstimator() {
                           />
                           <div>
                             <p className="text-sm font-black text-black">{item.label}</p>
-                            <p className="text-xs text-neutral-600">{item.desc}</p>
+                            <p className="text-xs font-bold text-black">{item.desc}</p>
                           </div>
                         </div>
                         <span className="rounded-md border border-black bg-black px-2.5 py-1 text-xs font-black text-[#c8f603]">
@@ -228,7 +228,7 @@ export default function FeeEstimator() {
                   <h3 className="text-xl font-black text-black">
                     1. Configure Your Transaction Volume
                   </h3>
-                  <p className="mt-1 text-xs text-neutral-600 sm:text-sm">
+                  <p className="mt-1 text-xs font-bold text-black sm:text-sm">
                     Drag the sliders to reflect your monthly activity.
                   </p>
 
@@ -251,7 +251,7 @@ export default function FeeEstimator() {
                       onChange={(e) => setTransactions(Number(e.target.value))}
                       className="mt-3 w-full accent-black cursor-pointer"
                     />
-                    <div className="mt-1 flex justify-between text-[10px] font-bold text-neutral-500">
+                    <div className="mt-1 flex justify-between text-[10px] font-black text-black">
                       <span>30 (Small)</span>
                       <span>200 (Growing)</span>
                       <span>500+ (High Volume)</span>
@@ -277,7 +277,7 @@ export default function FeeEstimator() {
                       onChange={(e) => setAccounts(Number(e.target.value))}
                       className="mt-3 w-full accent-black cursor-pointer"
                     />
-                    <div className="mt-1 flex justify-between text-[10px] font-bold text-neutral-500">
+                    <div className="mt-1 flex justify-between text-[10px] font-black text-black">
                       <span>1 Account</span>
                       <span>3 Accounts</span>
                       <span>6+ Accounts</span>
