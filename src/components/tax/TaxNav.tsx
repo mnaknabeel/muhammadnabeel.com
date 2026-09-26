@@ -43,7 +43,7 @@ export default function TaxNav() {
   };
 
   const navLinks = [
-    { label: "Bookkeeping", href: "/#services" },
+    { label: "Services", href: "/services" },
     { label: "Tax Filing", href: "/tax-filing", isHighlight: true },
     { label: "Tax Calculator", href: "/tax-calculator" },
     { label: "Tax Rates", href: "/tax-rates" },
