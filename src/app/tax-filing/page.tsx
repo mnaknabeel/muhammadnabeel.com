@@ -128,7 +128,7 @@ const checklistCategories = [
     icon: IdentificationCard,
     items: [
       "CNIC copy (front & back)",
-      "Annual Salary Certificate from employer (covering 1 July 2024 to 30 June 2025)",
+      "Annual Salary Certificate from employer (covering 1 July 2025 to 30 June 2026)",
       "Bank Account Maintenance Certificate & statement balance as of 30th June",
       "Annual Tax Deduction Certificate for mobile phones (downloadable from Jazz, Zong, Telenor, Ufone apps)",
       "Paid Vehicle Token Tax receipt or registration book (if car registered in your name)",

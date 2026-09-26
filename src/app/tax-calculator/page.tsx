@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import TaxNav from "@/components/tax/TaxNav";
 import TaxFooter from "@/components/tax/TaxFooter";
 import { favorit } from "@/app/gumroad/fonts";
@@ -28,8 +29,25 @@ import {
 const lime = "#c8f603";
 const yellow = "#ffc900";
 
-export default function TaxCalculatorPage() {
-  const [activeTab, setActiveTab] = useState<"salaried" | "freelance" | "business">("salaried");
+function CalculatorInner() {
+  const searchParams = useSearchParams();
+  const initialTab = searchParams.get("tab");
+  const [activeTab, setActiveTab] = useState<"salaried" | "freelance" | "business">(
+    initialTab === "freelance" || initialTab === "business" ? initialTab : "salaried"
+  );
+
+  useEffect(() => {
+    const tab = searchParams.get("tab");
+    if (tab === "freelance" || tab === "business" || tab === "salaried") {
+      setActiveTab(tab);
+    }
+  }, [searchParams]);
+
+  const handleTabChange = (newTab: "salaried" | "freelance" | "business") => {
+    setActiveTab(newTab);
+    const newUrl = newTab === "salaried" ? "/tax-calculator" : `/tax-calculator?tab=${newTab}`;
+    window.history.replaceState(null, "", newUrl);
+  };
 
   // Salaried inputs
   const [salaryInputMode, setSalaryInputMode] = useState<"monthly" | "annual">("monthly");
@@ -106,7 +124,7 @@ export default function TaxCalculatorPage() {
       <section className="border-b border-black bg-white px-5 py-12 sm:px-8 sm:py-16">
         <ScrollReveal className="mx-auto max-w-5xl text-center">
           <div className="inline-flex items-center gap-2 rounded-full border border-black bg-[#c8f603] px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-black">
-            <span>FBR Income Tax Ordinance 2026</span>
+            <span>Income Tax Ordinance, 2001</span>
             <span>✦</span>
             <span>Tax Year 2026 (FY 2025-26)</span>
           </div>
@@ -121,7 +139,7 @@ export default function TaxCalculatorPage() {
           <div className="mt-8 flex flex-wrap items-center justify-center gap-2">
             <button
               type="button"
-              onClick={() => setActiveTab("salaried")}
+              onClick={() => handleTabChange("salaried")}
               className={`flex items-center gap-2 rounded-lg border border-black px-5 py-3 text-sm font-semibold transition ${
                 activeTab === "salaried"
                   ? "bg-[#c8f603] shadow-[3px_3px_0_#000]"
@@ -133,7 +151,7 @@ export default function TaxCalculatorPage() {
             </button>
             <button
               type="button"
-              onClick={() => setActiveTab("freelance")}
+              onClick={() => handleTabChange("freelance")}
               className={`flex items-center gap-2 rounded-lg border border-black px-5 py-3 text-sm font-semibold transition ${
                 activeTab === "freelance"
                   ? "bg-[#c8f603] shadow-[3px_3px_0_#000]"
@@ -145,7 +163,7 @@ export default function TaxCalculatorPage() {
             </button>
             <button
               type="button"
-              onClick={() => setActiveTab("business")}
+              onClick={() => handleTabChange("business")}
               className={`flex items-center gap-2 rounded-lg border border-black px-5 py-3 text-sm font-semibold transition ${
                 activeTab === "business"
                   ? "bg-[#c8f603] shadow-[3px_3px_0_#000]"
@@ -290,7 +308,7 @@ export default function TaxCalculatorPage() {
                   </div>
                   {hasMedicalExemption && (
                     <p className="mt-2 text-xs font-semibold text-emerald-800">
-                      ✓ Saves you tax on Rs. {salariedResult.exemptMedicalAllowance.toLocaleString()} of salary!
+                      {`✓ Saves you tax on Rs. ${salariedResult.exemptMedicalAllowance.toLocaleString()} of salary!`}
                     </p>
                   )}
                 </div>
@@ -781,5 +799,21 @@ export default function TaxCalculatorPage() {
 
       <TaxFooter />
     </div>
+  );
+}
+
+export default function TaxCalculatorPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center bg-[#f4f4f0] p-8">
+          <div className="rounded-xl border border-black bg-white p-6 shadow-[4px_4px_0_#000]">
+            <p className="font-semibold text-black">Loading Pakistan Tax Calculator...</p>
+          </div>
+        </div>
+      }
+    >
+      <CalculatorInner />
+    </Suspense>
   );
 }

@@ -476,7 +476,10 @@ export default function GumroadMockup() {
           style={{ fontSize: "clamp(2rem, 6vw, 4.5rem)" }}
         >
           &ldquo;I speak finance, Python, and SQL fluently — and I build{" "}
-          <span className="px-3 rounded-md" style={{ background: yellow }}>bridges</span> between them.&rdquo;
+          <span className="mx-2 inline-block rounded-md px-3 py-0.5" style={{ background: yellow }}>
+            bridges
+          </span>{" "}
+          between them.&rdquo;
         </p>
       </section>
 

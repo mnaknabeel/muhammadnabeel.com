@@ -101,7 +101,7 @@ export default function TaxFooter() {
             <h4 className="text-xs font-bold uppercase tracking-wider text-black">Global &amp; Software</h4>
             <ul className="mt-4 space-y-2.5 text-sm">
               <li>
-                <Link href="/#services" className="text-black/80 transition hover:text-black hover:underline">
+                <Link href="/services" className="text-black/80 transition hover:text-black hover:underline">
                   QuickBooks &amp; Xero Bookkeeping
                 </Link>
               </li>
@@ -131,11 +131,11 @@ export default function TaxFooter() {
 
         {/* Legal disclaimer & copyright */}
         <div className="mt-12 border-t border-black/10 pt-8 text-xs text-black/60">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <p>
-              &copy; {new Date().getFullYear()} Muhammad Nabeel. All calculations are grounded in the Income Tax Ordinance, 2001 (Amended up to 2026) as issued by the Federal Board of Revenue (FBR).
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <p className="max-w-3xl leading-relaxed">
+              {"© "}{new Date().getFullYear()}{" Muhammad Nabeel. All calculations are grounded in the Income Tax Ordinance, 2001 (Amended up to Tax Year 2026) as issued by the Federal Board of Revenue (FBR)."}
             </p>
-            <div className="flex items-center gap-4">
+            <div className="flex shrink-0 items-center gap-4">
               <a href="mailto:mnak.nabeel@gmail.com" className="hover:underline">mnak.nabeel@gmail.com</a>
               <span>·</span>
               <a href="https://linkedin.com/in/muhammad-nabeel-finance-engineer" target="_blank" rel="noopener noreferrer" className="hover:underline">LinkedIn</a>
