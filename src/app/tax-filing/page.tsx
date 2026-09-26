@@ -9,6 +9,7 @@ import TaxHeroCanvas from "@/components/tax/TaxHeroCanvas";
 import RoadmapAscent from "@/components/tax/RoadmapAscent";
 import HangingPricingCards from "@/components/tax/HangingPricingCards";
 import ComparisonMatrix from "@/components/ComparisonMatrix";
+import AboutBlaze from "@/components/AboutBlaze";
 import {
   ScrollReveal,
   TiltCard,
@@ -480,68 +481,8 @@ export default function TaxFilingPage() {
         </div>
       </section>
 
-      {/* ── Meet Your Tax Practitioner Section ──────────────── */}
-      <section className="border-b border-black bg-[#f4f4f0] px-5 py-16 sm:px-8 sm:py-24">
-        <div className="mx-auto max-w-5xl">
-          <ScrollReveal>
-            <TiltCard maxTilt={5}>
-              <div className="overflow-hidden rounded-[24px_24px_24px_4px] border-2 border-black bg-white shadow-[8px_8px_0_#000]">
-                <div className="grid grid-cols-1 md:grid-cols-12">
-                  <div className="relative min-h-[320px] md:min-h-full md:col-span-5 bg-black/5">
-                    <Image
-                      src="/images/profile-about.jpeg"
-                      alt="Muhammad Nabeel — Tax Practitioner"
-                      fill
-                      className="object-cover object-top"
-                      sizes="(max-width: 768px) 100vw, 400px"
-                    />
-                    <div className="absolute top-4 left-4 rounded-md border border-black bg-[#c8f603] px-3 py-1 text-xs font-bold text-black shadow-[2px_2px_0_#000]">
-                      Your Dedicated Tax Practitioner
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col justify-between p-7 sm:p-10 md:col-span-7">
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="rounded bg-[#ffc900] px-2.5 py-0.5 text-xs font-bold">Verified Practitioner</span>
-                        <span className="text-xs text-black/60 font-semibold">10,000+ Returns Filed · 5+ Yrs</span>
-                      </div>
-                      <h3 className="mt-3 text-2xl sm:text-3xl font-bold tracking-tight text-black">
-                        Hi, I&apos;m Muhammad Nabeel.
-                      </h3>
-                      <p className="mt-3 text-sm leading-relaxed text-black/80">
-                        I am a <strong>Finance Engineer &amp; Tax Practitioner</strong> (Finance Team Lead at LeapAI Solution). Over the last 5 years, I have reconciled over <strong>$4M+ in client revenue</strong> and successfully filed over <strong>10,000+ tax returns</strong> with mathematical precision.
-                      </p>
-                      <p className="mt-3 text-sm leading-relaxed text-black/80">
-                        Most tax problems in Pakistan happen when people hire unqualified brokers who rush submissions without reconciling wealth statements, leaving clients exposed to FBR audit notices.
-                      </p>
-                      <p className="mt-3 text-sm leading-relaxed text-black/80">
-                        When you file with me, I personally verify your salary certificate, apply every statutory deduction allowed under the Income Tax Ordinance 2026, and ensure your closing wealth reconciles to the exact rupee.
-                      </p>
-                    </div>
-
-                    <div className="mt-6 border-t border-black/10 pt-4 flex flex-wrap items-center justify-between gap-4">
-                      <div>
-                        <p className="text-xs font-bold text-black">Muhammad Nabeel</p>
-                        <p className="text-[11px] text-black/70">LeapAI Finance Lead · FBR Tax Practitioner</p>
-                      </div>
-                      <a
-                        href="https://wa.me/923410224988?text=Hi%20Nabeel%2C%20I%20saw%20your%20profile%20and%20want%20to%20file%20my%20tax%20return%20with%20you."
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="magnetic inline-flex items-center gap-2 rounded-lg border border-black bg-[#c8f603] px-4 py-2 text-xs font-bold text-black transition hover:shadow-[3px_3px_0_#000]"
-                      >
-                        <WhatsappLogo size={16} weight="fill" />
-                        <span>Chat 1-on-1 with Me →</span>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </TiltCard>
-          </ScrollReveal>
-        </div>
-      </section>
+      {/* ── Meet Your Tax Practitioner Section (Jiro About Blaze) ── */}
+      <AboutBlaze />
 
       {/* Final Action Banner */}
       <section className="bg-black px-5 py-16 sm:px-8 sm:py-24 text-white">

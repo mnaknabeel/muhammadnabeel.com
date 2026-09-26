@@ -11,6 +11,8 @@ import TestimonialsSpotlight from "@/components/TestimonialsSpotlight";
 import InteractiveCaseStudies from "@/components/InteractiveCaseStudies";
 import ComparisonMatrix from "@/components/ComparisonMatrix";
 import FeeEstimator from "@/components/FeeEstimator";
+import StatsVendo from "@/components/StatsVendo";
+import AboutBlaze from "@/components/AboutBlaze";
 import {
   AnimatedCounter,
   ScrollReveal,
@@ -246,21 +248,8 @@ export default function Home() {
       {/* ── Portfolio — the main focus ──────────────────── */}
       <Portfolio />
 
-      {/* ── Big stat (Gumroad's $4,000,000+ moment) ──────── */}
-      <section className="px-5 py-20 sm:py-28 text-center">
-        <ScrollReveal>
-          <p
-            className="font-medium tracking-[-0.03em] leading-none tabular-nums"
-            style={{ fontSize: "clamp(2.3rem, 11vw, 9rem)" }}
-          >
-            <AnimatedCounter to={4000000} prefix="$" suffix="+" duration={2.2} />
-          </p>
-          <p className="mt-6 text-lg sm:text-xl text-black max-w-xl mx-auto leading-relaxed">
-            in client revenue tracked across 50+ business engagements &amp; 10,000+ tax filings — with a{" "}
-            <strong className="font-semibold text-black">98% accuracy rate</strong> on the books behind it.
-          </p>
-        </ScrollReveal>
-      </section>
+      {/* ── Verified Stats & Metrics (Jiro Stats Vendo Pattern) ── */}
+      <StatsVendo />
 
       {/* ── Cards Cascade — Services Section ────────────── */}
       <CardsCascade />
@@ -278,6 +267,9 @@ export default function Home() {
 
       {/* ── Why Muhammad Nabeel vs The Alternatives (Jiro Fintech Matrix) ── */}
       <ComparisonMatrix />
+
+      {/* ── The Practitioner Behind the Numbers (Jiro About Us 01 Blaze) ── */}
+      <AboutBlaze />
 
       {/* ── Tools I've built ────────────────────────────── */}
       <section id="tools" className="px-5 pb-20 sm:pb-28">

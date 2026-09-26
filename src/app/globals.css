@@ -203,4 +203,19 @@ html.hide-native * {
   }
 }
 
+/* Jiro-Inspired Glow Buttons & Energy Accents */
+.glow-btn {
+  position: relative;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 20px rgba(200, 246, 3, 0.35);
+}
+.glow-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 35px rgba(200, 246, 3, 0.65), 0 0 10px rgba(200, 246, 3, 0.9);
+}
+
+.energy-beam-bg {
+  background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(200, 246, 3, 0.15), transparent 70%);
+}
+
 
