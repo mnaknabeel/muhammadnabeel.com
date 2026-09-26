@@ -6,6 +6,8 @@ import TaxFooter from "@/components/tax/TaxFooter";
 import Hero from "@/app/gumroad/Hero";
 import Portfolio from "@/app/gumroad/Portfolio";
 import Experience from "@/app/gumroad/Experience";
+import CardsCascade from "@/components/CardsCascade";
+import TestimonialsSpotlight from "@/components/TestimonialsSpotlight";
 import {
   AnimatedCounter,
   ScrollReveal,
@@ -48,36 +50,7 @@ const ticker = [
   "FP&A", "FBR ACTIVE TAXPAYER LIST", "RECONCILIATION", "PYTHON", "SQL", "POWER BI",
 ];
 
-const capabilities = [
-  {
-    title: "Bookkeeping & clean-up",
-    desc: "QuickBooks and Xero, done right: weekly categorization, bank reconciliation, and catch-up work for books that sat ignored for a year. Fixed once — then it stays fixed.",
-    href: "/services#bookkeeping",
-    bg: "bg-white",
-    radius: "rounded-[24px_24px_24px_4px]",
-  },
-  {
-    title: "Financial reporting & dashboards",
-    desc: "Executive Power BI and Excel dashboards with real-time KPI tracking, SKU profitability, and month-end close delivered in days, not weeks. Built for real business decisions.",
-    href: "/services#dashboards",
-    bg: "bg-[#c8f603]",
-    radius: "rounded-[24px_24px_4px_24px]",
-  },
-  {
-    title: "Automation & reconciliation",
-    desc: "Python and SQL handle the boring parts: Amazon settlement ingestion, multi-currency bank feeds, platform payouts. 70% less reconciliation time on real engagements.",
-    href: "/services#ecommerce",
-    bg: "bg-[#ffc900]",
-    radius: "rounded-[24px_4px_24px_24px]",
-  },
-  {
-    title: "Pakistan Tax Return Filing",
-    desc: "Complete FBR income tax return preparation, Wealth Statement reconciliation (Sec 116), and Active Taxpayers List (ATL) maintenance for salaried, freelancers, and businesses.",
-    href: "/tax-filing",
-    bg: "bg-black text-[#f4f4f0]",
-    radius: "rounded-[4px_24px_24px_24px]",
-  },
-];
+
 
 const cases = [
   {
@@ -286,42 +259,8 @@ export default function Home() {
         </ScrollReveal>
       </section>
 
-      {/* ── Services bento ──────────────────────────────── */}
-      <section id="services" className="px-5 pb-20 sm:pb-28 max-w-6xl mx-auto">
-        <ScrollReveal>
-          <p className="mb-4 text-[15px]">
-            <span
-              className="rounded-md border border-black px-2.5 py-1 text-sm font-semibold"
-              style={{ background: lime }}
-            >
-              Services
-            </span>{" "}
-            — fixed monthly scope, no hourly meter
-          </p>
-          <h2 className="text-[clamp(2rem,5.5vw,4rem)] font-medium leading-[1.02] tracking-[-0.02em] mb-10 sm:mb-14">
-            What I can take off your plate.
-          </h2>
-        </ScrollReveal>
-
-        <StaggerContainer staggerDelay={0.1} className="grid sm:grid-cols-2 gap-5">
-          {capabilities.map((c) => (
-            <StaggerItem key={c.title}>
-              <TiltCard maxTilt={4} className="h-full">
-                <a
-                  href={c.href}
-                  className={`spotlight-card ${c.bg} ${c.radius} border border-black p-7 sm:p-9 block h-full transition hover:-translate-y-1 hover:shadow-[6px_6px_0_#000]`}
-                >
-                  <h3 className="text-2xl sm:text-3xl font-medium tracking-[-0.01em] mb-3">{c.title}</h3>
-                  <p className="text-base leading-relaxed text-black mb-6 max-w-md">{c.desc}</p>
-                  <span className="inline-flex items-center gap-1.5 font-medium underline decoration-black/30 underline-offset-4 hover:decoration-black transition">
-                    Explore service <span aria-hidden>→</span>
-                  </span>
-                </a>
-              </TiltCard>
-            </StaggerItem>
-          ))}
-        </StaggerContainer>
-      </section>
+      {/* ── Cards Cascade — Services Section ────────────── */}
+      <CardsCascade />
 
       {/* ── Case studies ────────────────────────────────── */}
       <section id="cases" className="px-5 pb-20 sm:pb-28 max-w-6xl mx-auto">
@@ -359,6 +298,9 @@ export default function Home() {
           ))}
         </StaggerContainer>
       </section>
+
+      {/* ── Carousel Spotlight — Verified Client Proof ──── */}
+      <TestimonialsSpotlight />
 
       {/* ── Experience: where I've worked ───────────────── */}
       <Experience />

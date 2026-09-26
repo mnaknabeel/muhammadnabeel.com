@@ -6,6 +6,7 @@ import TaxNav from "@/components/tax/TaxNav";
 import TaxFooter from "@/components/tax/TaxFooter";
 import { favorit } from "@/app/gumroad/fonts";
 import TaxHeroCanvas from "@/components/tax/TaxHeroCanvas";
+import RoadmapAscent from "@/components/tax/RoadmapAscent";
 import {
   ScrollReveal,
   TiltCard,
@@ -355,69 +356,8 @@ export default function TaxFilingPage() {
         </div>
       </section>
 
-      {/* 3-Step Process Section */}
-      <section className="border-b border-black bg-[#f4f4f0] px-5 py-16 sm:px-8 sm:py-24">
-        <div className="mx-auto max-w-6xl">
-          <ScrollReveal className="text-center">
-            <span className="rounded-md border border-black bg-[#ffc900] px-3 py-1 text-xs font-bold uppercase tracking-wider text-black">
-              How It Works
-            </span>
-            <h2 className="mt-3 text-[clamp(2rem,5vw,3.5rem)] font-bold tracking-tight text-black">
-              Filing so simple, it feels effortless.
-            </h2>
-            <p className="mx-auto mt-3 max-w-xl text-base text-black/75">
-              No complicated tax forms. No confusion. Send your documents once — we handle the entire FBR workflow.
-            </p>
-          </ScrollReveal>
-
-          <StaggerContainer staggerDelay={0.15} className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-3">
-            {/* Step 1 */}
-            <StaggerItem>
-              <TiltCard maxTilt={6} className="h-full">
-                <div className="spotlight-card relative h-full rounded-[20px] border border-black bg-white p-7 shadow-[5px_5px_0_#000]">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-black bg-[#c8f603] text-xl font-black text-black">
-                    1
-                  </div>
-                  <h3 className="mt-5 text-xl font-bold text-black">Share Your Documents</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-black/80">
-                    Send your CNIC, salary slip or certificate, and 30th June bank statement via WhatsApp or email. That is all we need to get started.
-                  </p>
-                </div>
-              </TiltCard>
-            </StaggerItem>
-
-            {/* Step 2 */}
-            <StaggerItem>
-              <TiltCard maxTilt={6} className="h-full">
-                <div className="spotlight-card relative h-full rounded-[20px] border border-black bg-white p-7 shadow-[5px_5px_0_#000]">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-black bg-[#ffc900] text-xl font-black text-black">
-                    2
-                  </div>
-                  <h3 className="mt-5 text-xl font-bold text-black">We Compute &amp; Optimize</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-black/80">
-                    We reconcile your Wealth Statement (Section 116) and claim all legal deductions: 10% medical exemption, Zakat, school fees, mobile &amp; car withholding.
-                  </p>
-                </div>
-              </TiltCard>
-            </StaggerItem>
-
-            {/* Step 3 */}
-            <StaggerItem>
-              <TiltCard maxTilt={6} className="h-full">
-                <div className="spotlight-card relative h-full rounded-[20px] border border-black bg-white p-7 shadow-[5px_5px_0_#000]">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-black bg-black text-xl font-black text-[#c8f603]">
-                    3
-                  </div>
-                  <h3 className="mt-5 text-xl font-bold text-black">Filed &amp; Confirmed</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-black/80">
-                    Your return is officially submitted directly on FBR Iris. You receive the official FBR CPR Acknowledgement and stay active on the ATL list.
-                  </p>
-                </div>
-              </TiltCard>
-            </StaggerItem>
-          </StaggerContainer>
-        </div>
-      </section>
+      {/* Cinematic Scroll-Animated Roadmap Ascent Section */}
+      <RoadmapAscent />
 
       {/* Pricing Packages Section */}
       <section id="pricing" className="border-b border-black bg-white px-5 py-16 sm:px-8 sm:py-24">

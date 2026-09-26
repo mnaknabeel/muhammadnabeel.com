@@ -29,22 +29,45 @@ const lime = "#c8f603";
 const pv = (v: MotionValue<number> | number) =>
   typeof v === "number" ? v : v.get();
 
-/* ── Backdrop 3D scene (kinetic mathematical nodes) ─────── */
+/* ── Backdrop 3D scene (kinetic mathematical nodes & particle nebula) ─────── */
 
-function GeometricNode({ position, scale = 1, speed = 1 }: { position: [number, number, number]; scale?: number; speed?: number }) {
+function CrystalNode({
+  position,
+  scale = 1,
+  speed = 1,
+  shape = "octahedron",
+  edgeColor = lime,
+}: {
+  position: [number, number, number];
+  scale?: number;
+  speed?: number;
+  shape?: "octahedron" | "icosahedron" | "dodecahedron";
+  edgeColor?: string;
+}) {
   const ref = useRef<THREE.Group>(null);
   useFrame((state) => {
     if (!ref.current) return;
-    ref.current.rotation.x = state.clock.elapsedTime * 0.2 * speed;
-    ref.current.rotation.y = state.clock.elapsedTime * 0.3 * speed;
+    ref.current.rotation.x = state.clock.elapsedTime * 0.16 * speed;
+    ref.current.rotation.y = state.clock.elapsedTime * 0.24 * speed;
+    ref.current.rotation.z = state.clock.elapsedTime * 0.08 * speed;
   });
   return (
-    <Float speed={speed * 1.5} rotationIntensity={0.8} floatIntensity={1.2}>
+    <Float speed={speed * 1.4} rotationIntensity={0.85} floatIntensity={1.25}>
       <group ref={ref} position={position} scale={scale}>
         <mesh>
-          <octahedronGeometry args={[0.65, 0]} />
-          <meshStandardMaterial color="#0e0e0e" roughness={0.2} metalness={0.8} />
-          <Edges color={lime} threshold={15} />
+          {shape === "icosahedron" ? (
+            <icosahedronGeometry args={[0.7, 0]} />
+          ) : shape === "dodecahedron" ? (
+            <dodecahedronGeometry args={[0.65, 0]} />
+          ) : (
+            <octahedronGeometry args={[0.68, 0]} />
+          )}
+          <meshStandardMaterial
+            color="#070b12"
+            roughness={0.16}
+            metalness={0.9}
+          />
+          <Edges color={edgeColor} threshold={14} />
         </mesh>
       </group>
     </Float>
@@ -56,8 +79,8 @@ function CameraDrift({ progress }: { progress: MotionValue<number> | number }) {
   useFrame(({ camera }) => {
     const p = pv(progress);
     camera.position.set(
-      pointer.x * 0.4,
-      2.2 - p * 0.4 + pointer.y * 0.3,
+      pointer.x * 0.45,
+      2.2 - p * 0.4 + pointer.y * 0.35,
       9 - p * 0.7
     );
     camera.lookAt(0, 0.9, 0);
@@ -68,28 +91,44 @@ function CameraDrift({ progress }: { progress: MotionValue<number> | number }) {
 function Backdrop({ progress }: { progress: MotionValue<number> | number }) {
   return (
     <>
-      <ambientLight intensity={1.1} />
-      <directionalLight position={[6, 8, 4]} intensity={1.4} />
-      <Suspense fallback={null}>
-        {/* Floating geometric finance nodes */}
-        <GeometricNode position={[5.2, 3.2, -1.8]} scale={0.8} speed={1.2} />
-        <GeometricNode position={[6.1, 1.4, -2.8]} scale={0.55} speed={1.5} />
-        <GeometricNode position={[-5.4, 2.8, -2.2]} scale={0.65} speed={1.1} />
+      <ambientLight intensity={1.2} />
+      <directionalLight position={[6, 8, 4]} intensity={1.6} />
+      {/* Neon accent point lights */}
+      <pointLight position={[5, 3, -1]} intensity={2.2} color={lime} distance={8} />
+      <pointLight position={[-5, 2, -2]} intensity={1.8} color="#ffc900" distance={8} />
 
-        {/* faint ledger grid floor */}
+      <Suspense fallback={null}>
+        {/* Multifaceted geometric finance nodes */}
+        <CrystalNode position={[5.4, 3.2, -1.8]} scale={0.85} speed={1.1} shape="icosahedron" edgeColor={lime} />
+        <CrystalNode position={[6.3, 1.2, -2.8]} scale={0.58} speed={1.4} shape="octahedron" edgeColor="#ffc900" />
+        <CrystalNode position={[-5.6, 2.7, -2.2]} scale={0.72} speed={1.0} shape="dodecahedron" edgeColor={lime} />
+        <CrystalNode position={[-4.2, -0.6, -1.5]} scale={0.48} speed={1.3} shape="octahedron" edgeColor="#00ff66" />
+
+        {/* Faint ledger grid floor */}
         <gridHelper
-          args={[60, 60, "#e0e0d6", "#eae8e0"]}
+          args={[60, 60, "#d8d8ce", "#e8e6dc"]}
           material-transparent
-          material-opacity={0.55}
+          material-opacity={0.6}
         />
+
+        {/* Dual-layer particle nebula */}
         <Sparkles
-          count={50}
-          scale={[16, 7, 8]}
-          size={2.2}
+          count={60}
+          scale={[18, 8, 9]}
+          size={2.4}
           speed={0.35}
           color={lime}
-          opacity={0.5}
+          opacity={0.6}
           position={[0, 2.4, -2]}
+        />
+        <Sparkles
+          count={35}
+          scale={[16, 7, 7]}
+          size={2.0}
+          speed={0.25}
+          color="#ffc900"
+          opacity={0.45}
+          position={[1, 2.0, -1.5]}
         />
       </Suspense>
       <CameraDrift progress={progress} />

@@ -13,6 +13,7 @@ import {
   NON_SALARIED_SLABS_TY2026,
 } from "@/lib/taxCalculators";
 import { ScrollReveal, TiltCard } from "@/components/AnimatedElements";
+import InteractiveMeshGradient from "@/components/tax/InteractiveMeshGradient";
 import {
   Calculator,
   Money,
@@ -120,9 +121,10 @@ function CalculatorInner() {
     >
       <TaxNav />
 
-      {/* Hero Header */}
-      <section className="border-b border-black bg-white px-5 py-12 sm:px-8 sm:py-16">
-        <ScrollReveal className="mx-auto max-w-5xl text-center">
+      {/* Hero Header with Interactive Subtle Gradient */}
+      <section className="relative overflow-hidden border-b border-black bg-white px-5 py-12 sm:px-8 sm:py-16">
+        <InteractiveMeshGradient opacity={0.06} />
+        <ScrollReveal className="relative z-10 mx-auto max-w-5xl text-center">
           <div className="inline-flex items-center gap-2 rounded-full border border-black bg-[#c8f603] px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-black">
             <span>Income Tax Ordinance, 2001</span>
             <span>✦</span>
@@ -177,8 +179,9 @@ function CalculatorInner() {
         </ScrollReveal>
       </section>
 
-      {/* Main Calculator Body */}
-      <main className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
+      {/* Main Calculator Body with Subtle Mesh Ambient Aura */}
+      <main className="relative overflow-hidden mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
+        <InteractiveMeshGradient opacity={0.08} />
         {activeTab === "salaried" && (
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
             {/* Left Inputs Column (7 Cols) */}
