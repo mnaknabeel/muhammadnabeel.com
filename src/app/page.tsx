@@ -8,6 +8,9 @@ import Portfolio from "@/app/gumroad/Portfolio";
 import Experience from "@/app/gumroad/Experience";
 import CardsCascade from "@/components/CardsCascade";
 import TestimonialsSpotlight from "@/components/TestimonialsSpotlight";
+import InteractiveCaseStudies from "@/components/InteractiveCaseStudies";
+import ComparisonMatrix from "@/components/ComparisonMatrix";
+import FeeEstimator from "@/components/FeeEstimator";
 import {
   AnimatedCounter,
   ScrollReveal,
@@ -262,48 +265,19 @@ export default function Home() {
       {/* ── Cards Cascade — Services Section ────────────── */}
       <CardsCascade />
 
-      {/* ── Case studies ────────────────────────────────── */}
-      <section id="cases" className="px-5 pb-20 sm:pb-28 max-w-6xl mx-auto">
-        <ScrollReveal>
-          <h2 className="text-[clamp(2rem,5.5vw,4rem)] font-medium leading-[1.02] tracking-[-0.02em] mb-4">
-            Proof, not promises.
-          </h2>
-          <p className="text-lg text-black max-w-xl mb-10 sm:mb-14">
-            Bookkeeping clean-ups, automation builds, and financial reviews — messy
-            data in, numbers you can act on out.
-          </p>
-        </ScrollReveal>
-
-        <StaggerContainer staggerDelay={0.12} className="grid md:grid-cols-3 gap-5">
-          {cases.map((c) => (
-            <StaggerItem key={c.title}>
-              <TiltCard maxTilt={5} className="h-full">
-                <article
-                  className="bg-white border border-black rounded-[20px] p-6 sm:p-7 flex flex-col h-full transition hover:-translate-y-1 hover:shadow-[6px_6px_0_#000]"
-                >
-                  <p className="text-[13px] uppercase tracking-[0.08em] text-black mb-3">{c.tag}</p>
-                  <h3 className="text-xl font-medium leading-snug mb-3">{c.title}</h3>
-                  <p className="text-[15px] leading-relaxed text-black mb-6">{c.desc}</p>
-                  <div className="mt-auto border-t border-black pt-4 space-y-2">
-                    {c.metrics.map(([label, value]) => (
-                      <div key={label} className="flex items-baseline justify-between text-[15px]">
-                        <span className="text-black">{label}</span>
-                        <span className="font-semibold tabular-nums">{value}</span>
-                      </div>
-                    ))}
-                  </div>
-                </article>
-              </TiltCard>
-            </StaggerItem>
-          ))}
-        </StaggerContainer>
-      </section>
+      {/* ── Interactive Case Studies (Jiro Challenge-Solution-ROI) ── */}
+      <div id="cases">
+        <InteractiveCaseStudies />
+      </div>
 
       {/* ── Carousel Spotlight — Verified Client Proof ──── */}
       <TestimonialsSpotlight />
 
       {/* ── Experience: where I've worked ───────────────── */}
       <Experience />
+
+      {/* ── Why Muhammad Nabeel vs The Alternatives (Jiro Fintech Matrix) ── */}
+      <ComparisonMatrix />
 
       {/* ── Tools I've built ────────────────────────────── */}
       <section id="tools" className="px-5 pb-20 sm:pb-28">
@@ -379,6 +353,9 @@ export default function Home() {
           </StaggerContainer>
         </div>
       </section>
+
+      {/* ── Instant Scope & Fee Estimator (Jiro PayUp Pattern) ── */}
+      <FeeEstimator />
 
       {/* ── FAQ ─────────────────────────────────────────── */}
       <section id="faq" className="mx-auto max-w-4xl px-5 pb-20 sm:pb-28">

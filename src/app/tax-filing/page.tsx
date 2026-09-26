@@ -8,6 +8,7 @@ import { favorit } from "@/app/gumroad/fonts";
 import TaxHeroCanvas from "@/components/tax/TaxHeroCanvas";
 import RoadmapAscent from "@/components/tax/RoadmapAscent";
 import HangingPricingCards from "@/components/tax/HangingPricingCards";
+import ComparisonMatrix from "@/components/ComparisonMatrix";
 import {
   ScrollReveal,
   TiltCard,
@@ -441,6 +442,9 @@ export default function TaxFilingPage() {
           </ScrollReveal>
         </div>
       </section>
+
+      {/* Feature & Value Comparison Matrix */}
+      <ComparisonMatrix />
 
       {/* FAQ Accordion Section */}
       <section id="faq" className="border-b border-black bg-white px-5 py-16 sm:px-8 sm:py-24">

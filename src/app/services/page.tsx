@@ -6,6 +6,7 @@ import Link from "next/link";
 import TaxNav from "@/components/tax/TaxNav";
 import TaxFooter from "@/components/tax/TaxFooter";
 import { favorit } from "@/app/gumroad/fonts";
+import FeeEstimator from "@/components/FeeEstimator";
 import {
   ScrollReveal,
   TiltCard,
@@ -492,6 +493,11 @@ export default function ServicesPage() {
                 </div>
               </ScrollReveal>
             ))}
+          </div>
+
+          {/* Interactive Fee Estimator & Scope Calculator (Jiro Pattern) */}
+          <div className="mt-14">
+            <FeeEstimator />
           </div>
 
           {/* Add-On Services Grid (From Flyer) */}
