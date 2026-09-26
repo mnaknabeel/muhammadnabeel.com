@@ -65,7 +65,7 @@ function SkillCard({
       ([entry]) => {
         if (entry.isIntersecting) setVisible(true)
       },
-      { threshold: 0.2 },
+      { threshold: 0.1 },
     )
     if (ref.current) observer.observe(ref.current)
     return () => observer.disconnect()
@@ -75,19 +75,19 @@ function SkillCard({
     <div
       ref={ref}
       className={cn(
-        "rounded-2xl border border-border bg-surface/50 p-6 transition-all duration-700",
+        "rounded-2xl border border-border bg-surface/50 p-5 sm:p-6 transition-all duration-700",
         visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8",
       )}
       style={{ transitionDelay: `${index * 100}ms` }}
     >
-      <p className="text-lime font-mono text-xs tracking-widest uppercase mb-4">
+      <p className="text-lime font-mono text-xs tracking-widest uppercase mb-3 sm:mb-4">
         {cat.name}
       </p>
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-1.5 sm:gap-2">
         {cat.skills.map((skill) => (
           <span
             key={skill}
-            className="text-sm text-fg-secondary bg-elevated px-3 py-1.5 rounded-lg border border-border/50"
+            className="text-xs sm:text-sm text-fg-secondary bg-elevated px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg border border-border/50"
           >
             {skill}
           </span>
@@ -99,19 +99,19 @@ function SkillCard({
 
 export default function Skills() {
   return (
-    <section id="skills" className="py-32 px-6">
+    <section id="skills" className="py-20 sm:py-32 px-6">
       <div className="max-w-5xl mx-auto">
         <p className="text-lime font-mono text-sm tracking-widest uppercase mb-3 text-center">
           Skills
         </p>
-        <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-center tracking-tight">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-center tracking-tight">
           What I bring
         </h2>
-        <p className="text-muted text-center max-w-xl mx-auto mb-16">
+        <p className="text-muted text-sm sm:text-base text-center max-w-xl mx-auto mb-10 sm:mb-16">
           Finance expertise automated through code. Systems thinking applied to
           every engagement.
         </p>
-        <div className="grid sm:grid-cols-2 gap-4">
+        <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
           {categories.map((cat, i) => (
             <SkillCard key={i} cat={cat} index={i} />
           ))}

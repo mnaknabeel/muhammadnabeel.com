@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Financial Forecast Model — Amazon.com, Inc.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --paper: #F5F2EB;
+  --ink: #1A1A1E;
+  --gold: #C89B3C;
+  --gold-light: #E8D5A0;
+  --slate: #5C6570;
+  --slate-light: #D6D9DD;
+  --border: #E2DDD4;
+  --white: #FFFFFF;
+  --green: #2D6A4F;
+  --green-light: #52B788;
+  --red: #B85450;
+  --amber: #C48B2E;
+  --blue: #4A7AA8;
+  --blue-light: #7AACD4;
+}
+
+body {
+  background: #1A1A1E;
+  font-family: 'Inter', system-ui, sans-serif;
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+.report {
+  max-width: 1000px;
+  margin: 20px auto 60px;
+  background: var(--paper);
+  box-shadow: 0 2px 40px rgba(0,0,0,0.15);
+}
+
+.report-inner { padding: 48px 56px; }
+
+@media(max-width:800px) {
+  .report-inner { padding: 28px 20px; }
+}
+
+.serif { font-family: 'DM Serif Display', Georgia, serif; font-weight: 400; font-style: italic; }
+
+.cover { margin-bottom: 40px; }
+
+.cover-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+
+.cover-title {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 40px;
+  font-style: italic;
+  color: var(--ink);
+  line-height: 1.1;
+  margin-top: 6px;
+}
+
+.cover-meta {
+  display: flex;
+  gap: 32px;
+  margin-top: 20px;
+  font-size: 12px;
+  color: var(--slate);
+  flex-wrap: wrap;
+}
+.cover-meta strong { color: var(--ink); font-weight: 600; }
+
+.tagline {
+  margin-top: 24px;
+  padding: 20px;
+  background: var(--white);
+  border-left: 4px solid var(--gold);
+  font-size: 13px;
+  color: var(--slate);
+  line-height: 1.7;
+}
+.tagline strong { color: var(--ink); }
+
+.section {
+  margin-top: 40px;
+  padding-top: 32px;
+  border-top: 1px solid var(--border);
+}
+
+.section-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 4px;
+}
+
+.section-title {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 28px;
+  font-style: italic;
+  color: var(--ink);
+  line-height: 1.2;
+  margin-bottom: 24px;
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 2px;
+  margin-bottom: 32px;
+}
+.kpi {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 22px 20px;
+}
+.kpi.green  { background: var(--green); }
+.kpi.red    { background: var(--red); }
+.kpi.gold   { background: var(--gold); color: var(--ink); }
+.kpi.blue   { background: var(--blue); }
+.kpi.amber  { background: var(--amber); color: var(--paper); }
+.kpi-label {
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  opacity: .7;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+.kpi-value {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 26px;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.kpi-delta { font-size: 11px; opacity: .75; }
+.kpi-delta.up::before { content: '\2191 '; }
+.kpi-delta.down::before { content: '\2193 '; }
+
+.chart-wrap {
+  background: var(--white);
+  border: 1px solid var(--border);
+  padding: 24px;
+}
+.chart-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+.chart-grid.full { grid-template-columns: 1fr; }
+.chart-grid.thirds { grid-template-columns: 1fr 1fr 1fr; }
+@media(max-width:800px) {
+  .chart-grid, .chart-grid.thirds { grid-template-columns: 1fr; }
+  .cover-title { font-size: 28px; }
+  .section-title { font-size: 22px; }
+}
+.chart-wrap h3 {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 17px;
+  font-style: italic;
+  font-weight: 400;
+  margin-bottom: 2px;
+}
+.chart-wrap p.sub {
+  font-size: 10px;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  color: var(--slate);
+  margin-bottom: 16px;
+}
+.chart-wrap { overflow: hidden; }
+.chart-wrap canvas { max-height: 250px; width: 100% !important; }
+
+table.styled { width: 100%; border-collapse: collapse; font-size: 12px; }
+table.styled th {
+  background: var(--ink);
+  color: var(--gold-light);
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+table.styled td {
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--border);
+}
+table.styled tr:last-child td { border-bottom: none; }
+table.styled tr:nth-child(even) td { background: rgba(0,0,0,.03); }
+table.styled .num { text-align: right; font-family: 'Inter', monospace; font-weight: 600; }
+table.styled .pos { color: var(--green); }
+table.styled .neg { color: var(--red); }
+table.styled .total td {
+  background: var(--ink) !important;
+  color: var(--gold-light);
+  font-weight: 700;
+}
+
+.callout {
+  margin-top: 16px;
+  padding: 16px 20px;
+  background: var(--white);
+  border-left: 4px solid var(--gold);
+  font-size: 12px;
+  color: var(--slate);
+  line-height: 1.7;
+}
+.callout strong { color: var(--ink); }
+
+footer {
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 11px;
+  color: var(--slate);
+}
+
+.value-prop-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+@media(max-width:800px) {
+  .value-prop-grid { grid-template-columns: 1fr; }
+}
+.value-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  padding: 20px;
+}
+.value-card h4 {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 16px;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.value-card p { font-size: 12px; color: var(--slate); line-height: 1.6; }
+
+.model-flow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+.flow-step {
+  background: var(--white);
+  border: 1px solid var(--border);
+  padding: 12px 18px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.flow-arrow { color: var(--gold); font-size: 18px; font-weight: 700; }
+.flow-step.active {
+  background: var(--gold);
+  color: var(--ink);
+  border-color: var(--gold);
+}
+</style>
+</head>
+<body>
+
+<div class="report">
+<div class="report-inner">
+
+<div class="cover">
+  <img src="/images/financial%20model.png" alt="" style="width:100%;height:auto;display:block;margin-bottom:28px;border-radius:4px;">
+  <div class="cover-label">Financial Forecasting Model</div>
+  <div class="cover-title">Amazon.com, Inc.</div>
+  <div class="cover-meta">
+    <span>Model Type: <strong>Quarterly Forecast</strong></span>
+    <span>History: <strong>Q1 2023 &ndash; Q2 2025</strong></span>
+    <span>Forecast: <strong>Q3 2025 &ndash; Q4 2025</strong></span>
+    <span>Scenarios: <strong>3 (Base / Upside / Downside)</strong></span>
+    <span>Data Source: <strong>10 Earnings Releases</strong></span>
+  </div>
+
+  <div class="tagline">
+    <strong>Automated financial model</strong> combining automated data extraction from 10 Amazon earnings releases with a driver-based quarterly forecasting engine. <strong>3 scenarios</strong>, <strong>6 financial statements</strong>, <strong>10 key drivers</strong>, <strong>100% formula-driven</strong>. Editable assumptions flow through the entire model in real time.
+  </div>
+</div>
+
+<div class="value-prop-grid">
+  <div class="value-card">
+    <h4>Automated Pipeline</h4>
+    <p>Extracts structured financial data from 10 quarterly earnings release PDFs. Populates historical statements, computes drivers, generates forecasts &mdash; all without manual data entry.</p>
+  </div>
+  <div class="value-card">
+    <h4>Driver-Based Forecasting</h4>
+    <p>Revenue growth, COGS, OPEX, tax rate, and capex as configurable drivers. Change any assumption &mdash; the full P&amp;L, cash flow, and balance sheet update instantly.</p>
+  </div>
+  <div class="value-card">
+    <h4>Scenario Analysis</h4>
+    <p>Base, Upside (+5% growth), and Downside (&minus;5% growth) scenarios side by side. Instant comparison of revenue, profit, and free cash flow across outcomes.</p>
+  </div>
+</div>
+
+<div class="model-flow">
+  <span class="flow-step">Raw Extract</span>
+  <span class="flow-arrow">&rarr;</span>
+  <span class="flow-step">Historical Model</span>
+  <span class="flow-arrow">&rarr;</span>
+  <span class="flow-step active">Drivers</span>
+  <span class="flow-arrow">&rarr;</span>
+  <span class="flow-step">Forecast</span>
+  <span class="flow-arrow">&rarr;</span>
+  <span class="flow-step">Scenarios</span>
+  <span class="flow-arrow">&rarr;</span>
+  <span class="flow-step">Validation</span>
+</div>
+
+<div class="section">
+  <div class="section-label">01 &mdash; Historical Performance</div>
+  <div class="section-title">Revenue &amp; Profit Trajectory</div>
+
+  <div class="kpi-grid">
+    <div class="kpi gold">
+      <div class="kpi-label">LTM Revenue</div>
+      <div class="kpi-value">$638B</div>
+      <div class="kpi-delta up">+9.2% vs prior LTM</div>
+    </div>
+    <div class="kpi green">
+      <div class="kpi-label">LTM Net Income</div>
+      <div class="kpi-value">$67.1B</div>
+      <div class="kpi-delta up">+57.6% vs prior LTM</div>
+    </div>
+    <div class="kpi blue">
+      <div class="kpi-label">Operating Margin (Q2 2025)</div>
+      <div class="kpi-value">11.4%</div>
+      <div class="kpi-delta up">from 3.7% in Q1 2023</div>
+    </div>
+    <div class="kpi amber">
+      <div class="kpi-label">AWS Revenue (Q2 2025)</div>
+      <div class="kpi-value">$30.9B</div>
+      <div class="kpi-delta up">AWS: $10.2B Op Income</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Total Assets</div>
+      <div class="kpi-value">$682B</div>
+      <div class="kpi-delta up">+46.9% since Q1 2023</div>
+    </div>
+    <div class="kpi green">
+      <div class="kpi-label">Free Cash Flow (LTM)</div>
+      <div class="kpi-value">$13.8B</div>
+      <div class="kpi-delta">Trailing 4 quarters</div>
+    </div>
+  </div>
+
+  <div class="chart-grid">
+    <div class="chart-wrap">
+      <h3>Quarterly Revenue</h3>
+      <p class="sub">Q1 2023 &ndash; Q2 2025</p>
+      <canvas id="revenueChart"></canvas>
+    </div>
+    <div class="chart-wrap">
+      <h3>Operating Income &amp; Margin</h3>
+      <p class="sub">Margin expansion from 3.7% to 11.4%</p>
+      <canvas id="opIncomeChart"></canvas>
+    </div>
+  </div>
+
+  <table class="styled" style="margin-top:20px;">
+    <thead>
+      <tr>
+        <th>Metric ($M)</th>
+        <th>2023 Q1</th>
+        <th>2023 Q2</th>
+        <th>2023 Q3</th>
+        <th>2023 Q4</th>
+        <th>2024 Q1</th>
+        <th>2024 Q2</th>
+        <th>2024 Q3</th>
+        <th>2024 Q4</th>
+        <th>2025 Q1</th>
+        <th>2025 Q2</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Revenue</td>
+        <td class="num">127,358</td><td class="num">134,383</td><td class="num">143,083</td><td class="num">169,961</td>
+        <td class="num">143,313</td><td class="num">147,977</td><td class="num">158,877</td><td class="num">187,792</td>
+        <td class="num">155,667</td><td class="num">167,702</td></tr>
+      <tr><td>Gross Profit</td>
+        <td class="num">59,567</td><td class="num">65,010</td><td class="num">68,061</td><td class="num">77,408</td>
+        <td class="num">70,680</td><td class="num">74,192</td><td class="num">77,900</td><td class="num">88,899</td>
+        <td class="num">78,691</td><td class="num">86,893</td></tr>
+      <tr><td>Operating Income</td>
+        <td class="num">4,774</td><td class="num">7,681</td><td class="num">11,188</td><td class="num">13,209</td>
+        <td class="num">15,307</td><td class="num">14,672</td><td class="num">17,411</td><td class="num">21,203</td>
+        <td class="num">18,405</td><td class="num">19,171</td></tr>
+      <tr><td>Net Income</td>
+        <td class="num">&mdash;</td><td class="num">&mdash;</td><td class="num">&mdash;</td><td class="num">&mdash;</td>
+        <td class="num pos">10,431</td><td class="num pos">13,485</td><td class="num pos">15,328</td><td class="num pos">20,004</td>
+        <td class="num pos">17,127</td><td class="num pos">18,164</td></tr>
+      <tr><td>Free Cash Flow</td>
+        <td class="num neg">-9,419</td><td class="num pos">5,021</td><td class="num pos">8,738</td><td class="num pos">27,877</td>
+        <td class="num pos">4,064</td><td class="num pos">7,661</td><td class="num pos">3,351</td><td class="num pos">17,802</td>
+        <td class="num neg">-8,004</td><td class="num pos">332</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section">
+  <div class="section-label">02 &mdash; Segment Breakdown</div>
+  <div class="section-title">North America, International &amp; AWS</div>
+
+  <div class="chart-grid thirds">
+    <div class="chart-wrap">
+      <h3>North America</h3>
+      <p class="sub">$100B revenue, $7.5B op income</p>
+      <canvas id="naChart"></canvas>
+    </div>
+    <div class="chart-wrap">
+      <h3>International</h3>
+      <p class="sub">$36.8B revenue, $1.5B op income</p>
+      <canvas id="intlChart"></canvas>
+    </div>
+    <div class="chart-wrap">
+      <h3>AWS</h3>
+      <p class="sub">$30.9B revenue, $10.2B op income</p>
+      <canvas id="awsChart"></canvas>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-label">03 &mdash; Key Financial Drivers</div>
+  <div class="section-title">What Drives the Model</div>
+
+  <div class="chart-grid">
+    <div class="chart-wrap">
+      <h3>Operating Leverage</h3>
+      <p class="sub">OPEX as % of revenue &mdash; declining trend</p>
+      <canvas id="opexTrendChart"></canvas>
+    </div>
+    <div class="chart-wrap">
+      <h3>Cost Structure</h3>
+      <p class="sub">COGS, Fulfillment, Tech, S&amp;M as % of revenue</p>
+      <canvas id="costStackChart"></canvas>
+    </div>
+  </div>
+
+  <table class="styled" style="margin-top:20px;">
+    <thead>
+      <tr>
+        <th>Driver</th>
+        <th>2023 Avg</th>
+        <th>2024 Avg</th>
+        <th>2025 H1 Avg</th>
+        <th>Model Input</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Revenue Growth QoQ</td><td class="num">10.3%</td><td class="num">3.3%</td><td class="num">&minus;4.7%</td><td class="num neg">&minus;17.1%</td></tr>
+      <tr><td>COGS % of Revenue</td><td class="num">52.9%</td><td class="num">51.0%</td><td class="num">48.8%</td><td class="num">49.4%</td></tr>
+      <tr><td>OPEX % of Revenue</td><td class="num">40.8%</td><td class="num">38.2%</td><td class="num">20.3%</td><td class="num">0.2%</td></tr>
+      <tr><td>Operating Margin</td><td class="num">6.3%</td><td class="num">10.7%</td><td class="num">11.6%</td><td class="num">50.4%</td></tr>
+      <tr><td>Tax Rate</td><td class="num">0.0%</td><td class="num">14.0%</td><td class="num">16.9%</td><td class="num">21.0%</td></tr>
+      <tr><td>Capex % of Revenue</td><td class="num">9.2%</td><td class="num">12.8%</td><td class="num">17.6%</td><td class="num">16.1%</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section">
+  <div class="section-label">04 &mdash; Forecast &amp; Scenarios</div>
+  <div class="section-title">Q3&ndash;Q4 2025 Projections</div>
+
+  <div class="kpi-grid">
+    <div class="kpi blue">
+      <div class="kpi-label">Base Case Q4 Revenue</div>
+      <div class="kpi-value">$88.7B</div>
+      <div class="kpi-delta down">&minus;47.1% from Q2 2025</div>
+    </div>
+    <div class="kpi gold">
+      <div class="kpi-label">Upside Q4 Revenue</div>
+      <div class="kpi-value">$112B</div>
+      <div class="kpi-delta up">+26.4% above base</div>
+    </div>
+    <div class="kpi red">
+      <div class="kpi-label">Downside Q4 Revenue</div>
+      <div class="kpi-value">$69.1B</div>
+      <div class="kpi-delta down">&minus;22.0% below base</div>
+    </div>
+    <div class="kpi green">
+      <div class="kpi-label">Base FCF Range</div>
+      <div class="kpi-value">$74&ndash;130B</div>
+      <div class="kpi-delta up">Over Q3&ndash;Q4 2025</div>
+    </div>
+    <div class="kpi amber">
+      <div class="kpi-label">Upside Total FCF</div>
+      <div class="kpi-value">$218B</div>
+      <div class="kpi-delta up">Q3+Q4 combined</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Downside Total FCF</div>
+      <div class="kpi-value">$131.6B</div>
+      <div class="kpi-delta down">&minus;39.6% vs upside</div>
+    </div>
+  </div>
+
+  <div class="chart-grid">
+    <div class="chart-wrap">
+      <h3>Revenue Forecast by Scenario</h3>
+      <p class="sub">Base vs Upside (+5%) vs Downside (&minus;5%)</p>
+      <canvas id="scenarioRevenueChart"></canvas>
+    </div>
+    <div class="chart-wrap">
+      <h3>Free Cash Flow by Scenario</h3>
+      <p class="sub">Q3&ndash;Q4 2025 projections</p>
+      <canvas id="scenarioFcfChart"></canvas>
+    </div>
+  </div>
+
+  <table class="styled" style="margin-top:20px;">
+    <thead>
+      <tr>
+        <th>Scenario</th>
+        <th>Metric</th>
+        <th>Q3 2025</th>
+        <th>Q4 2025</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Base Case</strong></td><td>Revenue</td><td class="num">$106,963</td><td class="num">$88,666</td><td class="num">$195,629</td></tr>
+      <tr><td></td><td>Net Income</td><td class="num pos">$42,548</td><td class="num pos">$35,269</td><td class="num pos">$77,817</td></tr>
+      <tr><td></td><td>Free Cash Flow</td><td class="num pos">$89,178</td><td class="num pos">$73,923</td><td class="num pos">$163,101</td></tr>
+      <tr><td><strong>Upside (+5%)</strong></td><td>Revenue</td><td class="num">$127,510</td><td class="num">$112,073</td><td class="num">$239,583</td></tr>
+      <tr><td></td><td>Net Income</td><td class="num pos">$50,721</td><td class="num pos">$44,580</td><td class="num pos">$95,301</td></tr>
+      <tr><td></td><td>Free Cash Flow</td><td class="num pos">$106,309</td><td class="num pos">$93,438</td><td class="num pos">$199,747</td></tr>
+      <tr><td><strong>Downside (&minus;5%)</strong></td><td>Revenue</td><td class="num">$88,752</td><td class="num">$69,132</td><td class="num">$157,884</td></tr>
+      <tr><td></td><td>Net Income</td><td class="num pos">$35,304</td><td class="num pos">$27,499</td><td class="num pos">$62,803</td></tr>
+      <tr class="total"><td></td><td>Free Cash Flow</td><td class="num pos">$73,995</td><td class="num pos">$57,637</td><td class="num pos">$131,632</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <strong>How the forecast works:</strong> Revenue is compounded from the last historical quarter using average QoQ growth. COGS and OPEX are applied as a percentage of revenue using historical averages. The effective tax rate is applied to pre-tax income. All assumptions are editable &mdash; change any yellow cell and the full model recalculates.
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-label">05 &mdash; Balance Sheet &amp; Cash Flow</div>
+  <div class="section-title">Financial Position &amp; Capital Allocation</div>
+
+  <div class="chart-grid">
+    <div class="chart-wrap">
+      <h3>Cash &amp; Debt Position</h3>
+      <p class="sub">Cash &amp; marketable securities vs long-term debt</p>
+      <canvas id="cashDebtChart"></canvas>
+    </div>
+    <div class="chart-wrap">
+      <h3>Free Cash Flow Trend</h3>
+      <p class="sub">Quarterly FCF with capex investment</p>
+      <canvas id="fcfChart"></canvas>
+    </div>
+  </div>
+
+  <table class="styled" style="margin-top:20px;">
+    <thead>
+      <tr>
+        <th>Balance Sheet ($M)</th>
+        <th>2023 Q1</th>
+        <th>2023 Q4</th>
+        <th>2024 Q4</th>
+        <th>2025 Q2</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Cash &amp; Securities</td><td class="num">64,405</td><td class="num">86,780</td><td class="num">101,202</td><td class="num">93,180</td></tr>
+      <tr><td>Total Current Assets</td><td class="num">136,221</td><td class="num">172,351</td><td class="num">190,867</td><td class="num">191,420</td></tr>
+      <tr><td>PP&amp;E</td><td class="num">190,754</td><td class="num">204,177</td><td class="num">252,665</td><td class="num">297,616</td></tr>
+      <tr><td>Total Assets</td><td class="num">464,378</td><td class="num">527,854</td><td class="num">624,894</td><td class="num">682,170</td></tr>
+      <tr><td>Total Equity</td><td class="num">154,526</td><td class="num">201,875</td><td class="num">285,970</td><td class="num">333,775</td></tr>
+      <tr><td>Long-term Debt</td><td class="num">67,084</td><td class="num">58,314</td><td class="num">52,623</td><td class="num">50,718</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section">
+  <div class="section-label">06 &mdash; Model Validation</div>
+  <div class="section-title">Accuracy &amp; Integrity Checks</div>
+
+  <div class="kpi-grid">
+    <div class="kpi green">
+      <div class="kpi-label">Validation Checks</div>
+      <div class="kpi-value">28 / 29 PASS</div>
+      <div class="kpi-delta">96.6% pass rate</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Data Sources</div>
+      <div class="kpi-value">10</div>
+      <div class="kpi-delta">Earnings releases</div>
+    </div>
+    <div class="kpi blue">
+      <div class="kpi-label">Model Sheets</div>
+      <div class="kpi-value">8</div>
+      <div class="kpi-delta">Raw Extract to Sources</div>
+    </div>
+    <div class="kpi amber">
+      <div class="kpi-label">Line Items Tracked</div>
+      <div class="kpi-value">882</div>
+      <div class="kpi-delta">Across all periods</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>Validation methodology:</strong> Each period checks three identities: Revenue = Product Revenue + Service Revenue, Gross Profit = Revenue &minus; COGS, and Assets = Liabilities + Equity. All 29 checks pass except one (2024 Q1 balance sheet, where total equity data was missing from the source PDF).
+  </div>
+
+  <div class="callout" style="border-left-color: var(--green); margin-top:12px;">
+    <strong>Data pipeline:</strong> 10 Amazon earnings release PDFs (Q1 2023 through Q2 2025) are processed through an automated extraction pipeline. Each source document is tracked with extraction status. No manual data entry &mdash; the model is fully reproducible from source files.
+  </div>
+</div>
+
+<footer>
+  <div class="serif" style="font-size:18px; color:var(--ink);">Amazon.com Financial Forecast Model</div>
+  <div>Quarterly Forecasting Engine &middot; Automated PDF Pipeline</div>
+  <div style="opacity:.6">All values in USD millions. Not investment advice. For demonstration purposes.</div>
+</footer>
+
+</div>
+</div>
+
+<script>
+const gold = '#C89B3C';
+const goldL = '#E8D5A0';
+const green = '#2D6A4F';
+const greenL = '#52B788';
+const red = '#B85450';
+const blue = '#4A7AA8';
+const blueL = '#7AACD4';
+const ink = '#1A1A1E';
+const amber = '#C48B2E';
+const paper = '#F5F2EB';
+
+Chart.defaults.font.family = "'Inter', system-ui, sans-serif";
+Chart.defaults.font.size = 11;
+Chart.defaults.color = ink;
+
+const labels = ['Q1 2023','Q2 2023','Q3 2023','Q4 2023','Q1 2024','Q2 2024','Q3 2024','Q4 2024','Q1 2025','Q2 2025'];
+const revenue = [127358,134383,143083,169961,143313,147977,158877,187792,155667,167702];
+const opIncome = [4774,7681,11188,13209,15307,14672,17411,21203,18405,19171];
+const opMargin = [3.75,5.72,7.82,7.77,10.68,9.92,10.96,11.29,11.82,11.43];
+const netIncome = [null,null,null,null,10431,13485,15328,20004,17127,18164];
+const grossProfit = [59567,65010,68061,77408,70680,74192,77900,88899,78691,86893];
+
+new Chart(document.getElementById('revenueChart'), {
+  type: 'bar',
+  data: {
+    labels,
+    datasets: [{
+      label: 'Revenue',
+      data: revenue,
+      backgroundColor: revenue.map(v => v >= 150000 ? gold : blueL),
+      borderWidth: 0
+    }]
+  },
+  options: {
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => '$'+(ctx.raw/1000).toFixed(0)+'B' } } },
+    scales: {
+      y: { grid: { color: 'rgba(0,0,0,.06)' }, ticks: { callback: v => '$'+(v/1000).toFixed(0)+'B' } },
+      x: { grid: { display: false }, ticks: { font: { size: 9 } } }
+    }
+  }
+});
+
+new Chart(document.getElementById('opIncomeChart'), {
+  type: 'bar',
+  data: {
+    labels,
+    datasets: [
+      { label: 'Operating Income', data: opIncome, backgroundColor: green, borderWidth: 0, yAxisID: 'y' },
+      { label: 'Operating Margin %', data: opMargin, type: 'line', borderColor: gold, backgroundColor: 'rgba(200,155,60,.1)', fill: true, tension: .3, borderWidth: 2, pointRadius: 4, yAxisID: 'y1' }
+    ]
+  },
+  options: {
+    plugins: { legend: { position: 'top', labels: { boxWidth: 10, font: { size: 10 } } } },
+    scales: {
+      y: { grid: { color: 'rgba(0,0,0,.06)' }, position: 'left', ticks: { callback: v => '$'+(v/1000).toFixed(1)+'B' } },
+      y1: { grid: { display: false }, position: 'right', min: 0, max: 15, ticks: { callback: v => v+'%' } },
+      x: { grid: { display: false }, ticks: { font: { size: 9 } } }
+    }
+  }
+});
+
+new Chart(document.getElementById('naChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Q1 2025','Q2 2025'],
+    datasets: [
+      { label: 'Revenue', data: [92887, 100068], backgroundColor: blue, borderWidth: 0 },
+      { label: 'Op Income', data: [5841, 7517], backgroundColor: green, borderWidth: 0 }
+    ]
+  },
+  options: {
+    plugins: { legend: { position: 'top', labels: { boxWidth: 10, font: { size: 9 } } } },
+    scales: {
+      y: { grid: { color: 'rgba(0,0,0,.06)' }, ticks: { callback: v => '$'+(v/1000).toFixed(0)+'B' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+new Chart(document.getElementById('intlChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Q1 2025','Q2 2025'],
+    datasets: [
+      { label: 'Revenue', data: [33513, 36761], backgroundColor: blue, borderWidth: 0 },
+      { label: 'Op Income', data: [1017, 1494], backgroundColor: green, borderWidth: 0 }
+    ]
+  },
+  options: {
+    plugins: { legend: { position: 'top', labels: { boxWidth: 10, font: { size: 9 } } } },
+    scales: {
+      y: { grid: { color: 'rgba(0,0,0,.06)' }, ticks: { callback: v => '$'+(v/1000).toFixed(0)+'B' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+new Chart(document.getElementById('awsChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Q1 2025','Q2 2025'],
+    datasets: [
+      { label: 'Revenue', data: [29267, 30873], backgroundColor: amber, borderWidth: 0 },
+      { label: 'Op Income', data: [11547, 10160], backgroundColor: green, borderWidth: 0 }
+    ]
+  },
+  options: {
+    plugins: { legend: { position: 'top', labels: { boxWidth: 10, font: { size: 9 } } } },
+    scales: {
+      y: { grid: { color: 'rgba(0,0,0,.06)' }, ticks: { callback: v => '$'+(v/1000).toFixed(0)+'B' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+const cogsPct = [53.2,51.6,52.4,54.5,50.7,49.9,51.0,52.7,49.4,48.2];
+const fulPct = [16.4,15.9,15.6,15.4,15.6,15.9,15.5,14.9,15.8,15.5];
+const techPct = [16.1,16.3,14.8,13.0,14.3,15.1,14.0,12.6,14.8,16.2];
+const smPct = [8.0,8.0,7.4,7.6,6.7,7.1,6.7,7.0,6.3,6.8];
+
+new Chart(document.getElementById('costStackChart'), {
+  type: 'bar',
+  data: {
+    labels,
+    datasets: [
+      { label: 'COGS %', data: cogsPct, backgroundColor: ink, borderWidth: 0 },
+      { label: 'Fulfillment %', data: fulPct, backgroundColor: blue, borderWidth: 0 },
+      { label: 'Tech & Infra %', data: techPct, backgroundColor: gold, borderWidth: 0 },
+      { label: 'Sales & Mktg %', data: smPct, backgroundColor: greenL, borderWidth: 0 }
+    ]
+  },
+  options: {
+    plugins: { legend: { position: 'top', labels: { boxWidth: 10, font: { size: 9 } } } },
+    scales: {
+      y: { grid: { color: 'rgba(0,0,0,.06)' }, stacked: true, max: 90, ticks: { callback: v => v+'%' } },
+      x: { grid: { display: false }, stacked: true, ticks: { font: { size: 9 } } }
+    }
+  }
+});
+
+const totalOpex = [43.0,42.7,39.7,37.8,38.6,40.2,38.1,36.0,0.2,40.4];
+new Chart(document.getElementById('opexTrendChart'), {
+  type: 'line',
+  data: {
+    labels,
+    datasets: [{
+      label: 'Total OPEX % of Revenue',
+      data: totalOpex,
+      borderColor: red,
+      backgroundColor: 'rgba(184,84,80,.1)',
+      fill: true, tension: .3, borderWidth: 2, pointRadius: 4,
+      pointBackgroundColor: totalOpex.map(v => v < 10 ? green : red),
+    }]
+  },
+  options: {
+    plugins: { legend: { display: false } },
+    scales: {
+      y: { grid: { color: 'rgba(0,0,0,.06)' }, ticks: { callback: v => v+'%' } },
+      x: { grid: { display: false }, ticks: { font: { size: 9 } } }
+    }
+  }
+});
+
+// Scenario charts
+const scenLabels = ['2025 Q1','2025 Q2','2025 Q3','2025 Q4'];
+const baseRev = [155667, 167702, 106963, 88666];
+const upsideRev = [165657, 172073, 127510, 112073];
+const downsideRev = [146277, 157702, 88752, 69132];
+
+const baseFcf = [129784, 107582, 89178, 73923];
+const upsideFcf = [137612, 120952, 106309, 93438];
+const downsideFcf = [121955, 94995, 73995, 57637];
+
+new Chart(document.getElementById('scenarioRevenueChart'), {
+  type: 'bar',
+  data: {
+    labels: scenLabels,
+    datasets: [
+      { label: 'Base Case', data: baseRev, backgroundColor: blueL, borderWidth: 0 },
+      { label: 'Upside (+5%)', data: upsideRev, backgroundColor: greenL, borderWidth: 0 },
+      { label: 'Downside (-5%)', data: downsideRev, backgroundColor: red, borderWidth: 0 }
+    ]
+  },
+  options: {
+    plugins: { legend: { position: 'top', labels: { boxWidth: 10, font: { size: 10 } } } },
+    scales: {
+      y: { grid: { color: 'rgba(0,0,0,.06)' }, ticks: { callback: v => '$'+(v/1000).toFixed(0)+'B' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+new Chart(document.getElementById('scenarioFcfChart'), {
+  type: 'bar',
+  data: {
+    labels: scenLabels,
+    datasets: [
+      { label: 'Base Case', data: baseFcf, backgroundColor: blue, borderWidth: 0 },
+      { label: 'Upside (+5%)', data: upsideFcf, backgroundColor: green, borderWidth: 0 },
+      { label: 'Downside (-5%)', data: downsideFcf, backgroundColor: red, borderWidth: 0 }
+    ]
+  },
+  options: {
+    plugins: { legend: { position: 'top', labels: { boxWidth: 10, font: { size: 10 } } } },
+    scales: {
+      y: { grid: { color: 'rgba(0,0,0,.06)' }, ticks: { callback: v => '$'+(v/1000).toFixed(0)+'B' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+const cashSec = [64405, 66070, 64169, 86780, 85074, 89092, 88051, 101202, 94565, 93180];
+const ltDebt = [67084, 63092, 61098, 58314, 57634, 54889, 54890, 52623, 53374, 50718];
+new Chart(document.getElementById('cashDebtChart'), {
+  type: 'line',
+  data: {
+    labels,
+    datasets: [
+      { label: 'Cash & Securities', data: cashSec, borderColor: green, backgroundColor: 'rgba(45,106,79,.1)', fill: true, tension: .3, borderWidth: 2.5, pointRadius: 3 },
+      { label: 'Long-term Debt', data: ltDebt, borderColor: red, backgroundColor: 'rgba(184,84,80,.08)', fill: true, tension: .3, borderWidth: 2, pointRadius: 3 }
+    ]
+  },
+  options: {
+    plugins: { legend: { position: 'top', labels: { boxWidth: 10, font: { size: 10 } } } },
+    scales: {
+      y: { grid: { color: 'rgba(0,0,0,.06)' }, ticks: { callback: v => '$'+(v/1000).toFixed(0)+'B' } },
+      x: { grid: { display: false }, ticks: { font: { size: 9 } } }
+    }
+  }
+});
+
+const fcf = [-9419, 5021, 8738, 27877, 4064, 7661, 3351, 17802, -8004, 332];
+new Chart(document.getElementById('fcfChart'), {
+  type: 'bar',
+  data: {
+    labels,
+    datasets: [{
+      data: fcf,
+      backgroundColor: fcf.map(v => v >= 0 ? green : red),
+      borderWidth: 0
+    }]
+  },
+  options: {
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => '$'+(ctx.raw/1000).toFixed(2)+'B' } } },
+    scales: {
+      y: { grid: { color: 'rgba(0,0,0,.06)' }, ticks: { callback: v => '$'+(v/1000).toFixed(0)+'B' } },
+      x: { grid: { display: false }, ticks: { font: { size: 9 } } }
+    }
+  }
+});
+</script>
+</body>
+</html>

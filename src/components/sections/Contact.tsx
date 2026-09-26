@@ -5,7 +5,7 @@ import { Envelope, LinkedinLogo, DownloadSimple } from "phosphor-react"
 const links = [
   {
     label: "Email",
-    href: "mailto:nabeel@muhammadnabeel.com",
+    href: "mailto:mnak.nabeel@gmail.com",
     icon: Envelope,
   },
   {
@@ -17,27 +17,27 @@ const links = [
 
 export default function Contact() {
   return (
-    <section id="contact" className="py-32 px-6">
+    <section id="contact" className="py-20 sm:py-32 px-6">
       <div className="max-w-3xl mx-auto text-center">
         <p className="text-lime font-mono text-sm tracking-widest uppercase mb-3">
           Contact
         </p>
-        <h2 className="text-3xl sm:text-4xl font-bold mb-4 tracking-tight">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 tracking-tight">
           Let&apos;s work together
         </h2>
-        <p className="text-muted text-base max-w-lg mx-auto mb-10">
+        <p className="text-muted text-sm sm:text-base max-w-lg mx-auto mb-8 sm:mb-10">
           Whether you need fractional finance leadership, a messy cleanup, or
           an automated pipeline — I&apos;d love to hear about it.
         </p>
 
-        <div className="flex flex-wrap items-center justify-center gap-4 mb-12">
+        <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 mb-8 sm:mb-12">
           {links.map((link) => (
             <a
               key={link.label}
               href={link.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-border bg-surface/50 text-fg hover:border-lime/50 hover:text-lime transition-all duration-300 text-sm font-medium"
+              className="inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl border border-border bg-surface/50 text-fg hover:border-lime/50 hover:text-lime transition-all duration-300 text-xs sm:text-sm font-medium"
             >
               <link.icon size={18} />
               {link.label}
@@ -46,9 +46,9 @@ export default function Contact() {
         </div>
 
         <a
-          href="/Nabeel_Resume_2026.pdf"
+          href="/Muhamamd_Nabeel_Resume.pdf"
           download
-          className="group inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-lime text-ink font-semibold text-sm hover:shadow-[0_0_30px_#c8f60344] transition-all duration-300"
+          className="group inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl bg-lime text-ink font-semibold text-xs sm:text-sm hover:shadow-[0_0_30px_#c8f60344] transition-all duration-300"
         >
           <DownloadSimple size={18} className="group-hover:translate-y-0.5 transition-transform" />
           Download Resume (PDF)

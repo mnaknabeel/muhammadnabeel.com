@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Accounts Payable Schedule — Restaurant Group June 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --paper: #F5F2EB;
+    --ink: #1A1A1E;
+    --gold: #C89B3C;
+    --gold-light: #E8D5A0;
+    --slate: #5C6570;
+    --slate-light: #D6D9DD;
+    --border: #E2DDD4;
+    --white: #FFFFFF;
+    --green: #2D6A4F;
+    --red: #B85450;
+    --amber: #C48B2E;
+  }
+  body {
+    background: #1A1A1E;
+    font-family: 'Inter', system-ui, sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+  .top-nav {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 16px 24px 0;
+  }
+  .top-nav a {
+    color: var(--gold-light);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: color .2s;
+  }
+  .top-nav a:hover { color: var(--gold); }
+  .report {
+    max-width: 960px;
+    margin: 20px auto 60px;
+    background: var(--paper);
+    box-shadow: 0 2px 40px rgba(0,0,0,0.15);
+  }
+  .report-inner { padding: 48px 56px; }
+  .serif { font-family: 'DM Serif Display', Georgia, serif; font-weight: 400; font-style: italic; }
+  .cover { margin-bottom: 28px; }
+  .cover-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--slate);
+  }
+  .cover-title {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 40px;
+    font-style: italic;
+    color: var(--ink);
+    line-height: 1.1;
+  }
+  .cover-sub {
+    font-size: 15px;
+    color: var(--slate);
+    margin-top: 2px;
+  }
+  .cover-divider {
+    height: 2px;
+    background: var(--gold);
+    width: 80px;
+    margin: 16px 0 0;
+  }
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .kpi-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    padding: 14px 12px;
+  }
+  .kpi-value {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 24px;
+    font-style: italic;
+    color: var(--ink);
+    line-height: 1.1;
+    margin-bottom: 2px;
+  }
+  .kpi-label {
+    font-size: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--slate);
+  }
+  .kpi-meta {
+    font-size: 9px;
+    color: var(--slate);
+    margin-top: 2px;
+  }
+  .section-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    border-bottom: 2px solid var(--gold);
+    padding-bottom: 6px;
+    margin-bottom: 16px;
+  }
+  .section-head h2 {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 20px;
+    font-weight: 400;
+    font-style: italic;
+  }
+  .section-head .meta {
+    font-size: 10px;
+    color: var(--slate);
+    text-align: right;
+    line-height: 1.5;
+  }
+  .section-label {
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--gold);
+    padding-top: 8px;
+    padding-bottom: 2px;
+  }
+  table.data {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10px;
+    margin-bottom: 16px;
+  }
+  table.data th {
+    text-align: left;
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--slate);
+    padding: 6px 8px 6px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  table.data th.right { text-align: right; padding-right: 0; }
+  table.data td {
+    padding: 4px 8px 4px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  table.data td.right { text-align: right; padding-right: 0; }
+  table.data td.num { text-align: right; font-variant-numeric: tabular-nums; padding-right: 0; }
+  table.data .total td { font-weight: 600; border-bottom: 2px solid var(--ink); }
+  table.data .grand td {
+    font-weight: 700;
+    border-top: 2px solid var(--ink);
+    border-bottom: 2px solid var(--ink);
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+  .gold { color: var(--gold); }
+  .green { color: var(--green); }
+  .red { color: var(--red); }
+  .amber { color: var(--amber); }
+  .credit { color: var(--green); }
+  .summary-box {
+    background: var(--white);
+    border: 1px solid var(--border);
+    padding: 14px;
+    margin-bottom: 20px;
+  }
+  .summary-box .tag {
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .summary-box ul {
+    list-style: none;
+    font-size: 10px;
+    line-height: 1.6;
+  }
+  .summary-box ul li::before { content: "— "; color: var(--gold); }
+  .notes {
+    font-size: 8px;
+    color: var(--slate);
+    line-height: 1.5;
+    border-top: 1px solid var(--border);
+    padding-top: 8px;
+    margin: 16px 0 24px;
+  }
+  .report-footer {
+    border-top: 1px solid var(--border);
+    padding-top: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .report-footer .label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--slate);
+  }
+  .report-footer .page-num {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-style: italic;
+    font-size: 12px;
+    color: var(--slate);
+  }
+  .age-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    margin-right: 4px;
+  }
+  .age-dot.current { background: var(--green); }
+  .age-dot.overdue { background: var(--amber); }
+  .age-dot.critical { background: var(--red); }
+  @media print {
+    body { background: #fff; }
+    .top-nav { display: none; }
+    .report { box-shadow: none; margin: 0; max-width: none; }
+    .report-inner { padding: 0; }
+    .cover { page-break-after: avoid; }
+    .kpi-grid { page-break-inside: avoid; }
+    .section-head { page-break-after: avoid; }
+    .summary-box { page-break-inside: avoid; }
+  }
+  @media (max-width: 768px) {
+    .report-inner { padding: 24px 20px; }
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .cover-title { font-size: 30px; }
+    .section-head { flex-direction: column; align-items: flex-start; gap: 4px; }
+    .section-head .meta { text-align: left; }
+  }
+  @media (max-width: 480px) {
+    .kpi-grid { grid-template-columns: 1fr; }
+    .cover-title { font-size: 26px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-nav">
+  <a href="/">&#8592; Back to Portfolio</a>
+</div>
+
+<div class="report">
+<div class="report-inner">
+
+  <!-- COVER -->
+  <div class="cover">
+    <img src="/images/payable%20report.png" alt="" style="width:100%;height:auto;display:block;margin-bottom:28px;border-radius:4px;">
+    <div class="cover-label">Accounts Payable Schedule</div>
+    <div class="cover-title">Restaurant Group</div>
+    <div class="cover-sub">UAE Restaurant Group &middot; As at 30 June 2026 &middot; AED</div>
+    <div class="cover-divider"></div>
+  </div>
+
+  <!-- KPI GRID -->
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-value">AED 25.9K</div>
+      <div class="kpi-label">Outstanding Payables</div>
+      <div class="kpi-meta">24 suppliers</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value green">AED 13.9K</div>
+      <div class="kpi-label">Net AP Balance</div>
+      <div class="kpi-meta">after credits</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">AED 12.1K</div>
+      <div class="kpi-label">Over-payments</div>
+      <div class="kpi-meta">9 suppliers</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">33</div>
+      <div class="kpi-label">Suppliers with Balance</div>
+      <div class="kpi-meta">135 fully settled</div>
+    </div>
+  </div>
+
+  <!-- EXECUTIVE SUMMARY -->
+  <div class="section-head">
+    <h2>Executive Summary</h2>
+  </div>
+
+  <div class="summary-box">
+    <div style="font-size:10px;line-height:1.7;color:var(--slate);">
+      As of 30 June 2026, the restaurant group carries a net accounts payable balance of <strong>AED 13,863.10</strong>. This is the difference between <strong>AED 25,927.87</strong> outstanding to 24 suppliers and <strong>AED 12,064.77</strong> in over-payments / credits across 9 suppliers (primarily JVC-3 at AED 10,800). A further 135 suppliers are fully settled.<br><br>
+      Net payable = AED 25,927.87 &minus; AED 12,064.77 = <strong>AED 13,863.10</strong>.
+    </div>
+  </div>
+
+  <!-- SECTION A: BALANCES DUE -->
+  <div class="section-head">
+    <h2>A. Balances Due</h2>
+    <div class="meta">24 Suppliers &middot; AED 25,927.87</div>
+  </div>
+
+  <table class="data">
+    <tr><th>#</th><th>Supplier</th><th class="right">Billed</th><th class="right">Paid</th><th class="right">Balance</th></tr>
+    <tr><td>1</td><td>Eurotech Gas</td><td class="num">88,872</td><td class="num">83,163</td><td class="num amber">5,709</td></tr>
+    <tr><td>2</td><td>Bhaijan Flourmill &amp; Foodstuff</td><td class="num">121,878</td><td class="num">117,931</td><td class="num amber">3,947</td></tr>
+    <tr><td>3</td><td>Empower Central Cooling</td><td class="num">18,489</td><td class="num">15,507</td><td class="num amber">2,982</td></tr>
+    <tr><td>4</td><td>Hot Pack</td><td class="num">81,463</td><td class="num">78,485</td><td class="num amber">2,978</td></tr>
+    <tr><td>5</td><td>Royal Foodstuff</td><td class="num">15,462</td><td class="num">12,679</td><td class="num amber">2,784</td></tr>
+    <tr><td>6</td><td>Reimburse to Umair</td><td class="num">2,457</td><td class="num">610</td><td class="num amber">1,847</td></tr>
+    <tr><td>7</td><td>Arjan Room</td><td class="num">14,200</td><td class="num">12,800</td><td class="num amber">1,400</td></tr>
+    <tr><td>8</td><td>Shahid Green Hill Food Stuff</td><td class="num">82,575</td><td class="num">81,425</td><td class="num amber">1,150</td></tr>
+    <tr><td>9</td><td>Orient Insurance</td><td class="num">5,759</td><td class="num">4,871</td><td class="num">887</td></tr>
+    <tr><td>10</td><td>Green Rose General Trading</td><td class="num">75,463</td><td class="num">74,805</td><td class="num">657</td></tr>
+    <tr><td>11</td><td>Muhammad Imran Yousaf Food</td><td class="num">33,498</td><td class="num">33,235</td><td class="num">263</td></tr>
+    <tr><td>12-24</td><td>Other suppliers (13 vendors)</td><td class="num">357,270</td><td class="num">355,562</td><td class="num">1,326</td></tr>
+    <tr class="grand"><td></td><td><strong>Total</strong></td><td class="num"><strong>897,386</strong></td><td class="num"><strong>871,073</strong></td><td class="num"><strong>25,928</strong></td></tr>
+  </table>
+
+  <!-- SECTION B: OVER-PAYMENTS -->
+  <div class="section-head">
+    <h2>B. Over-payments / Credits</h2>
+    <div class="meta">9 Suppliers &middot; AED 12,064.77 recoverable</div>
+  </div>
+
+  <table class="data">
+    <tr><th>#</th><th>Supplier</th><th class="right">Billed</th><th class="right">Paid</th><th class="right">Credit</th></tr>
+    <tr><td>1</td><td>JVC 3</td><td class="num">15,350</td><td class="num">26,150</td><td class="num green">(10,800)</td></tr>
+    <tr><td>2</td><td>Al Rawabi Dairy Company</td><td class="num">18,347</td><td class="num">19,142</td><td class="num green">(796)</td></tr>
+    <tr><td>3</td><td>DEWA</td><td class="num">56,390</td><td class="num">56,726</td><td class="num green">(337)</td></tr>
+    <tr><td>4</td><td>Capital General Trading</td><td class="num">1,655</td><td class="num">1,731</td><td class="num green">(76)</td></tr>
+    <tr><td>5</td><td>Shahid Abbas AC Repairing</td><td class="num">940</td><td class="num">960</td><td class="num green">(20)</td></tr>
+    <tr><td>6</td><td>United Dairies</td><td class="num">8,471</td><td class="num">8,486</td><td class="num green">(15)</td></tr>
+    <tr><td>7</td><td>Khiara Traders</td><td class="num">9,803</td><td class="num">9,817</td><td class="num green">(14)</td></tr>
+    <tr><td>8</td><td>Golden Loaf Est</td><td class="num">5,519</td><td class="num">5,524</td><td class="num green">(5)</td></tr>
+    <tr><td>9</td><td>Land Sea</td><td class="num">2,159</td><td class="num">2,161</td><td class="num green">(2)</td></tr>
+    <tr class="grand"><td></td><td><strong>Total</strong></td><td class="num"><strong>118,634</strong></td><td class="num"><strong>130,697</strong></td><td class="num green"><strong>(12,065)</strong></td></tr>
+  </table>
+
+  <!-- NET POSITION -->
+  <div class="summary-box" style="background:var(--white);text-align:right;">
+    <div class="tag" style="color:var(--gold);text-align:left;">Net AP Position</div>
+    <div style="font-family:'DM Serif Display',Georgia,serif;font-style:italic;font-size:28px;color:var(--green);">
+      AED 13,863.10
+    </div>
+    <div style="font-size:10px;color:var(--slate);">
+      Outstanding payables AED 25,927.87 &minus; Credits AED 12,064.77
+    </div>
+  </div>
+
+  <!-- AP AGING -->
+  <div class="section-head">
+    <h2>Supplier Aging Profile</h2>
+    <div class="meta">Balance Distribution</div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <table class="data">
+        <tr><th>Balance Range</th><th class="right">Count</th><th class="right">Total</th></tr>
+        <tr><td><span class="age-dot.critical"></span> AED 1,000+</td><td class="num">8</td><td class="num amber">23,580</td></tr>
+        <tr><td><span class="age-dot.overdue"></span> AED 100 - 999</td><td class="num">10</td><td class="num">1,908</td></tr>
+        <tr><td><span class="age-dot.current"></span> AED 0 - 99</td><td class="num">6</td><td class="num">440</td></tr>
+        <tr class="grand"><td>Total Outstanding</td><td class="num">24</td><td class="num">25,928</td></tr>
+      </table>
+    </div>
+
+    <div>
+      <div class="summary-box">
+        <div class="tag" style="color:var(--gold)">Key Observations</div>
+        <ul>
+          <li>Top 5 suppliers account for AED 18,400 (71%) of total outstanding</li>
+          <li>JVC 3 over-payment of AED 10,800 should be confirmed and reclassified as prepayment</li>
+          <li>Eurotech Gas (AED 5,709) and Bhaijan Flourmill (AED 3,947) are the two largest payables</li>
+          <li>135 suppliers fully settled — strong AP discipline overall</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTES -->
+  <div class="notes">
+    <strong>Notes:</strong> 1. Balances per supplier = Billed minus Paid. 2. Over-payment rows are credits recoverable against future invoices, not cash liabilities. 3. JVC 3 over-payment of AED 10,800 is significant — recommend confirming allocation and carrying as prepayment. 4. AP reduced by AED 30,604 from May (AED 44,467) to June (AED 13,863). 5. Revenue reconciliation across 9 channels completed within 5 business days of month-end.
+  </div>
+
+  <!-- ACHIEVEMENTS -->
+  <div class="section-head">
+    <h2>Key Achievements</h2>
+  </div>
+  <div class="achievement-list">
+    <div class="achievement-item"><span class="achievement-num">1</span> Reduced monthly close cycle from 12 to 4 days through automated data ingestion across 9 revenue channels</div>
+    <div class="achievement-item"><span class="achievement-num">2</span> Reconciled AED 1.8M+ in aggregator payouts (Talabat, Noon, Deliveroo, Zomato, Keeta) with 99.8% accuracy</div>
+    <div class="achievement-item"><span class="achievement-num">3</span> Cut net AP balance by 69% — from AED 44,467 (May) to AED 13,863 (June)</div>
+    <div class="achievement-item"><span class="achievement-num">4</span> Identified AED 12,065 in supplier credits and over-payments for recovery</div>
+    <div class="achievement-item"><span class="achievement-num">5</span> Implemented automated AP aging tracking across 168 supplier accounts</div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="report-footer">
+    <span class="label">Restaurant Group &middot; Accounts Payable June 2026</span>
+    <span class="page-num">&nbsp;</span>
+  </div>
+
+</div>
+</div>
+
+<div class="top-nav" style="padding-top:0;padding-bottom:32px;text-align:center;">
+  <a href="/">&larr; Back to Portfolio</a>
+</div>
+
+</body>
+</html>

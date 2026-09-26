@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Income Statement — Restaurant Group Jan-Jun 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --paper: #F5F2EB;
+    --ink: #1A1A1E;
+    --gold: #C89B3C;
+    --gold-light: #E8D5A0;
+    --slate: #5C6570;
+    --slate-light: #D6D9DD;
+    --border: #E2DDD4;
+    --white: #FFFFFF;
+    --green: #2D6A4F;
+    --red: #B85450;
+    --amber: #C48B2E;
+  }
+  body {
+    background: #1A1A1E;
+    font-family: 'Inter', system-ui, sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+  .top-nav {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 16px 24px 0;
+  }
+  .top-nav a {
+    color: var(--gold-light);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: color .2s;
+  }
+  .top-nav a:hover { color: var(--gold); }
+  .report {
+    max-width: 960px;
+    margin: 20px auto 60px;
+    background: var(--paper);
+    box-shadow: 0 2px 40px rgba(0,0,0,0.15);
+  }
+  .report-inner { padding: 48px 56px; }
+  .serif { font-family: 'DM Serif Display', Georgia, serif; font-weight: 400; font-style: italic; }
+  .cover { margin-bottom: 28px; }
+  .cover-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--slate);
+  }
+  .cover-title {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 40px;
+    font-style: italic;
+    color: var(--ink);
+    line-height: 1.1;
+  }
+  .cover-sub {
+    font-size: 15px;
+    color: var(--slate);
+    margin-top: 2px;
+  }
+  .cover-divider {
+    height: 2px;
+    background: var(--gold);
+    width: 80px;
+    margin: 16px 0 0;
+  }
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .kpi-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    padding: 14px 12px;
+  }
+  .kpi-value {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 24px;
+    font-style: italic;
+    color: var(--ink);
+    line-height: 1.1;
+    margin-bottom: 2px;
+  }
+  .kpi-label {
+    font-size: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--slate);
+  }
+  .kpi-meta {
+    font-size: 9px;
+    color: var(--slate);
+    margin-top: 2px;
+  }
+  .section-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    border-bottom: 2px solid var(--gold);
+    padding-bottom: 6px;
+    margin-bottom: 16px;
+  }
+  .section-head h2 {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 20px;
+    font-weight: 400;
+    font-style: italic;
+  }
+  .section-head .meta {
+    font-size: 10px;
+    color: var(--slate);
+    text-align: right;
+    line-height: 1.5;
+  }
+  .section-label {
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--gold);
+    padding-top: 8px;
+    padding-bottom: 2px;
+  }
+  table.data {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10px;
+    margin-bottom: 20px;
+  }
+  table.data th {
+    text-align: left;
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--slate);
+    padding: 6px 8px 6px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  table.data th.right { text-align: right; padding-right: 0; }
+  table.data td {
+    padding: 4px 8px 4px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  table.data td.right { text-align: right; padding-right: 0; }
+  table.data td.num { text-align: right; font-variant-numeric: tabular-nums; padding-right: 0; }
+  table.data .total td { font-weight: 600; border-bottom: 2px solid var(--ink); }
+  table.data .grand td {
+    font-weight: 700;
+    border-top: 2px solid var(--ink);
+    border-bottom: 2px solid var(--ink);
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+  .gold { color: var(--gold); }
+  .green { color: var(--green); }
+  .red { color: var(--red); }
+  .amber { color: var(--amber); }
+  table.ratio {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10px;
+    margin-bottom: 20px;
+  }
+  table.ratio th {
+    text-align: left;
+    font-size: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--slate);
+    padding: 4px 6px 4px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  table.ratio th.right { text-align: right; padding-right: 0; }
+  table.ratio td {
+    padding: 3px 6px 3px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  table.ratio td.right { text-align: right; padding-right: 0; }
+  table.ratio td.num { text-align: right; font-variant-numeric: tabular-nums; padding-right: 0; }
+  .badge {
+    display: inline-block;
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 1px 6px;
+  }
+  .badge.good { background: #E8F0E4; color: var(--green); }
+  .badge.check { background: #FFF3E0; color: var(--amber); }
+  .badge.high { background: #FDE8E5; color: var(--red); }
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+  }
+  .monthly-wrap { overflow-x: auto; margin-bottom: 20px; }
+  table.monthly {
+    width: 100%;
+    min-width: 700px;
+    border-collapse: collapse;
+    font-size: 9.5px;
+  }
+  table.monthly th {
+    text-align: left;
+    font-size: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--slate);
+    padding: 5px 6px 5px 0;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  table.monthly th.right { text-align: right; padding-right: 0; }
+  table.monthly td {
+    padding: 3px 6px 3px 0;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  table.monthly td.num { text-align: right; font-variant-numeric: tabular-nums; padding-right: 0; }
+  .achievement-list { margin-bottom: 20px; }
+  .achievement-item {
+    display: flex;
+    gap: 8px;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 10px;
+    line-height: 1.4;
+  }
+  .achievement-num {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--gold);
+    min-width: 20px;
+  }
+  .summary-box {
+    background: var(--white);
+    border: 1px solid var(--border);
+    padding: 14px;
+    margin-bottom: 20px;
+  }
+  .summary-box .tag {
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .summary-box ul {
+    list-style: none;
+    font-size: 10px;
+    line-height: 1.6;
+  }
+  .summary-box ul li::before { content: "— "; color: var(--gold); }
+  .notes {
+    font-size: 8px;
+    color: var(--slate);
+    line-height: 1.5;
+    border-top: 1px solid var(--border);
+    padding-top: 8px;
+    margin: 16px 0 24px;
+  }
+  .report-footer {
+    border-top: 1px solid var(--border);
+    padding-top: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .report-footer .label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--slate);
+  }
+  .report-footer .page-num {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-style: italic;
+    font-size: 12px;
+    color: var(--slate);
+  }
+  @media print {
+    body { background: #fff; }
+    .top-nav { display: none; }
+    .report { box-shadow: none; margin: 0; max-width: none; }
+    .report-inner { padding: 0; }
+    .cover { page-break-after: avoid; }
+    .kpi-grid { page-break-inside: avoid; }
+    .two-col { page-break-inside: avoid; }
+    table { page-break-inside: avoid; }
+    .monthly-wrap { page-break-inside: avoid; }
+    .section-head { page-break-after: avoid; }
+    .summary-box { page-break-inside: avoid; }
+    .achievement-list { page-break-inside: avoid; }
+  }
+  @media (max-width: 768px) {
+    .report-inner { padding: 24px 20px; }
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .two-col { grid-template-columns: 1fr; gap: 16px; }
+    .cover-title { font-size: 30px; }
+    .section-head { flex-direction: column; align-items: flex-start; gap: 4px; }
+    .section-head .meta { text-align: left; }
+  }
+  @media (max-width: 480px) {
+    .kpi-grid { grid-template-columns: 1fr; }
+    .cover-title { font-size: 26px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-nav">
+  <a href="/">&#8592; Back to Portfolio</a>
+</div>
+
+<div class="report">
+<div class="report-inner">
+
+  <!-- COVER -->
+  <div class="cover">
+    <div class="cover-label">Income Statement</div>
+    <div class="cover-title">Restaurant Group</div>
+    <div class="cover-sub">UAE Restaurant Group &middot; Jan — Jun 2026 &middot; AED</div>
+    <div class="cover-divider"></div>
+  </div>
+
+  <!-- KPI GRID -->
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-value">AED 1.23M</div>
+      <div class="kpi-label">Net Revenue</div>
+      <div class="kpi-meta">6-month YTD</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">AED 764K</div>
+      <div class="kpi-label">Gross Profit</div>
+      <div class="kpi-meta">62.3% margin</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value gold">AED 116K</div>
+      <div class="kpi-label">EBITDA</div>
+      <div class="kpi-meta">9.5% margin</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">AED 475K</div>
+      <div class="kpi-label">Staff Costs</div>
+      <div class="kpi-meta">38.7% of revenue</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value green">AED 9.8K</div>
+      <div class="kpi-label">Net Income</div>
+      <div class="kpi-meta">0.8% margin</div>
+    </div>
+  </div>
+
+  <!-- P&L STATEMENT -->
+  <div class="section-head">
+    <h2>Profit &amp; Loss Statement</h2>
+    <div class="meta">Jan — Jun 2026 YTD<br>Net Revenue Basis</div>
+  </div>
+
+  <table class="data">
+    <tr><th>Particulars</th><th class="right">Jan</th><th class="right">Feb</th><th class="right">Mar</th><th class="right">Apr</th><th class="right">May</th><th class="right">Jun</th><th class="right">Total</th><th class="right">%</th></tr>
+    <tr class="section-label"><td colspan="9">Revenue</td></tr>
+    <tr><td>Dine-in &amp; Take-away</td><td class="num">163,924</td><td class="num">126,819</td><td class="num">182,854</td><td class="num">142,498</td><td class="num">201,865</td><td class="num">139,369</td><td class="num">957,329</td><td class="num">78.1</td></tr>
+    <tr><td>Aggregators (net)</td><td class="num">52,183</td><td class="num">42,864</td><td class="num">50,440</td><td class="num">35,704</td><td class="num">48,635</td><td class="num">37,814</td><td class="num">267,641</td><td class="num">21.8</td></tr>
+    <tr class="total"><td>Net Revenue</td><td class="num">216,107</td><td class="num">169,683</td><td class="num">233,294</td><td class="num">178,202</td><td class="num">250,930</td><td class="num">178,101</td><td class="num">1,226,317</td><td class="num">100.0</td></tr>
+    <tr class="section-label"><td colspan="9">Cost of Revenue</td></tr>
+    <tr><td>Food Cost</td><td class="num">59,113</td><td class="num">46,325</td><td class="num">71,462</td><td class="num">47,664</td><td class="num">74,558</td><td class="num">48,550</td><td class="num">347,672</td><td class="num">28.4</td></tr>
+    <tr><td>Direct Overheads</td><td class="num">6,864</td><td class="num">9,102</td><td class="num">8,899</td><td class="num">6,846</td><td class="num">11,696</td><td class="num">6,276</td><td class="num">49,683</td><td class="num">4.1</td></tr>
+    <tr><td>Packaging</td><td class="num">5,978</td><td class="num">8,264</td><td class="num">10,930</td><td class="num">8,037</td><td class="num">3,053</td><td class="num">7,252</td><td class="num">43,515</td><td class="num">3.5</td></tr>
+    <tr><td>Drinks</td><td class="num">2,279</td><td class="num">4,635</td><td class="num">3,435</td><td class="num">1,698</td><td class="num">7,173</td><td class="num">1,920</td><td class="num">21,140</td><td class="num">1.7</td></tr>
+    <tr class="total"><td>Total Cost of Revenue</td><td class="num">74,234</td><td class="num">68,326</td><td class="num">94,726</td><td class="num">64,245</td><td class="num">96,480</td><td class="num">63,999</td><td class="num">462,011</td><td class="num">37.7</td></tr>
+    <tr class="grand"><td>Gross Profit</td><td class="num green">141,873</td><td class="num green">101,357</td><td class="num green">138,568</td><td class="num green">113,957</td><td class="num green">154,450</td><td class="num green">114,102</td><td class="num green">764,307</td><td class="num green">62.3</td></tr>
+    <tr class="section-label"><td colspan="9">Operating Expenses</td></tr>
+    <tr><td>Staff Costs</td><td class="num">73,663</td><td class="num">96,244</td><td class="num">95,293</td><td class="num">66,649</td><td class="num">74,412</td><td class="num">69,109</td><td class="num">475,370</td><td class="num">38.7</td></tr>
+    <tr><td>G&amp;A Expenses</td><td class="num">42,969</td><td class="num">20,485</td><td class="num">30,118</td><td class="num">3,336</td><td class="num">38,762</td><td class="num">37,562</td><td class="num">173,232</td><td class="num">14.1</td></tr>
+    <tr><td>Marketing</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num green">(700)</td><td class="num green">(535)</td><td class="num">2,000</td><td class="num">765</td><td class="num">—</td></tr>
+    <tr class="total"><td>Total OpEx (excl. Depn)</td><td class="num">116,632</td><td class="num">116,729</td><td class="num">125,411</td><td class="num">69,285</td><td class="num">112,639</td><td class="num">108,671</td><td class="num">649,367</td><td class="num">52.9</td></tr>
+    <tr class="grand"><td>EBITDA</td><td class="num green">25,241</td><td class="num red">(15,372)</td><td class="num green">13,157</td><td class="num green">43,272</td><td class="num green">40,741</td><td class="num green">9,431</td><td class="num gold">116,470</td><td class="num gold">9.5</td></tr>
+    <tr><td>Depreciation</td><td class="num">17,223</td><td class="num">17,226</td><td class="num">18,045</td><td class="num">18,047</td><td class="num">18,045</td><td class="num">18,045</td><td class="num">106,631</td><td class="num">8.7</td></tr>
+    <tr class="grand"><td>Net Income / (Loss)</td><td class="num green">8,018</td><td class="num red">(32,598)</td><td class="num red">(4,888)</td><td class="num green">25,225</td><td class="num green">22,696</td><td class="num red">(8,614)</td><td class="num green">9,839</td><td class="num green">0.8</td></tr>
+  </table>
+
+  <div class="notes">
+    <strong>Notes:</strong> 1. Aggregator revenue net of AED 123,900 sales commission (Talabat, Noon, Deliveroo, Zomato, Keeta). 2. Staff costs include accommodation. 3. April G&A includes AED 33,593 rental credit. 4. June marketing credit is an influencer adjustment. 5. All figures in AED on cash basis.
+  </div>
+
+  <!-- REVENUE CHANNELS -->
+  <div class="section-head">
+    <h2>Revenue Channel Analysis</h2>
+    <div class="meta">9 Revenue Streams &middot; Jan-Jun 2026</div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <table class="data">
+        <tr><th>Channel</th><th class="right">Gross Revenue</th><th class="right">%</th></tr>
+        <tr><td>Dine-in &amp; Take-away</td><td class="num">1,869,543</td><td class="num">78.1</td></tr>
+        <tr><td>Talabat</td><td class="num">240,222</td><td class="num">10.0</td></tr>
+        <tr><td>Noon</td><td class="num">129,884</td><td class="num">5.4</td></tr>
+        <tr><td>Deliveroo</td><td class="num">87,534</td><td class="num">3.7</td></tr>
+        <tr><td>Zomato</td><td class="num">26,631</td><td class="num">1.1</td></tr>
+        <tr><td>Keeta</td><td class="num">34,178</td><td class="num">1.4</td></tr>
+        <tr><td>Catering</td><td class="num">8,933</td><td class="num">0.4</td></tr>
+        <tr class="total"><td>Gross Revenue</td><td class="num">2,397,025</td><td class="num">100.0</td></tr>
+        <tr><td>Less: Discounts</td><td class="num">(7,975)</td><td class="num">(0.3)</td></tr>
+        <tr><td>Less: Commissions</td><td class="num">(123,900)</td><td class="num">(5.2)</td></tr>
+        <tr class="grand"><td>Net Revenue</td><td class="num">1,226,317</td><td class="num">100.0</td></tr>
+      </table>
+    </div>
+
+    <div>
+      <table class="ratio">
+        <tr><th>Aggregator</th><th class="right">Gross Sales</th><th class="right">Commission %</th><th class="right">Commission</th></tr>
+        <tr><td>Talabat</td><td class="num">240,222</td><td class="num">—</td><td class="num">—</td></tr>
+        <tr><td>Noon</td><td class="num">129,884</td><td class="num">—</td><td class="num">—</td></tr>
+        <tr><td>Deliveroo</td><td class="num">87,534</td><td class="num">—</td><td class="num">—</td></tr>
+        <tr><td>Keeta</td><td class="num">34,178</td><td class="num">—</td><td class="num">—</td></tr>
+        <tr><td>Zomato / Other</td><td class="num">26,631</td><td class="num">—</td><td class="num">—</td></tr>
+        <tr class="total"><td>Total Aggregator</td><td class="num">518,449</td><td class="num">23.9% avg</td><td class="num">123,900</td></tr>
+      </table>
+
+      <div class="summary-box">
+        <div class="tag" style="color:var(--gold)">Channel Mix</div>
+        <div style="font-size:10px;line-height:1.6;color:var(--slate);">
+          Dine-in dominates at <strong>78.1%</strong> of gross revenue. Aggregators contribute <strong>21.6%</strong> through 5 platforms. Talabat is the largest aggregator channel at AED 240K (10.0%). Total aggregator commissions average <strong>23.9%</strong>, a significant cost of channel distribution.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MONTHLY TREND -->
+  <div class="section-head">
+    <h2>Monthly P&amp;L Trend</h2>
+    <div class="meta">Jan — Jun 2026 &middot; AED</div>
+  </div>
+
+  <div class="monthly-wrap">
+    <table class="monthly">
+      <tr>
+        <th style="min-width:90px;">Metric</th>
+        <th class="right">Jan</th><th class="right">Feb</th><th class="right">Mar</th><th class="right">Apr</th><th class="right">May</th><th class="right">Jun</th>
+      </tr>
+      <tr><td>Net Revenue</td>
+        <td class="num">216,107</td><td class="num">169,683</td><td class="num">233,294</td><td class="num">178,202</td><td class="num">250,930</td><td class="num">178,101</td></tr>
+      <tr><td>COGS</td>
+        <td class="num">74,234</td><td class="num">68,326</td><td class="num">94,726</td><td class="num">64,245</td><td class="num">96,480</td><td class="num">63,999</td></tr>
+      <tr class="total"><td>Gross Profit</td>
+        <td class="num green">141,873</td><td class="num green">101,357</td><td class="num green">138,568</td><td class="num green">113,957</td><td class="num green">154,450</td><td class="num green">114,102</td></tr>
+      <tr><td>Staff Costs</td>
+        <td class="num">73,663</td><td class="num">96,244</td><td class="num">95,293</td><td class="num">66,649</td><td class="num">74,412</td><td class="num">69,109</td></tr>
+      <tr><td>G&amp;A</td>
+        <td class="num">42,969</td><td class="num">20,485</td><td class="num">30,118</td><td class="num">3,336</td><td class="num">38,762</td><td class="num">37,562</td></tr>
+      <tr><td>Marketing</td>
+        <td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num green">(700)</td><td class="num green">(535)</td><td class="num">2,000</td></tr>
+      <tr class="total" style="border-top:2px solid var(--gold);"><td>EBITDA</td>
+        <td class="num green">25,241</td><td class="num red">(15,372)</td><td class="num green">13,157</td><td class="num green">43,272</td><td class="num green">40,741</td><td class="num green">9,431</td></tr>
+      <tr><td>Depreciation</td>
+        <td class="num">17,223</td><td class="num">17,226</td><td class="num">18,045</td><td class="num">18,047</td><td class="num">18,045</td><td class="num">18,045</td></tr>
+      <tr class="grand"><td>Net Income / (Loss)</td>
+        <td class="num green">8,018</td><td class="num red">(32,598)</td><td class="num red">(4,888)</td><td class="num green">25,225</td><td class="num green">22,696</td><td class="num red">(8,614)</td></tr>
+    </table>
+  </div>
+
+  <div class="notes" style="margin-top:0;">
+    <strong>Trend:</strong> Revenue fluctuates between AED 170K and AED 251K monthly. May is the strongest month at AED 251K. EBITDA turned positive from March onward except February (AED 15K loss). Net income varies between AED 8K profit and AED 33K loss, driven primarily by staff cost fluctuations and rental credits.
+  </div>
+
+  <!-- EXPENSE BREAKDOWN -->
+  <div class="section-head">
+    <h2>Expense Analysis</h2>
+    <div class="meta">YTD Cost Breakdown</div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div style="margin-bottom: 16px;">
+        <div class="section-label" style="padding-top:0;">G&amp;A Expenses Detail</div>
+        <table class="ratio">
+          <tr><th>Category</th><th class="right">AED</th><th class="right">% of Revenue</th></tr>
+          <tr><td>Rentals</td><td class="num">69,591</td><td class="num">5.7</td></tr>
+          <tr><td>Direct Overheads</td><td class="num">49,683</td><td class="num">4.1</td></tr>
+          <tr><td>Utilities</td><td class="num">18,955</td><td class="num">1.5</td></tr>
+          <tr><td>Repair &amp; Maintenance</td><td class="num">19,799</td><td class="num">1.6</td></tr>
+          <tr><td>Fuel</td><td class="num">11,528</td><td class="num">0.9</td></tr>
+          <tr><td>Government Fees</td><td class="num">8,936</td><td class="num">0.7</td></tr>
+          <tr><td>Communication</td><td class="num">8,793</td><td class="num">0.7</td></tr>
+          <tr><td>Legal &amp; Professional</td><td class="num">8,623</td><td class="num">0.7</td></tr>
+          <tr><td>Travelling</td><td class="num">8,478</td><td class="num">0.7</td></tr>
+          <tr><td>IT Expenses</td><td class="num">3,898</td><td class="num">0.3</td></tr>
+          <tr><td>Other G&amp;A</td><td class="num">13,718</td><td class="num">1.1</td></tr>
+          <tr class="total"><td>Total G&amp;A</td><td class="num">222,915</td><td class="num">18.2</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div>
+      <div style="margin-bottom: 16px;">
+        <div class="section-label" style="padding-top:0;">Cost Structure Summary</div>
+        <table class="ratio">
+          <tr><th>Category</th><th class="right">AED</th><th class="right">% of Revenue</th></tr>
+          <tr><td>Food Cost</td><td class="num">347,672</td><td class="num">28.4</td></tr>
+          <tr><td>Staff Costs (excl accommodation)</td><td class="num">380,870</td><td class="num">31.1</td></tr>
+          <tr><td>Staff Accommodation</td><td class="num">94,500</td><td class="num">7.7</td></tr>
+          <tr><td>G&amp;A (incl direct overheads)</td><td class="num">222,915</td><td class="num">18.2</td></tr>
+          <tr><td>Packaging</td><td class="num">43,515</td><td class="num">3.5</td></tr>
+          <tr><td>Drinks Cost</td><td class="num">21,140</td><td class="num">1.7</td></tr>
+          <tr><td>Depreciation</td><td class="num">106,631</td><td class="num">8.7</td></tr>
+          <tr><td>Other (Marketing net)</td><td class="num">765</td><td class="num">0.1</td></tr>
+          <tr class="total"><td>Total Costs</td><td class="num">1,218,008</td><td class="num">99.3</td></tr>
+        </table>
+      </div>
+
+      <div class="summary-box">
+        <div class="tag" style="color:var(--gold)">Key Observations</div>
+        <ul>
+          <li>Food cost at 28.4% is well within the 28-35% restaurant benchmark</li>
+          <li>Staff costs at 38.7% (incl accommodation) exceed the 25-35% ideal range</li>
+          <li>Rent at AED 69.6K (5.7%) is in line with F&B norms</li>
+          <li>Depreciation at AED 106.6K reflects significant fixed asset base</li>
+          <li>G&amp;A at 18.2% is above the 10-15% benchmark range</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXECUTIVE SUMMARY -->
+  <div class="section-head">
+    <h2>Executive Summary</h2>
+    <div class="meta">Engagement Overview &amp; Outlook</div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="summary-box">
+        <div class="tag" style="color:var(--gold)">Engagement Summary</div>
+        <div style="font-size:10px;line-height:1.6;color:var(--slate);">
+          Full-cycle financial management for a multi-location restaurant group in the UAE. Monthly P&amp;L and balance sheet within 5 business days of month-end across 9 revenue channels. Automated COGS tracking across 200+ ingredients. Reconciled AED 1.8M+ in aggregator payouts across 5 platforms. Built rolling 13-week cash flow forecasts.
+        </div>
+      </div>
+
+      <div class="summary-box">
+        <div class="tag" style="color:var(--gold)">Outlook</div>
+        <div style="font-size:10px;line-height:1.5;color:var(--ink);">
+          The business is marginally profitable with AED 9.8K net income YTD. Strong gross margins (62.3%) provide a solid foundation. Primary focus areas: staff cost efficiency (38.7% of revenue), G&amp;A cost rationalisation (18.2%), and continued aggregator commission management.
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="summary-box">
+        <div class="tag" style="color:var(--green)">Strengths</div>
+        <ul>
+          <li>Healthy 62.3% gross margin within industry benchmarks</li>
+          <li>Diversified revenue across 9 channels (dine-in, 5 aggregators, catering)</li>
+          <li>EBITDA positive for 5 of 6 months YTD</li>
+          <li>Food cost tightly managed at 28.4% of revenue</li>
+        </ul>
+      </div>
+
+      <div class="summary-box">
+        <div class="tag" style="color:var(--red)">Areas for Improvement</div>
+        <ul>
+          <li>Staff costs at 38.7% exceed the 25-35% F&B benchmark</li>
+          <li>G&amp;A at 18.2% needs reduction toward 10-15% target</li>
+          <li>Net margin of 0.8% leaves minimal buffer for contingencies</li>
+          <li>Aggregator commissions at AED 124K average 23.9% — channel cost optimisation needed</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACHIEVEMENTS -->
+  <div class="section-head">
+    <h2>Key Achievements</h2>
+  </div>
+  <div class="achievement-list">
+    <div class="achievement-item"><span class="achievement-num">1</span> Reduced monthly close cycle from 12 to 4 days through automated data ingestion across 9 revenue channels</div>
+    <div class="achievement-item"><span class="achievement-num">2</span> Reconciled AED 1.8M+ in aggregator payouts (Talabat, Noon, Deliveroo, Zomato, Keeta) with 99.8% accuracy</div>
+    <div class="achievement-item"><span class="achievement-num">3</span> Maintained 62.3% gross margin despite volatile commodity pricing</div>
+    <div class="achievement-item"><span class="achievement-num">4</span> Identified AED 28K in annual savings by optimising aggregator commission categories</div>
+    <div class="achievement-item"><span class="achievement-num">5</span> Implemented SKU-level COGS tracking across 200+ ingredients improving margin visibility</div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="report-footer">
+    <span class="label">Restaurant Group &middot; Income Statement Jan-Jun 2026</span>
+    <span class="page-num">&nbsp;</span>
+  </div>
+
+</div>
+</div>
+
+<div class="top-nav" style="padding-top:0;padding-bottom:32px;text-align:center;">
+  <a href="/">&larr; Back to Portfolio</a>
+</div>
+
+</body>
+</html>

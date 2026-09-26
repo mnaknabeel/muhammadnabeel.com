@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Financial Review — Delivery Startup 2023</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --paper: #F5F2EB;
+    --ink: #1A1A1E;
+    --gold: #C89B3C;
+    --gold-light: #E8D5A0;
+    --slate: #5C6570;
+    --slate-light: #D6D9DD;
+    --border: #E2DDD4;
+    --white: #FFFFFF;
+    --green: #2D6A4F;
+    --red: #B85450;
+    --amber: #C48B2E;
+  }
+  body {
+    background: #1A1A1E;
+    font-family: 'Inter', system-ui, sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+  .top-nav {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 16px 24px 0;
+  }
+  .top-nav a {
+    color: var(--gold-light);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: color .2s;
+  }
+  .top-nav a:hover { color: var(--gold); }
+  .report {
+    max-width: 960px;
+    margin: 20px auto 60px;
+    background: var(--paper);
+    box-shadow: 0 2px 40px rgba(0,0,0,0.15);
+  }
+  .report-inner { padding: 48px 56px; }
+  .serif { font-family: 'DM Serif Display', Georgia, serif; font-weight: 400; font-style: italic; }
+  .cover { margin-bottom: 28px; }
+  .cover-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--slate);
+  }
+  .cover-title {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 40px;
+    font-style: italic;
+    color: var(--ink);
+    line-height: 1.1;
+  }
+  .cover-sub {
+    font-size: 15px;
+    color: var(--slate);
+    margin-top: 2px;
+  }
+  .cover-divider {
+    height: 2px;
+    background: var(--gold);
+    width: 80px;
+    margin: 16px 0 0;
+  }
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .kpi-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    padding: 14px 12px;
+  }
+  .kpi-value {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 24px;
+    font-style: italic;
+    color: var(--ink);
+    line-height: 1.1;
+    margin-bottom: 2px;
+  }
+  .kpi-label {
+    font-size: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--slate);
+  }
+  .kpi-meta {
+    font-size: 9px;
+    color: var(--slate);
+    margin-top: 2px;
+  }
+  .section-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    border-bottom: 2px solid var(--gold);
+    padding-bottom: 6px;
+    margin-bottom: 16px;
+  }
+  .section-head h2 {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 20px;
+    font-weight: 400;
+    font-style: italic;
+  }
+  .section-head .meta {
+    font-size: 10px;
+    color: var(--slate);
+    text-align: right;
+    line-height: 1.5;
+  }
+  .section-label {
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--gold);
+    padding-top: 8px;
+    padding-bottom: 2px;
+  }
+  table.data {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10px;
+    margin-bottom: 20px;
+  }
+  table.data th {
+    text-align: left;
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--slate);
+    padding: 6px 8px 6px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  table.data th.right { text-align: right; padding-right: 0; }
+  table.data td {
+    padding: 4px 8px 4px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  table.data td.right { text-align: right; padding-right: 0; }
+  table.data td.num { text-align: right; font-variant-numeric: tabular-nums; padding-right: 0; }
+  table.data .total td { font-weight: 600; border-bottom: 2px solid var(--ink); }
+  table.data .grand td {
+    font-weight: 700;
+    border-top: 2px solid var(--ink);
+    border-bottom: 2px solid var(--ink);
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+  .gold { color: var(--gold); }
+  .green { color: var(--green); }
+  .red { color: var(--red); }
+  .amber { color: var(--amber); }
+  table.ratio {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10px;
+    margin-bottom: 20px;
+  }
+  table.ratio th {
+    text-align: left;
+    font-size: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--slate);
+    padding: 4px 6px 4px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  table.ratio th.right { text-align: right; padding-right: 0; }
+  table.ratio td {
+    padding: 3px 6px 3px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  table.ratio td.right { text-align: right; padding-right: 0; }
+  table.ratio td.num { text-align: right; font-variant-numeric: tabular-nums; padding-right: 0; }
+  .badge {
+    display: inline-block;
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 1px 6px;
+  }
+  .badge.good { background: #E8F0E4; color: var(--green); }
+  .badge.check { background: #FFF3E0; color: var(--amber); }
+  .badge.high { background: #FDE8E5; color: var(--red); }
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+  }
+  .monthly-wrap { overflow-x: auto; margin-bottom: 20px; }
+  table.monthly {
+    width: 100%;
+    min-width: 700px;
+    border-collapse: collapse;
+    font-size: 9.5px;
+  }
+  table.monthly th {
+    text-align: left;
+    font-size: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--slate);
+    padding: 5px 6px 5px 0;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  table.monthly th.right { text-align: right; padding-right: 0; }
+  table.monthly td {
+    padding: 3px 6px 3px 0;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  table.monthly td.num { text-align: right; font-variant-numeric: tabular-nums; padding-right: 0; }
+  .achievement-list { margin-bottom: 20px; }
+  .achievement-item {
+    display: flex;
+    gap: 8px;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 10px;
+    line-height: 1.4;
+  }
+  .achievement-num {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--gold);
+    min-width: 20px;
+  }
+  .summary-box {
+    background: var(--white);
+    border: 1px solid var(--border);
+    padding: 14px;
+    margin-bottom: 20px;
+  }
+  .summary-box .tag {
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .summary-box ul {
+    list-style: none;
+    font-size: 10px;
+    line-height: 1.6;
+  }
+  .summary-box ul li::before { content: "— "; color: var(--gold); }
+  .notes {
+    font-size: 8px;
+    color: var(--slate);
+    line-height: 1.5;
+    border-top: 1px solid var(--border);
+    padding-top: 8px;
+    margin: 16px 0 24px;
+  }
+  .report-footer {
+    border-top: 1px solid var(--border);
+    padding-top: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .report-footer .label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--slate);
+  }
+  .report-footer .page-num {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-style: italic;
+    font-size: 12px;
+    color: var(--slate);
+  }
+  @media print {
+    body { background: #fff; }
+    .top-nav { display: none; }
+    .report { box-shadow: none; margin: 0; max-width: none; }
+    .report-inner { padding: 0; }
+    .cover { page-break-after: avoid; }
+    .kpi-grid { page-break-inside: avoid; }
+    .two-col { page-break-inside: avoid; }
+    table { page-break-inside: avoid; }
+    .monthly-wrap { page-break-inside: avoid; }
+    .section-head { page-break-after: avoid; }
+    .summary-box { page-break-inside: avoid; }
+    .achievement-list { page-break-inside: avoid; }
+  }
+  @media (max-width: 768px) {
+    .report-inner { padding: 24px 20px; }
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .two-col { grid-template-columns: 1fr; gap: 16px; }
+    .cover-title { font-size: 30px; }
+    .section-head { flex-direction: column; align-items: flex-start; gap: 4px; }
+    .section-head .meta { text-align: left; }
+  }
+  @media (max-width: 480px) {
+    .kpi-grid { grid-template-columns: 1fr; }
+    .cover-title { font-size: 26px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-nav">
+  <a href="/">&#8592; Back to Portfolio</a>
+</div>
+
+<div class="report">
+<div class="report-inner">
+
+  <!-- COVER -->
+  <div class="cover">
+    <img src="/images/delivery%20startup.png" alt="" style="width:100%;height:auto;display:block;margin-bottom:28px;border-radius:4px;">
+    <div class="cover-label">Annual Financial Review</div>
+    <div class="cover-title">Delivery Startup</div>
+    <div class="cover-sub">Last-Mile Delivery Startup &middot; Year Ended 31 December 2023 &middot; USD</div>
+    <div class="cover-divider"></div>
+  </div>
+
+  <!-- KPI GRID -->
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-value">$77.5K</div>
+      <div class="kpi-label">Total Revenue</div>
+      <div class="kpi-meta">+25.9% YoY</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">$23.7K</div>
+      <div class="kpi-label">Net Income</div>
+      <div class="kpi-meta">from -$19.2K loss</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value green">97.4%</div>
+      <div class="kpi-label">Gross Margin</div>
+      <div class="kpi-meta">service-based model</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">$16.5K</div>
+      <div class="kpi-label">Cash Position</div>
+      <div class="kpi-meta">up from $457</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value"><span class="green">30.6%</span></div>
+      <div class="kpi-label">Net Margin</div>
+      <div class="kpi-meta">industry avg 5-10%</div>
+    </div>
+  </div>
+
+  <!-- P&L STATEMENT -->
+  <div class="section-head">
+    <h2>Profit &amp; Loss Statement</h2>
+    <div class="meta">Year Ended 31 December 2023<br>with 2022 Comparatives</div>
+  </div>
+
+  <table class="data">
+    <tr><th>Particulars</th><th class="right">2023</th><th class="right">2022</th><th class="right">Change</th><th class="right">%</th></tr>
+    <tr class="section-label"><td colspan="5">Revenue</td></tr>
+    <tr><td>PayPal Sales</td><td class="num">41,815</td><td class="num">—</td><td class="num">—</td><td class="num">53.9</td></tr>
+    <tr><td>Direct Sales</td><td class="num">30,871</td><td class="num">—</td><td class="num">—</td><td class="num">39.8</td></tr>
+    <tr><td>Channel Sales</td><td class="num">4,863</td><td class="num">—</td><td class="num">—</td><td class="num">6.3</td></tr>
+    <tr class="total"><td>Total Revenue</td><td class="num">77,549</td><td class="num">61,595</td><td class="num green">15,954</td><td class="num green">25.9</td></tr>
+    <tr class="section-label"><td colspan="5">Cost of Goods Sold</td></tr>
+    <tr><td>Fuel</td><td class="num">2,045</td><td class="num">3,838</td><td class="num red">(1,793)</td><td class="num red">(46.7)</td></tr>
+    <tr class="total"><td>Total COGS</td><td class="num">2,045</td><td class="num">3,838</td><td class="num red">(1,793)</td><td class="num red">(46.7)</td></tr>
+    <tr class="section-label"><td colspan="5">Operating Expenses</td></tr>
+    <tr><td>Contractors</td><td class="num">9,879</td><td class="num">14,151</td><td class="num green">(4,272)</td><td class="num green">(30.2)</td></tr>
+    <tr><td>Meals &amp; Entertainment</td><td class="num">8,375</td><td class="num">9,550</td><td class="num green">(1,175)</td><td class="num green">(12.3)</td></tr>
+    <tr><td>PayPal Expense</td><td class="num">7,053</td><td class="num">0</td><td class="num red">7,053</td><td class="num">NEW</td></tr>
+    <tr><td>Car &amp; Truck</td><td class="num">3,985</td><td class="num">7,734</td><td class="num green">(3,749)</td><td class="num green">(48.5)</td></tr>
+    <tr><td>Insurance</td><td class="num">3,648</td><td class="num">3,847</td><td class="num green">(199)</td><td class="num green">(5.2)</td></tr>
+    <tr><td>Travel</td><td class="num">3,235</td><td class="num">6,150</td><td class="num green">(2,915)</td><td class="num green">(47.4)</td></tr>
+    <tr><td>Job Supplies</td><td class="num">2,932</td><td class="num">12,149</td><td class="num green">(9,217)</td><td class="num green">(75.9)</td></tr>
+    <tr><td>Phone &amp; Internet</td><td class="num">2,665</td><td class="num">1,478</td><td class="num red">1,187</td><td class="num red">80.3</td></tr>
+    <tr><td>Office Supplies &amp; Software</td><td class="num">2,396</td><td class="num">2,109</td><td class="num red">287</td><td class="num red">13.6</td></tr>
+    <tr><td>Utilities</td><td class="num">1,867</td><td class="num">1,534</td><td class="num red">333</td><td class="num red">21.7</td></tr>
+    <tr><td>Other Operating Expenses</td><td class="num">1,643</td><td class="num">14,797</td><td class="num green">(13,154)</td><td class="num green">(88.9)</td></tr>
+    <tr class="total"><td>Total Operating Expenses</td><td class="num">47,679</td><td class="num">73,499</td><td class="num green">(25,820)</td><td class="num green">(35.1)</td></tr>
+    <tr class="grand"><td>Operating Income</td><td class="num green">27,826</td><td class="num red">(15,742)</td><td class="num green">43,568</td><td class="num">—</td></tr>
+    <tr><td>Other Expenses</td><td class="num">4,157</td><td class="num">3,452</td><td class="num red">705</td><td class="num red">20.4</td></tr>
+    <tr class="grand"><td>Net Income</td><td class="num green">23,711</td><td class="num red">(19,194)</td><td class="num green">42,905</td><td class="num green">223.5</td></tr>
+  </table>
+
+  <div class="notes">
+        <strong>Notes:</strong> 1. The business swung from a $19.2K loss to $23.7K profit — a $42.9K or 223.5% improvement. 2. Total expenses fell 35.1% while revenue grew 25.9%. 3. PayPal is the primary payment channel at 53.9% of revenue. 4. The largest customer contributed $16,346 (21% of total revenue).
+  </div>
+
+  <!-- FINANCIAL RATIOS -->
+  <div class="section-head">
+    <h2>Financial Analysis</h2>
+    <div class="meta">Industry Benchmark Comparison</div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <table class="ratio">
+        <tr><th>Ratio</th><th class="right">Value</th><th class="right">Benchmark</th><th></th></tr>
+        <tr><td>Gross Profit Margin</td><td class="num">97.4%</td><td class="num">15-25%</td><td><span class="badge good">Excellent</span></td></tr>
+        <tr><td>Net Profit Margin</td><td class="num">30.6%</td><td class="num">5-10%</td><td><span class="badge good">Excellent</span></td></tr>
+        <tr><td>Expense-to-Revenue</td><td class="num">61.5%</td><td class="num">70-85%</td><td><span class="badge good">Good</span></td></tr>
+        <tr><td>Current Ratio</td><td class="num">14.0x</td><td class="num">1.5-2.0x</td><td><span class="badge good">Excellent</span></td></tr>
+        <tr><td>Debt-to-Equity</td><td class="num">0.0x</td><td class="num">0.5-1.5x</td><td><span class="badge good">Excellent</span></td></tr>
+        <tr><td>Cash Runway</td><td class="num">14+ mo</td><td class="num">3-6 mo</td><td><span class="badge good">Excellent</span></td></tr>
+        <tr><td>Quality of Earnings</td><td class="num">1.05x</td><td class="num">>1.0x</td><td><span class="badge good">Good</span></td></tr>
+        <tr><td>Revenue per $ Expense</td><td class="num">$1.63</td><td class="num">$1.20-1.50</td><td><span class="badge good">Good</span></td></tr>
+      </table>
+    </div>
+
+    <div>
+      <table class="ratio">
+        <tr><th>Category</th><th class="right">2023</th><th class="right">% of Revenue</th></tr>
+        <tr><td>Contractors</td><td class="num">9,879</td><td class="num">12.7</td></tr>
+        <tr><td>Meals &amp; Entertainment</td><td class="num">8,375</td><td class="num">10.8</td></tr>
+        <tr><td>PayPal Expense</td><td class="num">7,053</td><td class="num">9.1</td></tr>
+        <tr><td>Car &amp; Truck</td><td class="num">3,985</td><td class="num">5.1</td></tr>
+        <tr><td>Insurance</td><td class="num">3,648</td><td class="num">4.7</td></tr>
+        <tr><td>Travel</td><td class="num">3,235</td><td class="num">4.2</td></tr>
+        <tr><td>Job Supplies</td><td class="num">2,932</td><td class="num">3.8</td></tr>
+        <tr><td>Phone &amp; Internet</td><td class="num">2,665</td><td class="num">3.4</td></tr>
+        <tr><td>Office Supplies &amp; Software</td><td class="num">2,396</td><td class="num">3.1</td></tr>
+        <tr><td>Other Operating Exp</td><td class="num">3,510</td><td class="num">4.5</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- MONTHLY TREND -->
+  <div class="section-head">
+    <h2>Monthly P&amp;L Trend</h2>
+    <div class="meta">January — December 2023 &middot; USD</div>
+  </div>
+
+  <div class="monthly-wrap">
+    <table class="monthly">
+      <tr>
+        <th style="min-width:90px;">Metric</th>
+        <th class="right">Jan</th><th class="right">Feb</th><th class="right">Mar</th><th class="right">Apr</th>
+        <th class="right">May</th><th class="right">Jun</th><th class="right">Jul</th><th class="right">Aug</th>
+        <th class="right">Sep</th><th class="right">Oct</th><th class="right">Nov</th><th class="right">Dec</th>
+      </tr>
+      <tr><td>Revenue</td>
+        <td class="num">10,321</td><td class="num">6,964</td><td class="num">6,911</td><td class="num">6,375</td>
+        <td class="num">6,818</td><td class="num">8,076</td><td class="num red">506</td><td class="num">6,976</td>
+        <td class="num">11,306</td><td class="num">6,906</td><td class="num">5,893</td><td class="num red">496</td></tr>
+      <tr><td>COGS</td>
+        <td class="num">189</td><td class="num">404</td><td class="num">62</td><td class="num">197</td>
+        <td class="num">34</td><td class="num">58</td><td class="num">8</td><td class="num">357</td>
+        <td class="num">257</td><td class="num">486</td><td class="num">126</td><td class="num">18</td></tr>
+      <tr class="total"><td>Gross Profit</td>
+        <td class="num">10,133</td><td class="num">6,560</td><td class="num">6,849</td><td class="num">6,179</td>
+        <td class="num">6,784</td><td class="num">8,018</td><td class="num">498</td><td class="num">6,619</td>
+        <td class="num">11,049</td><td class="num">6,420</td><td class="num">5,767</td><td class="num">478</td></tr>
+      <tr class="total"><td>Total Expenses</td>
+        <td class="num">6,100</td><td class="num">4,737</td><td class="num">4,009</td><td class="num">4,030</td>
+        <td class="num">4,324</td><td class="num">5,876</td><td class="num">837</td><td class="num">2,671</td>
+        <td class="num">4,679</td><td class="num">6,531</td><td class="num">3,327</td><td class="num">558</td></tr>
+      <tr class="grand"><td>Net Income</td>
+        <td class="num green">3,447</td><td class="num green">1,629</td><td class="num green">2,576</td><td class="num green">1,923</td>
+        <td class="num green">2,342</td><td class="num green">2,028</td><td class="num red">(334)</td><td class="num green">3,757</td>
+        <td class="num green">6,027</td><td class="num red">(1,436)</td><td class="num green">1,819</td><td class="num red">(68)</td></tr>
+    </table>
+  </div>
+
+  <div class="notes" style="margin-top:0;">
+    <strong>Trend:</strong> Revenue peaked in September ($11.3K) and January ($10.3K). July and December are anomaly months with near-zero revenue ($506 and $496). Q3 was the most profitable quarter at 50.3% net margin due to controlled expenses. October was a near-break-even month ($6.9K revenue, $6.5K expenses).
+  </div>
+
+  <!-- QUARTERLY -->
+  <div class="section-head">
+    <h2>Quarterly Performance</h2>
+    <div class="meta">2023 Quarterly Breakdown</div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <table class="data">
+        <tr><th>Quarter</th><th class="right">Revenue</th><th class="right">Expenses</th><th class="right">Net Income</th><th class="right">Margin</th></tr>
+        <tr><td>Q1 (Jan-Mar)</td><td class="num">24,196</td><td class="num">14,847</td><td class="num green">7,651</td><td class="num">31.6%</td></tr>
+        <tr><td>Q2 (Apr-Jun)</td><td class="num">21,270</td><td class="num">14,230</td><td class="num green">6,294</td><td class="num">29.6%</td></tr>
+        <tr><td>Q3 (Jul-Sep)</td><td class="num">18,788</td><td class="num">8,186</td><td class="num green">9,450</td><td class="num">50.3%</td></tr>
+        <tr><td>Q4 (Oct-Dec)</td><td class="num">13,294</td><td class="num">10,416</td><td class="num green">315</td><td class="num">2.4%</td></tr>
+        <tr class="grand"><td>Annual</td><td class="num">77,549</td><td class="num">47,679</td><td class="num green">23,711</td><td class="num">30.6%</td></tr>
+      </table>
+    </div>
+
+    <div>
+      <table class="ratio">
+        <tr><th>Revenue Channel</th><th class="right">Amount</th><th class="right">%</th></tr>
+        <tr><td>PayPal Sales</td><td class="num">41,815</td><td class="num">53.9</td></tr>
+        <tr><td>Direct Sales</td><td class="num">30,871</td><td class="num">39.8</td></tr>
+        <tr><td>Channel Sales</td><td class="num">4,863</td><td class="num">6.3</td></tr>
+        <tr class="total"><td>Total Revenue</td><td class="num">77,549</td><td class="num">100.0</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- EXECUTIVE SUMMARY -->
+  <div class="section-head">
+    <h2>Executive Summary</h2>
+    <div class="meta">Engagement Overview &amp; Outlook</div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="summary-box">
+        <div class="tag" style="color:var(--gold)">Engagement Summary</div>
+        <div style="font-size:10px;line-height:1.6;color:var(--slate);">
+          Full-cycle financial analysis for a California-based last-mile delivery startup transitioning from QuickBooks Online. Built monthly P&L with YoY comparatives, revenue channel analysis across PayPal/direct/channel sales, expense benchmarking, cash flow analysis, and DCF valuation. Identified $31.5K in expense reductions and a 223.5% net income swing.
+        </div>
+      </div>
+
+      <div class="summary-box">
+        <div class="tag" style="color:var(--gold)">Outlook</div>
+        <div style="font-size:10px;line-height:1.5;color:var(--ink);">
+          The business is well-positioned for growth with strong fundamentals, zero debt, and improving cash reserves. Primary focus areas: diversifying revenue beyond PayPal dependency, managing expense discipline, and building formal operating procedures.
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="summary-box">
+        <div class="tag" style="color:var(--green)">Strengths</div>
+        <ul>
+          <li>Exceptional 97.4% gross margin — asset-light service model</li>
+          <li>Zero long-term debt — conservative capital structure</li>
+          <li>14+ months cash runway — strong liquidity position</li>
+          <li>30.6% net margin exceeds industry benchmarks significantly</li>
+        </ul>
+      </div>
+
+      <div class="summary-box">
+        <div class="tag" style="color:var(--red)">Areas for Improvement</div>
+        <ul>
+          <li>Revenue concentration: 53.9% through PayPal, 21% from single customer</li>
+          <li>Extreme monthly volatility: $496 to $11,306 range (22x)</li>
+          <li>$21.7K Venmo informal liability — no repayment terms documented</li>
+          <li>Meals &amp; Entertainment at 10.8% of revenue flags audit risk</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACHIEVEMENTS -->
+  <div class="section-head">
+    <h2>Key Achievements</h2>
+  </div>
+  <div class="achievement-list">
+    <div class="achievement-item"><span class="achievement-num">1</span> Delivered a 223.5% profit swing — from a $19.2K loss to $23.7K net income in a single year</div>
+    <div class="achievement-item"><span class="achievement-num">2</span> Reduced operating expenses by 35.1% ($25.8K) while revenue grew 25.9%</div>
+    <div class="achievement-item"><span class="achievement-num">3</span> Grew cash reserves from $457 to $16,541 — a 36x improvement in liquidity</div>
+    <div class="achievement-item"><span class="achievement-num">4</span> Achieved zero long-term debt with only $1,178 in minimal current liabilities</div>
+    <div class="achievement-item"><span class="achievement-num">5</span> Identified $31.5K in YoY expense savings with 9 out of 19 expense categories reduced</div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="report-footer">
+    <span class="label">Delivery Startup &middot; Financial Review 2023</span>
+    <span class="page-num">&nbsp;</span>
+  </div>
+
+</div>
+</div>
+
+<div class="top-nav" style="padding-top:0;padding-bottom:32px;text-align:center;">
+  <a href="/">&larr; Back to Portfolio</a>
+</div>
+
+</body>
+</html>

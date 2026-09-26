@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Financial Review 2023 — Delivery Startup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --paper: #F5F2EB;
+  --ink: #1A1A1E;
+  --gold: #C89B3C;
+  --gold-light: #E8D5A0;
+  --slate: #5C6570;
+  --slate-light: #D6D9DD;
+  --border: #E2DDD4;
+  --white: #FFFFFF;
+  --green: #2D6A4F;
+  --green-light: #52B788;
+  --red: #B85450;
+  --red-light: #E07A8A;
+  --amber: #C48B2E;
+  --blue: #4A7AA8;
+}
+
+body {
+  background: #1A1A1E;
+  font-family: 'Inter', system-ui, sans-serif;
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+.report {
+  max-width: 1000px;
+  margin: 20px auto 60px;
+  background: var(--paper);
+  box-shadow: 0 2px 40px rgba(0,0,0,0.15);
+}
+
+.report-inner {
+  padding: 48px 56px;
+}
+
+.serif { font-family: 'DM Serif Display', Georgia, serif; font-weight: 400; font-style: italic; }
+
+.cover { margin-bottom: 40px; }
+
+.cover-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+
+.cover-title {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 40px;
+  font-style: italic;
+  color: var(--ink);
+  line-height: 1.1;
+  margin-top: 6px;
+}
+
+.cover-meta {
+  display: flex;
+  gap: 32px;
+  margin-top: 20px;
+  font-size: 12px;
+  color: var(--slate);
+  flex-wrap: wrap;
+}
+.cover-meta strong { color: var(--ink); font-weight: 600; }
+
+.section {
+  margin-top: 40px;
+  padding-top: 32px;
+  border-top: 1px solid var(--border);
+}
+
+.section-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 4px;
+}
+
+.section-title {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 28px;
+  font-style: italic;
+  color: var(--ink);
+  line-height: 1.2;
+  margin-bottom: 24px;
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 2px;
+  margin-bottom: 32px;
+}
+.kpi {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 22px 20px;
+}
+.kpi.green  { background: var(--green); }
+.kpi.red    { background: var(--red); }
+.kpi.gold   { background: var(--gold); color: var(--ink); }
+.kpi.blue   { background: var(--blue); }
+.kpi-label {
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  opacity: .7;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+.kpi-value {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 26px;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.kpi-delta {
+  font-size: 11px;
+  opacity: .75;
+}
+.kpi-delta.up::before { content: '\2191 '; }
+.kpi-delta.down::before { content: '\2193 '; }
+
+.chart-wrap {
+  background: var(--white);
+  border: 1px solid var(--border);
+  padding: 24px;
+}
+.chart-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+.chart-grid.full { grid-template-columns: 1fr; }
+.chart-grid.thirds { grid-template-columns: 1fr 1fr 1fr; }
+@media(max-width:800px) {
+  .report-inner { padding: 28px 20px; }
+  .cover-title { font-size: 28px; }
+  .chart-grid, .chart-grid.thirds { grid-template-columns: 1fr; }
+  .section-title { font-size: 22px; }
+}
+.chart-wrap h3 {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 17px;
+  font-style: italic;
+  font-weight: 400;
+  margin-bottom: 2px;
+}
+.chart-wrap p.sub {
+  font-size: 10px;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  color: var(--slate);
+  margin-bottom: 16px;
+}
+.chart-wrap canvas { max-height: 250px; }
+
+.waterfall { display: flex; flex-direction: column; gap: 6px; }
+.wf-row { display: flex; align-items: center; gap: 12px; }
+.wf-label { width: 200px; font-size: 12px; flex-shrink: 0; }
+.wf-bar-wrap { flex: 1; background: var(--slate-light); height: 32px; position: relative; }
+.wf-bar {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  font-size: 12px;
+  font-weight: 700;
+  color: white;
+  position: absolute;
+}
+.wf-bar.pos { background: var(--green); left: 0; }
+.wf-bar.neg { background: var(--red); right: 0; direction: rtl; }
+.wf-bar.neutral { background: var(--gold); color: var(--ink); left: 0; }
+
+table.styled { width: 100%; border-collapse: collapse; font-size: 12px; }
+table.styled th {
+  background: var(--ink);
+  color: var(--gold-light);
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+table.styled td {
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--border);
+}
+table.styled tr:last-child td { border-bottom: none; }
+table.styled tr:nth-child(even) td { background: rgba(0,0,0,.03); }
+table.styled .num { text-align: right; font-family: 'Inter', monospace; font-weight: 600; }
+table.styled .pos { color: var(--green); }
+table.styled .neg { color: var(--red); }
+table.styled .total td {
+  background: var(--ink) !important;
+  color: var(--gold-light);
+  font-weight: 700;
+}
+
+.risk-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+.risk-card {
+  border-left: 4px solid var(--red);
+  background: var(--white);
+  padding: 20px;
+}
+.risk-card.warn { border-color: var(--amber); }
+.risk-card.ok   { border-color: var(--green); }
+.risk-card h4 {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 15px;
+  font-weight: 400;
+  margin-bottom: 6px;
+}
+.risk-card p { font-size: 12px; color: var(--slate); line-height: 1.6; }
+.badge {
+  display: inline-block;
+  font-size: 8px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+.badge.high { background: var(--red); color: white; }
+.badge.med  { background: var(--amber); color: white; }
+.badge.low  { background: var(--green); color: white; }
+
+.rec-list { display: flex; flex-direction: column; gap: 10px; }
+.rec {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 14px;
+  align-items: start;
+  background: var(--white);
+  padding: 14px 18px;
+  border: 1px solid var(--border);
+}
+.rec-num {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 20px;
+  font-style: italic;
+  color: var(--gold);
+  line-height: 1;
+  padding-top: 2px;
+}
+.rec h4 { font-size: 12px; font-weight: 600; margin-bottom: 2px; }
+.rec p { font-size: 11px; color: var(--slate); line-height: 1.6; }
+.tag {
+  display: inline-block;
+  font-size: 8px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border: 1px solid currentColor;
+  padding: 1px 6px;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+.tag.now  { color: var(--red); }
+.tag.soon { color: var(--amber); }
+.tag.med-tag { color: var(--green); }
+
+.callout {
+  margin-top: 16px;
+  padding: 16px 20px;
+  background: var(--white);
+  border-left: 4px solid var(--gold);
+  font-size: 12px;
+  color: var(--slate);
+  line-height: 1.7;
+}
+.callout strong { color: var(--ink); }
+
+footer {
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 11px;
+  color: var(--slate);
+}
+</style>
+</head>
+<body>
+
+<div class="report">
+<div class="report-inner">
+
+<div class="cover">
+  <img src="/images/ghostro%20review.png" alt="" style="width:100%;height:auto;display:block;margin-bottom:28px;border-radius:4px;">
+  <div class="cover-label">Financial Performance Review &middot; FY 2023</div>
+  <div class="cover-title">Delivery Startup</div>
+  <div class="cover-meta">
+    <span>Period: <strong>January &ndash; December 2023</strong></span>
+    <span>Basis: <strong>Accrual</strong></span>
+    <span>Source: <strong>QuickBooks Online</strong></span>
+    <span>Prepared: <strong>May 21, 2026</strong></span>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-label">01 &mdash; Performance at a Glance</div>
+  <div class="section-title">The Turnaround Story</div>
+
+  <div class="kpi-grid">
+    <div class="kpi gold">
+      <div class="kpi-label">Revenue</div>
+      <div class="kpi-value">$77,549</div>
+      <div class="kpi-delta up">+25.9% vs 2022</div>
+    </div>
+    <div class="kpi green">
+      <div class="kpi-label">Net Income</div>
+      <div class="kpi-value">$23,711</div>
+      <div class="kpi-delta up">from $&minus;19,194 loss</div>
+    </div>
+    <div class="kpi blue">
+      <div class="kpi-label">Net Margin</div>
+      <div class="kpi-value">30.6%</div>
+      <div class="kpi-delta up">+61.7pp vs 2022</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Gross Margin</div>
+      <div class="kpi-value">97.4%</div>
+      <div class="kpi-delta up">+3.6pp vs 2022</div>
+    </div>
+    <div class="kpi green">
+      <div class="kpi-label">Cash Position (EoY)</div>
+      <div class="kpi-value">$38,282</div>
+      <div class="kpi-delta up">+$23,956 vs 2022</div>
+    </div>
+    <div class="kpi red">
+      <div class="kpi-label">Venmo Liability</div>
+      <div class="kpi-value">$21,741</div>
+      <div class="kpi-delta down">+$7,872 vs 2022 &ensp;&#9888;</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Net Cash (EoY)</div>
+      <div class="kpi-value">$16,541</div>
+      <div class="kpi-delta up">vs $457 in 2022</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Owner Draws</div>
+      <div class="kpi-value">$8,755</div>
+      <div class="kpi-delta">36.9% of net income</div>
+    </div>
+  </div>
+
+  <div class="chart-grid">
+    <div class="chart-wrap">
+      <h3>Revenue &amp; Net Income</h3>
+      <p class="sub">2022 vs 2023 Comparison</p>
+      <canvas id="revIncomeChart"></canvas>
+    </div>
+    <div class="chart-wrap">
+      <h3>Monthly Revenue 2023</h3>
+      <p class="sub">Full year with seasonality highlighted</p>
+      <canvas id="monthlyRevChart"></canvas>
+    </div>
+  </div>
+
+  <div class="chart-grid">
+    <div class="chart-wrap">
+      <h3>Monthly Net Income</h3>
+      <p class="sub">Profitable vs loss months</p>
+      <canvas id="netIncomeMonthly"></canvas>
+    </div>
+    <div class="chart-wrap">
+      <h3>Margin Trend 2023</h3>
+      <p class="sub">Gross margin &amp; net margin by month</p>
+      <canvas id="marginChart"></canvas>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-label">02 &mdash; Expense Deep Dive</div>
+  <div class="section-title">How Expenses Were Slashed 35%</div>
+
+  <div class="chart-grid">
+    <div class="chart-wrap">
+      <h3>Expense Category Breakdown 2023</h3>
+      <p class="sub">Operating expenses by category</p>
+      <canvas id="expenseDonut"></canvas>
+    </div>
+    <div class="chart-wrap">
+      <h3>YoY Expense Variances</h3>
+      <p class="sub">2023 vs 2022 &mdash; material changes</p>
+      <canvas id="expenseVariance"></canvas>
+    </div>
+  </div>
+
+  <div class="chart-grid full">
+    <div class="chart-wrap">
+      <h3>Monthly Expenses vs Revenue 2023</h3>
+      <p class="sub">Operating leverage visualised</p>
+      <canvas id="expRevBar"></canvas>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-label">03 &mdash; Cash Flow Analysis</div>
+  <div class="section-title">Cash Build &amp; Account Migration</div>
+
+  <div class="chart-grid">
+    <div class="chart-wrap">
+      <h3>Monthly Cash Position (excl. Venmo)</h3>
+      <p class="sub">2022 vs 2023 trajectory</p>
+      <canvas id="cashPositionChart"></canvas>
+    </div>
+    <div class="chart-wrap">
+      <h3>Cumulative Cash Retained 2023</h3>
+      <p class="sub">Net income less owner draws</p>
+      <canvas id="cumulativeCash"></canvas>
+    </div>
+  </div>
+
+  <div class="chart-grid">
+    <div class="chart-wrap">
+      <h3>Account Balance Migration</h3>
+      <p class="sub">How funds shifted across accounts during 2023</p>
+      <canvas id="accountMigration"></canvas>
+    </div>
+    <div class="chart-wrap">
+      <h3>Cash Flow Waterfall</h3>
+      <p class="sub">How net income was allocated in 2023</p>
+      <div style="padding-top:12px;">
+        <div class="waterfall">
+          <div class="wf-row">
+            <div class="wf-label">Net Income</div>
+            <div class="wf-bar-wrap">
+              <div class="wf-bar pos" style="width:100%">$23,711</div>
+            </div>
+          </div>
+          <div class="wf-row">
+            <div class="wf-label">Less: Owner Draws</div>
+            <div class="wf-bar-wrap">
+              <div class="wf-bar neg" style="width:37%">&minus;$8,755</div>
+            </div>
+          </div>
+          <div class="wf-row">
+            <div class="wf-label">Less: Venmo Liability &uarr;</div>
+            <div class="wf-bar-wrap">
+              <div class="wf-bar neg" style="width:33%">&minus;$7,872</div>
+            </div>
+          </div>
+          <div class="wf-row">
+            <div class="wf-label" style="font-weight:600;">= Change in Cash</div>
+            <div class="wf-bar-wrap">
+              <div class="wf-bar neutral" style="width:63%">$22,828</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-label">04 &mdash; Seasonality</div>
+  <div class="section-title">Quarterly Performance Patterns</div>
+
+  <div class="chart-grid thirds">
+    <div class="chart-wrap" style="grid-column:span 2;">
+      <h3>Quarterly Revenue, Expenses &amp; Net Income</h3>
+      <p class="sub">Q1&ndash;Q4 2023 performance breakdown</p>
+      <canvas id="quarterlyChart"></canvas>
+    </div>
+    <div class="chart-wrap">
+      <h3>Quarterly Net Margin</h3>
+      <p class="sub">Profitability by quarter</p>
+      <canvas id="quarterlyMargin"></canvas>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>Key Seasonality Finding:</strong> Q3 (Jul&ndash;Sep) is paradoxically the most profitable quarter at <strong>50.3% net margin</strong> despite lower revenue ($18,788),
+    driven by dramatically lower expenses ($8,186). Q4 nearly breaks even ($315 net income, 2.4% margin) as December collapses to just $496 revenue.
+    Revenue peaks in Q1 ($24,196) but heavy expenses compress margins. The business must build cash reserves in Q1&ndash;Q2 &amp; Q3 to weather Q4 lows.
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-label">05 &mdash; Business Valuation</div>
+  <div class="section-title">DCF Equity Value: ~$373,000</div>
+
+  <div class="chart-grid">
+    <div class="chart-wrap">
+      <h3>5-Year Free Cash Flow Projections</h3>
+      <p class="sub">10% revenue growth, 35% EBITDA margin, 11% WACC</p>
+      <canvas id="dcfChart"></canvas>
+    </div>
+    <div class="chart-wrap">
+      <h3>Valuation Composition</h3>
+      <p class="sub">PV of FCFs vs terminal value</p>
+      <canvas id="valuationPie"></canvas>
+    </div>
+  </div>
+
+  <table class="styled">
+    <thead>
+      <tr>
+        <th>Year</th>
+        <th>Revenue</th>
+        <th>EBITDA</th>
+        <th>Free Cash Flow</th>
+        <th>PV of FCF</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Base (2023)</td><td class="num">$77,549</td><td class="num">$27,142</td><td class="num pos">$23,711</td><td class="num">&mdash;</td></tr>
+      <tr><td>Year 1</td><td class="num">$85,304</td><td class="num">$29,856</td><td class="num pos">$23,800</td><td class="num pos">$21,448</td></tr>
+      <tr><td>Year 2</td><td class="num">$93,834</td><td class="num">$32,842</td><td class="num pos">$26,180</td><td class="num pos">$21,261</td></tr>
+      <tr><td>Year 3</td><td class="num">$103,217</td><td class="num">$36,126</td><td class="num pos">$28,798</td><td class="num pos">$21,077</td></tr>
+      <tr><td>Year 4</td><td class="num">$113,539</td><td class="num">$39,739</td><td class="num pos">$31,677</td><td class="num pos">$20,893</td></tr>
+      <tr><td>Year 5</td><td class="num">$124,893</td><td class="num">$43,713</td><td class="num pos">$34,845</td><td class="num pos">$20,712</td></tr>
+      <tr class="total"><td>Enterprise Value</td><td class="num" colspan="3">PV FCFs $105,391 + PV Terminal $250,789</td><td class="num">$356,180</td></tr>
+      <tr class="total"><td><strong>Equity Value</strong></td><td class="num" colspan="3">Enterprise Value + Net Cash $16,541</td><td class="num">$372,721</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    &#9888; <strong>Valuation caveats:</strong> This is based on a single profitable year. The value is closely tied to the owner-operator.
+    Venmo liability is not captured in traditional debt metrics. No formal recurring revenue contracts exist.
+    Liquidation value would be significantly lower. Use this as a directional estimate only.
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-label">06 &mdash; Risk Assessment</div>
+  <div class="section-title">What Needs Attention</div>
+
+  <div class="risk-grid">
+    <div class="risk-card">
+      <div class="badge high">High Risk</div>
+      <h4>Venmo Liability</h4>
+      <p>$21,741 informal liability grew 56.8% YoY. Represents 56.8% of positive cash. No formal repayment terms &mdash; creates legal and financial uncertainty.</p>
+    </div>
+    <div class="risk-card warn">
+      <div class="badge med">Medium Risk</div>
+      <h4>Revenue Seasonality</h4>
+      <p>July ($506) and December ($496) near-zero revenue months. Q4 generates only $315 net income. Cash reserves must cover 2 near-dead months annually.</p>
+    </div>
+    <div class="risk-card warn">
+      <div class="badge med">Medium Risk</div>
+      <h4>Single Year Profitability</h4>
+      <p>2023 is the first profitable year on record. The sustainability of the 35% expense reduction needs 2+ more years of data to confirm as structural, not one-off.</p>
+    </div>
+    <div class="risk-card warn">
+      <div class="badge med">Medium Risk</div>
+      <h4>Owner Dependency</h4>
+      <p>Business valuation closely tied to owner-operator. No documented systems or recurring contracts. If the owner steps away, revenue continuity is uncertain.</p>
+    </div>
+    <div class="risk-card ok">
+      <div class="badge low">Lower Risk</div>
+      <h4>Owner Draw Policy</h4>
+      <p>Draws of $8,755 were within net income (36.9% payout ratio). However, no formal policy exists &mdash; ad-hoc draws could erode equity in a down year.</p>
+    </div>
+    <div class="risk-card ok">
+      <div class="badge low">Lower Risk</div>
+      <h4>Insurance Coverage</h4>
+      <p>Current spend of $3,648/year may be insufficient for a delivery operation with vehicle exposure. Needs review against actual risk exposure.</p>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-label">07 &mdash; Action Plan</div>
+  <div class="section-title">Recommended Next Steps</div>
+
+  <div class="rec-list">
+    <div class="rec">
+      <div class="rec-num">01</div>
+      <div>
+        <h4>Formalize the Venmo Arrangement <span class="tag now">Immediate</span></h4>
+        <p>Document repayment terms, interest (if any), and timeline. The $21,741 informal liability is the single largest financial risk to the business. Treat it like a real loan.</p>
+      </div>
+    </div>
+    <div class="rec">
+      <div class="rec-num">02</div>
+      <div>
+        <h4>Separate Personal &amp; Business Finances <span class="tag now">Immediate</span></h4>
+        <p>Stop commingling personal expenses through business accounts. This distorts reporting and creates tax exposure. Open a dedicated personal account if not already done.</p>
+      </div>
+    </div>
+    <div class="rec">
+      <div class="rec-num">03</div>
+      <div>
+        <h4>Build a 3-Month Cash Reserve <span class="tag now">Immediate</span></h4>
+        <p>Target minimum $11,920 in liquid reserves (3&times; average monthly expenses of $3,973). July and December can generate near-zero revenue &mdash; be prepared.</p>
+      </div>
+    </div>
+    <div class="rec">
+      <div class="rec-num">04</div>
+      <div>
+        <h4>Create a Seasonal Revenue Strategy <span class="tag soon">90 Days</span></h4>
+        <p>Develop an active plan to cover July and December lean months. Consider promotions, new service offerings, or part-time alternative revenue during dead months.</p>
+      </div>
+    </div>
+    <div class="rec">
+      <div class="rec-num">05</div>
+      <div>
+        <h4>Set a Formal Owner Draw Policy <span class="tag soon">90 Days</span></h4>
+        <p>Cap draws at 50&ndash;70% of trailing 3-month net income. Never draw more than you've earned in that period. This protects the business in down months like Oct and Dec.</p>
+      </div>
+    </div>
+    <div class="rec">
+      <div class="rec-num">06</div>
+      <div>
+        <h4>Diversify Revenue Channels <span class="tag med-tag">6 Months</span></h4>
+        <p>Reduce dependency on any single platform. Channel Sales ($46,678) and PayPal ($41,815) are healthy &mdash; explore a third channel or direct recurring contracts to smooth revenue.</p>
+      </div>
+    </div>
+    <div class="rec">
+      <div class="rec-num">07</div>
+      <div>
+        <h4>Build a Forward-Looking Budget <span class="tag med-tag">6 Months</span></h4>
+        <p>Move from prior-year comparison to an actual monthly budget. This enables real-time variance tracking and faster decision-making when expenses deviate.</p>
+      </div>
+    </div>
+    <div class="rec">
+      <div class="rec-num">08</div>
+      <div>
+        <h4>Review Insurance Coverage <span class="tag med-tag">6 Months</span></h4>
+        <p>At $3,648/year, coverage may be thin for a delivery operation with vehicle liability exposure. Get a professional review &mdash; one claim could wipe out a year of profit.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="serif" style="font-size:18px; color:var(--ink);">Delivery Startup</div>
+  <div>FY 2023 Financial Performance Review &middot; Prepared May 21, 2026</div>
+  <div style="opacity:.6">Based on QuickBooks Online exports. Not a substitute for professional financial advice.</div>
+</footer>
+
+</div>
+</div>
+
+<script>
+const GOLD = '#C89B3C';
+const GOLD_L = '#E8D5A0';
+const GREEN = '#2D6A4F';
+const GREEN_L = '#52B788';
+const RED = '#B85450';
+const RED_L = '#E07A8A';
+const BLUE = '#4A7AA8';
+const BLUE_L = '#7AACD4';
+const INK = '#1A1A1E';
+const SLATE = '#5C6570';
+const PAPER = '#F5F2EB';
+const BORDER = '#E2DDD4';
+
+Chart.defaults.font.family = "'Inter', system-ui, sans-serif";
+Chart.defaults.font.size = 11;
+Chart.defaults.color = INK;
+
+const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const revenue2023 = [10321,6964,6911,6375,6818,8076,506,6976,11306,6906,5893,496];
+const expenses2023 = [6100,4737,4009,4030,4324,5876,837,2671,4679,6531,3327,558];
+const netIncome2023 = [3447,1629,2576,1923,2342,2028,-334,3757,6027,-1436,1819,-68];
+const cash2022 = [24096,24862,24152,21431,18199,16369,16410,15736,15657,14887,15520,14326];
+const cash2023 = [17498,17490,17900,19305,19381,20976,21134,27711,32474,36197,37512,38282];
+const cumCash = [-3508,-4163,-4180,-3162,-3237,-2244,-2550,2344,7197,7151,8196,8877];
+
+new Chart(document.getElementById('revIncomeChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Revenue 2022','Revenue 2023','Net Income 2022','Net Income 2023'],
+    datasets: [{ data: [61595, 77549, -19194, 23711], backgroundColor: [BLUE_L, GOLD, RED_L, GREEN], borderWidth: 0 }]
+  },
+  options: {
+    plugins: { legend: { display: false } },
+    scales: {
+      y: { grid: { color: 'rgba(0,0,0,.06)' }, ticks: { callback: v => '$'+(v/1000).toFixed(0)+'k' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+new Chart(document.getElementById('monthlyRevChart'), {
+  type: 'bar',
+  data: {
+    labels: months,
+    datasets: [{ data: revenue2023, backgroundColor: revenue2023.map(v => v < 2000 ? RED : GOLD), borderWidth: 0 }]
+  },
+  options: {
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => '$'+ctx.raw.toLocaleString() } } },
+    scales: {
+      y: { grid: { color: 'rgba(0,0,0,.06)' }, ticks: { callback: v => '$'+(v/1000).toFixed(0)+'k' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+new Chart(document.getElementById('netIncomeMonthly'), {
+  type: 'bar',
+  data: {
+    labels: months,
+    datasets: [{ data: netIncome2023, backgroundColor: netIncome2023.map(v => v < 0 ? RED : GREEN), borderWidth: 0 }]
+  },
+  options: {
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => '$'+ctx.raw.toLocaleString() } } },
+    scales: {
+      y: { grid: { color: 'rgba(0,0,0,.06)' }, ticks: { callback: v => '$'+v.toLocaleString() } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+const grossMargins = [98.2,94.2,101.6,97.0,99.4,99.3,99.4,94.9,97.7,93.0,97.9,98.8];
+const netMargins = [33.4,23.4,37.3,30.2,34.4,25.1,-65.9,53.9,53.3,-20.8,30.9,-13.6];
+new Chart(document.getElementById('marginChart'), {
+  type: 'line',
+  data: {
+    labels: months,
+    datasets: [
+      { label: 'Gross Margin %', data: grossMargins, borderColor: GREEN, backgroundColor: 'rgba(45,106,79,.08)', fill: true, tension: .3, borderWidth: 2, pointRadius: 3 },
+      { label: 'Net Margin %', data: netMargins, borderColor: GOLD, backgroundColor: 'rgba(200,155,60,.08)', fill: true, tension: .3, borderWidth: 2, pointRadius: 3 }
+    ]
+  },
+  options: {
+    plugins: { legend: { position: 'top', labels: { boxWidth: 10, font: { size: 10 } } } },
+    scales: {
+      y: { grid: { color: 'rgba(0,0,0,.06)' }, ticks: { callback: v => v+'%' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+new Chart(document.getElementById('expenseDonut'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Contractors','Meals & Ent.','Car & Truck','Travel','Job Supplies','Insurance','Phone & Internet','Office & SW','Other'],
+    datasets: [{
+      data: [9879, 8375, 3985, 3235, 2932, 3648, 2665, 2396, 2564],
+      backgroundColor: [INK, GOLD, GREEN, BLUE, RED, GOLD_L, GREEN_L, BLUE_L, RED_L],
+      borderWidth: 2, borderColor: PAPER,
+    }]
+  },
+  options: {
+    plugins: { legend: { position: 'right', labels: { boxWidth: 10, font: { size: 10 } } } },
+    cutout: '58%'
+  }
+});
+
+const expLabels = ['Job Supplies','Other Bus.','Contractors','Car & Truck','Travel','Meals & Ent.','Advertising','Repairs','Bank Fees','Phone & Internet'];
+const exp2022 = [12149, 8477, 14151, 7734, 6150, 9550, 1272, 1094, 1207, 1478];
+const exp2023val = [2932, 515, 9879, 3985, 3235, 8375, 53, 20, 174, 2665];
+new Chart(document.getElementById('expenseVariance'), {
+  type: 'bar',
+  data: {
+    labels: expLabels,
+    datasets: [
+      { label: '2022', data: exp2022, backgroundColor: BLUE_L+'99', borderWidth: 0 },
+      { label: '2023', data: exp2023val, backgroundColor: GOLD, borderWidth: 0 }
+    ]
+  },
+  options: {
+    indexAxis: 'y',
+    plugins: { legend: { position: 'top', labels: { boxWidth: 10, font: { size: 10 } } } },
+    scales: {
+      x: { grid: { color: 'rgba(0,0,0,.06)' }, ticks: { callback: v => '$'+(v/1000).toFixed(0)+'k' } },
+      y: { grid: { display: false }, ticks: { font: { size: 10 } } }
+    }
+  }
+});
+
+new Chart(document.getElementById('expRevBar'), {
+  type: 'bar',
+  data: {
+    labels: months,
+    datasets: [
+      { label: 'Revenue', data: revenue2023, backgroundColor: GOLD+'cc', borderWidth: 0 },
+      { label: 'Expenses', data: expenses2023, backgroundColor: RED+'99', borderWidth: 0 }
+    ]
+  },
+  options: {
+    plugins: { legend: { position: 'top', labels: { boxWidth: 10, font: { size: 10 } } } },
+    scales: {
+      y: { grid: { color: 'rgba(0,0,0,.06)' }, ticks: { callback: v => '$'+v.toLocaleString() } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+new Chart(document.getElementById('cashPositionChart'), {
+  type: 'line',
+  data: {
+    labels: months,
+    datasets: [
+      { label: '2022 Cash', data: cash2022, borderColor: BLUE_L, backgroundColor: 'rgba(122,172,212,.08)', fill: true, tension: .3, borderWidth: 2, pointRadius: 3 },
+      { label: '2023 Cash', data: cash2023, borderColor: GOLD, backgroundColor: 'rgba(200,155,60,.1)', fill: true, tension: .3, borderWidth: 2.5, pointRadius: 3 }
+    ]
+  },
+  options: {
+    plugins: { legend: { position: 'top', labels: { boxWidth: 10, font: { size: 10 } } } },
+    scales: {
+      y: { grid: { color: 'rgba(0,0,0,.06)' }, ticks: { callback: v => '$'+(v/1000).toFixed(0)+'k' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+new Chart(document.getElementById('cumulativeCash'), {
+  type: 'line',
+  data: {
+    labels: months,
+    datasets: [{
+      label: 'Cumulative Cash Retained',
+      data: cumCash,
+      borderColor: GREEN,
+      backgroundColor: ctx => {
+        const chart = ctx.chart;
+        const {ctx: c, chartArea} = chart;
+        if (!chartArea) return 'transparent';
+        const gradient = c.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+        gradient.addColorStop(0, 'rgba(45,106,79,.3)');
+        gradient.addColorStop(1, 'rgba(45,106,79,0)');
+        return gradient;
+      },
+      fill: true, tension: .3, borderWidth: 2.5, pointRadius: 4,
+      pointBackgroundColor: cumCash.map(v => v >= 0 ? GREEN : RED),
+    }]
+  },
+  options: {
+    plugins: { legend: { display: false } },
+    scales: {
+      y: { grid: { color: 'rgba(0,0,0,.06)' }, ticks: { callback: v => '$'+v.toLocaleString() } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+new Chart(document.getElementById('accountMigration'), {
+  type: 'line',
+  data: {
+    labels: months,
+    datasets: [
+      { label: 'Checking 5200', data: [15313,15104,14511,11628,11970,null,null,14106,13804,11628,11970,11970], borderColor: BLUE, backgroundColor: 'transparent', tension: .3, borderWidth: 2, pointRadius: 3 },
+      { label: 'Checking 7382', data: [1720,4332,7332,17718,18465,null,null,12022,13905,17718,18465,19437], borderColor: GREEN, backgroundColor: 'transparent', tension: .3, borderWidth: 2, pointRadius: 3 },
+      { label: 'PayPal', data: [465,null,null,null,null,null,null,1583,4764,6851,7077,6875], borderColor: GOLD, backgroundColor: 'transparent', tension: .3, borderWidth: 2, pointRadius: 3 },
+      { label: 'Venmo (liability)', data: [-14470,-15931,-16733,-21387,-21651,null,null,-18197,-18093,-21387,-21651,-21741], borderColor: RED, backgroundColor: 'transparent', tension: .3, borderWidth: 2, borderDash: [5,3], pointRadius: 3 }
+    ]
+  },
+  options: {
+    plugins: { legend: { position: 'top', labels: { boxWidth: 10, font: { size: 10 } } } },
+    scales: {
+      y: { grid: { color: 'rgba(0,0,0,.06)' }, ticks: { callback: v => '$'+(v/1000).toFixed(0)+'k' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+new Chart(document.getElementById('quarterlyChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Q1','Q2','Q3','Q4'],
+    datasets: [
+      { label: 'Revenue', data: [24196, 21270, 18788, 13294], backgroundColor: GOLD, borderWidth: 0 },
+      { label: 'Expenses', data: [14847, 14230, 8186, 10416], backgroundColor: RED+'99', borderWidth: 0 },
+      { label: 'Net Income', data: [7651, 6294, 9450, 315], backgroundColor: GREEN, borderWidth: 0 }
+    ]
+  },
+  options: {
+    plugins: { legend: { position: 'top', labels: { boxWidth: 10, font: { size: 10 } } } },
+    scales: {
+      y: { grid: { color: 'rgba(0,0,0,.06)' }, ticks: { callback: v => '$'+(v/1000).toFixed(0)+'k' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+new Chart(document.getElementById('quarterlyMargin'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Q1 (31.6%)','Q2 (29.6%)','Q3 (50.3%)','Q4 (2.4%)'],
+    datasets: [{
+      data: [31.6, 29.6, 50.3, 2.4],
+      backgroundColor: [GOLD, BLUE_L, GREEN, RED_L],
+      borderWidth: 2, borderColor: PAPER,
+    }]
+  },
+  options: {
+    plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 } } } },
+    cutout: '50%'
+  }
+});
+
+new Chart(document.getElementById('dcfChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Base 2023','Year 1','Year 2','Year 3','Year 4','Year 5'],
+    datasets: [
+      { label: 'Revenue', data: [77549, 85304, 93834, 103217, 113539, 124893], backgroundColor: GOLD+'cc', borderWidth: 0, yAxisID: 'y' },
+      { label: 'Free Cash Flow', data: [23711, 23800, 26180, 28798, 31677, 34845], backgroundColor: GREEN, borderWidth: 0, yAxisID: 'y' }
+    ]
+  },
+  options: {
+    plugins: { legend: { position: 'top', labels: { boxWidth: 10, font: { size: 10 } } } },
+    scales: {
+      y: { grid: { color: 'rgba(0,0,0,.06)' }, ticks: { callback: v => '$'+(v/1000).toFixed(0)+'k' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+new Chart(document.getElementById('valuationPie'), {
+  type: 'doughnut',
+  data: {
+    labels: ['PV of FCFs ($105k)', 'PV Terminal Value ($251k)', 'Net Cash ($17k)'],
+    datasets: [{
+      data: [105391, 250789, 16541],
+      backgroundColor: [BLUE, GOLD, GREEN],
+      borderWidth: 2, borderColor: PAPER,
+    }]
+  },
+  options: {
+    plugins: {
+      legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 } } },
+      tooltip: { callbacks: { label: ctx => '$'+ctx.raw.toLocaleString() } }
+    },
+    cutout: '55%'
+  }
+});
+</script>
+</body>
+</html>

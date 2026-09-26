@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Variance Analysis — QBD vs QBO — Construction Company</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --paper: #F5F2EB;
+  --ink: #1A1A1E;
+  --gold: #C89B3C;
+  --gold-light: #E8D5A0;
+  --slate: #5C6570;
+  --slate-light: #D6D9DD;
+  --border: #E2DDD4;
+  --white: #FFFFFF;
+  --green: #2D6A4F;
+  --green-light: #52B788;
+  --red: #B85450;
+  --red-light: #E07A8A;
+  --amber: #C48B2E;
+  --blue: #4A7AA8;
+  --blue-light: #7AACD4;
+}
+
+body {
+  background: #1A1A1E;
+  font-family: 'Inter', system-ui, sans-serif;
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+.report {
+  max-width: 1000px;
+  margin: 20px auto 60px;
+  background: var(--paper);
+  box-shadow: 0 2px 40px rgba(0,0,0,0.15);
+}
+
+.report-inner { padding: 48px 56px; }
+
+@media(max-width:800px) {
+  .report-inner { padding: 28px 20px; }
+}
+
+.serif { font-family: 'DM Serif Display', Georgia, serif; font-weight: 400; font-style: italic; }
+
+.cover { margin-bottom: 40px; }
+
+.cover-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+
+.cover-title {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 40px;
+  font-style: italic;
+  color: var(--ink);
+  line-height: 1.1;
+  margin-top: 6px;
+}
+
+.cover-meta {
+  display: flex;
+  gap: 32px;
+  margin-top: 20px;
+  font-size: 12px;
+  color: var(--slate);
+  flex-wrap: wrap;
+}
+.cover-meta strong { color: var(--ink); font-weight: 600; }
+
+.section {
+  margin-top: 40px;
+  padding-top: 32px;
+  border-top: 1px solid var(--border);
+}
+
+.section-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 4px;
+}
+
+.section-title {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 28px;
+  font-style: italic;
+  color: var(--ink);
+  line-height: 1.2;
+  margin-bottom: 24px;
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 2px;
+  margin-bottom: 32px;
+}
+.kpi {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 22px 20px;
+}
+.kpi.red   { background: var(--red); }
+.kpi.gold  { background: var(--gold); color: var(--ink); }
+.kpi.blue  { background: var(--blue); }
+.kpi.amber { background: var(--amber); color: var(--paper); }
+.kpi.green { background: var(--green); }
+.kpi-label {
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  opacity: .7;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+.kpi-value {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 26px;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.kpi-delta { font-size: 11px; opacity: .75; }
+.kpi-delta.up::before { content: '\2191 '; }
+.kpi-delta.down::before { content: '\2193 '; }
+
+.chart-wrap {
+  background: var(--white);
+  border: 1px solid var(--border);
+  padding: 24px;
+  overflow: hidden;
+}
+.chart-wrap canvas { max-height: 250px; width: 100% !important; }
+.chart-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+.chart-grid.full { grid-template-columns: 1fr; }
+@media(max-width:800px) {
+  .chart-grid { grid-template-columns: 1fr; }
+  .cover-title { font-size: 28px; }
+  .section-title { font-size: 22px; }
+}
+.chart-wrap h3 {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 17px;
+  font-style: italic;
+  font-weight: 400;
+  margin-bottom: 2px;
+}
+.chart-wrap p.sub {
+  font-size: 10px;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  color: var(--slate);
+  margin-bottom: 16px;
+}
+
+table.styled { width: 100%; border-collapse: collapse; font-size: 12px; }
+table.styled th {
+  background: var(--ink);
+  color: var(--gold-light);
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+table.styled td {
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--border);
+}
+table.styled tr:last-child td { border-bottom: none; }
+table.styled tr:nth-child(even) td { background: rgba(0,0,0,.03); }
+table.styled .num { text-align: right; font-family: 'Inter', monospace; font-weight: 600; }
+table.styled .pos { color: var(--green); }
+table.styled .neg { color: var(--red); }
+table.styled .total td {
+  background: var(--ink) !important;
+  color: var(--gold-light);
+  font-weight: 700;
+}
+
+.callout {
+  margin-top: 16px;
+  padding: 16px 20px;
+  background: var(--white);
+  border-left: 4px solid var(--gold);
+  font-size: 12px;
+  color: var(--slate);
+  line-height: 1.7;
+}
+.callout strong { color: var(--ink); }
+.callout.red { border-left-color: var(--red); }
+.callout.green { border-left-color: var(--green); }
+.callout.amber { border-left-color: var(--amber); }
+
+footer {
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 11px;
+  color: var(--slate);
+}
+
+.issue-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  padding: 20px;
+  margin-bottom: 12px;
+}
+.issue-card.critical { border-left: 4px solid var(--red); }
+.issue-card.warn { border-left: 4px solid var(--amber); }
+.issue-card.ok { border-left: 4px solid var(--green); }
+.issue-card h4 {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 16px;
+  font-style: italic;
+  font-weight: 400;
+  margin-bottom: 8px;
+}
+.issue-card .badge {
+  display: inline-block;
+  font-size: 8px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+.badge.high { background: var(--red); color: white; }
+.badge.med { background: var(--amber); color: white; }
+.badge.low { background: var(--green); color: white; }
+.issue-card .variance-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin: 10px 0;
+}
+.issue-card .vf {
+  font-size: 12px;
+}
+.issue-card .vf strong { display: block; font-size: 14px; color: var(--ink); }
+.issue-card p { font-size: 12px; color: var(--slate); line-height: 1.6; }
+.issue-card .rec { margin-top: 8px; }
+.issue-card .rec li {
+  font-size: 11px;
+  color: var(--slate);
+  line-height: 1.6;
+  margin-left: 16px;
+}
+</style>
+</head>
+<body>
+
+<div class="report">
+<div class="report-inner">
+
+<div class="cover">
+  <div class="cover-label">Trial Balance Variance Analysis</div>
+  <div class="cover-title">Construction Company Ltd</div>
+  <div class="cover-meta">
+    <span>Period: <strong>August 31, 2025</strong></span>
+    <span>Comparison: <strong>QBD vs QBO</strong></span>
+    <span>Industry: <strong>Construction (Canada)</strong></span>
+    <span>Prepared: <strong>April 27, 2026</strong></span>
+  </div>
+</div>
+
+<img src="/images/varaince.jpg" alt="" style="width:100%;height:auto;display:block;margin-bottom:28px;border-radius:4px;">
+
+<div class="section">
+  <div class="section-label">01 &mdash; Executive Summary</div>
+  <div class="section-title">$2.1M in Unreconciled Variances</div>
+
+  <div class="kpi-grid">
+    <div class="kpi red">
+      <div class="kpi-label">Critical Issues</div>
+      <div class="kpi-value">4</div>
+      <div class="kpi-delta">$1,847,089 total variance</div>
+    </div>
+    <div class="kpi gold">
+      <div class="kpi-label">Mapping Differences</div>
+      <div class="kpi-value">12</div>
+      <div class="kpi-delta">Same values, diff names</div>
+    </div>
+    <div class="kpi blue">
+      <div class="kpi-label">Missing in QBD</div>
+      <div class="kpi-value">18</div>
+      <div class="kpi-delta">$587,871 total</div>
+    </div>
+    <div class="kpi amber">
+      <div class="kpi-label">Missing in QBO</div>
+      <div class="kpi-value">11</div>
+      <div class="kpi-delta">$1,919,379 total</div>
+    </div>
+    <div class="kpi red">
+      <div class="kpi-label">Retained Earnings Gap</div>
+      <div class="kpi-value">$1.07M</div>
+      <div class="kpi-delta down">QBD: $59K vs QBO: $1.13M</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Bank Recon Gap</div>
+      <div class="kpi-value">$1.52M</div>
+      <div class="kpi-delta down">Chequing missing in QBD</div>
+    </div>
+  </div>
+
+  <div class="callout red">
+    <strong>Significant discrepancies</strong> totaling over <strong>$2.1M</strong> between QuickBooks Desktop and QuickBooks Online trial balances. Four critical issues require immediate attention. The largest variance is a <strong>$1.52M Chequing account</strong> present in QBO but completely absent from QBD.
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-label">02 &mdash; Critical Discrepancies</div>
+  <div class="section-title">Immediate Action Required</div>
+
+  <div class="issue-card critical">
+    <div class="badge high">Critical</div>
+    <h4>Retained Earnings &mdash; $1,067,437 Variance</h4>
+    <div class="variance-row">
+      <div class="vf">QBD: <strong style="color:var(--red);">$59,461</strong></div>
+      <div class="vf">QBO: <strong style="color:var(--green);">$1,126,899</strong></div>
+      <div class="vf">Variance: <strong style="color:var(--red);">-$1,067,437</strong></div>
+    </div>
+    <p>QBD may be missing historical data or transactions. QBO may have incorrect prior year closing entries or improper opening balances during migration.</p>
+    <div class="rec">
+      <strong>Recommended:</strong> Review year-end closing entries, verify retained earnings from prior year financials, ensure proper carry-forward in QBO.
+    </div>
+  </div>
+
+  <div class="issue-card critical">
+    <div class="badge high">Critical</div>
+    <h4>Bank Accounts &mdash; $1,524,401 Missing from QBD</h4>
+    <div class="variance-row">
+      <div class="vf">Chequing (QBO only): <strong style="color:var(--red);">$1,524,401</strong></div>
+      <div class="vf">Scotia Bank 6817 (QBD): <strong>$18,995</strong></div>
+    </div>
+    <p>QBO shows a primary Chequing account with $1.52M that doesn't appear in QBD. Massive cash reconciliation issue &mdash; entire bank account structure differs between systems.</p>
+    <div class="rec">
+      <strong>Recommended:</strong> Verify which bank accounts exist in the Chart of Accounts, reconcile all bank accounts in both systems, check for unmigrated sub-accounts.
+    </div>
+  </div>
+
+  <div class="issue-card critical">
+    <div class="badge high">Critical</div>
+    <h4>Tax Liabilities &mdash; $141,376 Variance</h4>
+    <div class="variance-row">
+      <div class="vf">QBD: <strong style="color:var(--red);">$8,831</strong></div>
+      <div class="vf">QBO: <strong style="color:var(--green);">$150,207</strong></div>
+      <div class="vf">Variance: <strong style="color:var(--red);">-$141,376</strong></div>
+    </div>
+    <p>QBO shows significantly higher GST/HST ($81,252 vs $8,706) and PST ($68,955 vs $126). Could mean additional sales recorded in QBO, unreconciled tax payments in QBD, or potential tax filing compliance issues.</p>
+    <div class="rec">
+      <strong>Recommended:</strong> Review all sales invoices for proper tax calculation, verify tax payments made, consult with tax accountant.
+    </div>
+  </div>
+
+  <div class="issue-card critical">
+    <div class="badge high">Critical</div>
+    <h4>Revenue Recognition &mdash; $355,980 in Unmatched Revenue</h4>
+    <div class="variance-row">
+      <div class="vf">Sales (QBO only): <strong>$72,381</strong></div>
+      <div class="vf">Services (QBO only): <strong>$283,599</strong></div>
+      <div class="vf">Construction Income: <strong>$556,742</strong> matched</div>
+    </div>
+    <p>QBO has two extra revenue categories not present in QBD. $283,599 in Services and $72,381 in Sales need verification against actual business activity.</p>
+    <div class="rec">
+      <strong>Recommended:</strong> Determine if these are new revenue streams post-migration, verify correct categorization, capture all revenue in correct categories.
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-label">03 &mdash; Variance by Category</div>
+  <div class="section-title">Balance Sheet &amp; Income Statement Impact</div>
+
+  <div class="chart-grid">
+    <div class="chart-wrap">
+      <h3>Variance by Account Category</h3>
+      <p class="sub">Balance sheet accounts</p>
+      <canvas id="bsVarChart"></canvas>
+    </div>
+    <div class="chart-wrap">
+      <h3>Critical Issue Breakdown</h3>
+      <p class="sub">4 issues driving 97% of variance</p>
+      <canvas id="criticalPieChart"></canvas>
+    </div>
+  </div>
+
+  <table class="styled" style="margin-top:20px;">
+    <thead>
+      <tr>
+        <th>Category</th>
+        <th>QBD Total</th>
+        <th>QBO Total</th>
+        <th>Variance</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Cash &amp; Bank</td><td class="num">$19,084</td><td class="num">$1,554,806</td><td class="num pos">$1,535,722</td></tr>
+      <tr><td>Accounts Receivable</td><td class="num">$8,983</td><td class="num">$19,148</td><td class="num pos">$10,166</td></tr>
+      <tr><td>Accounts Payable</td><td class="num">$10,620</td><td class="num">$14,202</td><td class="num pos">$3,581</td></tr>
+      <tr><td>Credit Cards</td><td class="num">$60,052</td><td class="num">$40,162</td><td class="num neg">-$19,890</td></tr>
+      <tr><td>Tax Liabilities</td><td class="num">$12,411</td><td class="num">$150,207</td><td class="num pos">$137,796</td></tr>
+      <tr class="total"><td>Total Revenue</td><td class="num">$558,096</td><td class="num">$913,774</td><td class="num pos">$355,679</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section">
+  <div class="section-label">04 &mdash; Accounts with Matching Values</div>
+  <div class="section-title">Mapping Differences Only &mdash; No Financial Impact</div>
+
+  <div class="callout green">
+    These 12 accounts have the <strong>same values</strong> but <strong>different names</strong> between QBD and QBO. No action needed &mdash; documented for reconciliation completeness.
+  </div>
+
+  <table class="styled" style="margin-top:16px;">
+    <thead>
+      <tr>
+        <th>QBD Account Name</th>
+        <th>QBO Account Name</th>
+        <th>Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Accounts Receivable (*)</td><td>Accounts Receivable (A/R)</td><td class="num">$8,983 / $19,148</td></tr>
+      <tr><td>Bank Service Charges</td><td>Bank charges</td><td class="num">$2,461</td></tr>
+      <tr><td>Casual Labor</td><td>Casual labor</td><td class="num">$750</td></tr>
+      <tr><td>Professional Fees</td><td>Legal and professional fees</td><td class="num">$6,156</td></tr>
+      <tr><td>Scotialine VISA 3015</td><td>Scotialine VISA 3015</td><td class="num">$28,667</td></tr>
+      <tr><td>Government Grant</td><td>Government Grant</td><td class="num">$466</td></tr>
+      <tr><td>Misc income</td><td>Other Ordinary Income</td><td class="num">$314</td></tr>
+      <tr><td>Interest Income</td><td>Interest earned</td><td class="num">$3,692</td></tr>
+      <tr><td>Interest expense</td><td>Interest expense</td><td class="num">$1,641</td></tr>
+      <tr><td>Patronage dividends</td><td>Patronage Dividends</td><td class="num">$574</td></tr>
+      <tr><td>Freight</td><td>Freight</td><td class="num">$431</td></tr>
+      <tr><td>Landfill</td><td>Landfill</td><td class="num">$667</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout amber" style="margin-top:12px;">
+    * A/R shows different values: $8,982.69 (QBD) vs $19,148.20 (QBO) &mdash; this needs investigation despite similar naming.
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-label">05 &mdash; Unilateral Account Analysis</div>
+  <div class="section-title">Missing in Either System</div>
+
+  <div class="chart-grid">
+    <div class="chart-wrap">
+      <h3>Accounts Only in QBD</h3>
+      <p class="sub">18 accounts, $587,871 total</p>
+      <canvas id="qbdOnlyChart"></canvas>
+    </div>
+    <div class="chart-wrap">
+      <h3>Accounts Only in QBO</h3>
+      <p class="sub">11 accounts, $1,919,379 total</p>
+      <canvas id="qboOnlyChart"></canvas>
+    </div>
+  </div>
+
+  <table class="styled">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Account</th>
+        <th>Amount</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>QBD Only</td><td>Subcontractors Expense</td><td class="num">$189,712</td><td>Major expense missing from QBO</td></tr>
+      <tr><td>QBD Only</td><td>Construction Materials Costs</td><td class="num">$130,898</td><td>COGS not captured in QBO</td></tr>
+      <tr><td>QBD Only</td><td>Payroll Expenses</td><td class="num">$89,448</td><td>Matches QBO Payroll Direct Labor</td></tr>
+      <tr><td>QBD Only</td><td>Travel</td><td class="num">$53,726</td><td>Large expense unaccounted in QBO</td></tr>
+      <tr><td>QBO Only</td><td>Chequing</td><td class="num" style="color:var(--red);">$1,524,401</td><td>Primary bank account - CRITICAL</td></tr>
+      <tr><td>QBO Only</td><td>Services</td><td class="num">$283,599</td><td>Revenue category not in QBD</td></tr>
+      <tr><td>QBO Only</td><td>Sales</td><td class="num">$72,381</td><td>Revenue category not in QBD</td></tr>
+      <tr><td>QBO Only</td><td>Home Hardware PRO 6506</td><td class="num">$39,702</td><td>Credit card not in QBD</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section">
+  <div class="section-label">06 &mdash; Deleted Accounts in QBO</div>
+  <div class="section-title">Ghost Records with Active Balances</div>
+
+  <div class="callout amber">
+    8 accounts are marked as <strong>"deleted"</strong> in QBO but still carry balances totaling <strong>$72,432</strong>. These need review &mdash; either reactivate or cleanup.
+  </div>
+
+  <table class="styled">
+    <thead>
+      <tr>
+        <th>Account</th>
+        <th>Balance</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Cash on hand</td><td class="num">$39,217</td></tr>
+      <tr><td>Business Visa LOC</td><td class="num">$13,631</td></tr>
+      <tr><td>Infinite Visa</td><td class="num">$8,521</td></tr>
+      <tr><td>Scotiabank Business Chequing</td><td class="num">$4,460</td></tr>
+      <tr><td>Scotiabank Business Savings</td><td class="num">$4,460</td></tr>
+      <tr><td>Black BMO</td><td class="num">$1,571</td></tr>
+      <tr><td>Pioneer Coop Account</td><td class="num">$500</td></tr>
+      <tr><td>Medical Expense</td><td class="num">$72</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section">
+  <div class="section-label">07 &mdash; Action Plan</div>
+  <div class="section-title">Prioritized Recommendations</div>
+
+  <div class="issue-card critical">
+    <div class="badge high">Priority 1 &mdash; Immediate</div>
+    <h4>Retained Earnings Reconciliation</h4>
+    <p>Investigate the $1.07M variance by reviewing prior year financials and closing entries. Verify opening balance equity treatment during QBO migration.</p>
+  </div>
+
+  <div class="issue-card critical">
+    <div class="badge high">Priority 1 &mdash; Immediate</div>
+    <h4>Bank Account Alignment</h4>
+    <p>Determine why QBD is missing the $1.52M Chequing account. Verify all bank accounts are properly set up and reconciled across both systems.</p>
+  </div>
+
+  <div class="issue-card critical">
+    <div class="badge high">Priority 1 &mdash; Immediate</div>
+    <h4>Tax Liability Review</h4>
+    <p>Reconcile the $141K tax variance with the accounting team. Ensure tax filings are based on correct balances and no compliance exposure exists.</p>
+  </div>
+
+  <div class="issue-card warn">
+    <div class="badge med">Priority 2 &mdash; Within 2 Weeks</div>
+    <h4>Revenue Categorization</h4>
+    <p>Confirm validity of "Sales" and "Services" categories in QBO. Resolve the $10K A/R variance. Clean up deleted accounts with active balances.</p>
+  </div>
+
+  <div class="issue-card ok">
+    <div class="badge low">Priority 3 &mdash; Ongoing</div>
+    <h4>Process Improvement</h4>
+    <p>Create a standardized Chart of Accounts mapping document between QBD and QBO. Implement monthly variance checks to catch discrepancies early.</p>
+  </div>
+</div>
+
+<footer>
+  <div class="serif" style="font-size:18px; color:var(--ink);">Construction Company Ltd</div>
+  <div>Variance Analysis &middot; QBD vs QBO &middot; August 2025</div>
+  <div style="opacity:.6">Prepared April 27, 2026. For internal use. Requires professional review.</div>
+</footer>
+
+</div>
+</div>
+
+<script>
+const gold = '#C89B3C';
+const green = '#2D6A4F';
+const greenL = '#52B788';
+const red = '#B85450';
+const redL = '#E07A8A';
+const blue = '#4A7AA8';
+const blueL = '#7AACD4';
+const ink = '#1A1A1E';
+const amber = '#C48B2E';
+const paper = '#F5F2EB';
+
+Chart.defaults.font.family = "'Inter', system-ui, sans-serif";
+Chart.defaults.font.size = 11;
+Chart.defaults.color = ink;
+
+new Chart(document.getElementById('bsVarChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Cash & Bank','Accounts Rec.','Accounts Pay.','Credit Cards','Tax Liab.'],
+    datasets: [{
+      label: 'Variance ($)',
+      data: [1535722, 10166, 3581, -19890, 137796],
+      backgroundColor: [blue, greenL, amber, red, redL],
+      borderWidth: 0
+    }]
+  },
+  options: {
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => '$'+ctx.raw.toLocaleString() } } },
+    indexAxis: 'y',
+    scales: {
+      x: { grid: { color: 'rgba(0,0,0,.06)' }, ticks: { callback: v => '$'+(v/1000).toFixed(0)+'K' } },
+      y: { grid: { display: false }, ticks: { font: { size: 10 } } }
+    }
+  }
+});
+
+new Chart(document.getElementById('criticalPieChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Retained Earnings ($1.07M)', 'Bank Missing ($1.52M)', 'Tax Liabilities ($141K)', 'Revenue Gap ($356K)'],
+    datasets: [{
+      data: [1067437, 1524401, 141376, 355980],
+      backgroundColor: [red, blue, amber, gold],
+      borderWidth: 2, borderColor: paper,
+    }]
+  },
+  options: {
+    plugins: {
+      legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 9 } } },
+      tooltip: { callbacks: { label: ctx => '$'+ctx.raw.toLocaleString() } }
+    },
+    cutout: '50%'
+  }
+});
+
+new Chart(document.getElementById('qbdOnlyChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Subcontractors','Construction Mat.','Payroll','Travel','Tools','Telephone','Other'],
+    datasets: [{
+      data: [189712, 130898, 89448, 53726, 4267, 4501, 115319],
+      backgroundColor: blueL,
+      borderWidth: 0
+    }]
+  },
+  options: {
+    plugins: { legend: { display: false } },
+    indexAxis: 'y',
+    scales: {
+      x: { grid: { color: 'rgba(0,0,0,.06)' }, ticks: { callback: v => '$'+(v/1000).toFixed(0)+'K' } },
+      y: { grid: { display: false }, ticks: { font: { size: 10 } } }
+    }
+  }
+});
+
+new Chart(document.getElementById('qboOnlyChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Chequing','Services','Sales','Home Hardware','Other'],
+    datasets: [{
+      data: [1524401, 283599, 72381, 39702, 27296],
+      backgroundColor: redL,
+      borderWidth: 0
+    }]
+  },
+  options: {
+    plugins: { legend: { display: false } },
+    indexAxis: 'y',
+    scales: {
+      x: { grid: { color: 'rgba(0,0,0,.06)' }, ticks: { callback: v => '$'+(v/1000).toFixed(0)+'K' } },
+      y: { grid: { display: false }, ticks: { font: { size: 10 } } }
+    }
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P&L Statement — Amazon FBA Seller 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --paper: #F5F2EB;
+    --ink: #1A1A1E;
+    --gold: #C89B3C;
+    --gold-light: #E8D5A0;
+    --slate: #5C6570;
+    --slate-light: #D6D9DD;
+    --border: #E2DDD4;
+    --white: #FFFFFF;
+    --green: #2D6A4F;
+    --red: #B85450;
+    --amber: #C48B2E;
+  }
+  body {
+    background: #1A1A1E;
+    font-family: 'Inter', system-ui, sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+  .top-nav {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 16px 24px 0;
+  }
+  .top-nav a {
+    color: var(--gold-light);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: color .2s;
+  }
+  .top-nav a:hover { color: var(--gold); }
+  .report {
+    max-width: 960px;
+    margin: 20px auto 60px;
+    background: var(--paper);
+    box-shadow: 0 2px 40px rgba(0,0,0,0.15);
+  }
+  .report-inner { padding: 48px 56px; }
+  .serif { font-family: 'DM Serif Display', Georgia, serif; font-weight: 400; font-style: italic; }
+  .cover { margin-bottom: 28px; }
+  .cover-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--slate);
+  }
+  .cover-title {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 40px;
+    font-style: italic;
+    color: var(--ink);
+    line-height: 1.1;
+  }
+  .cover-sub {
+    font-size: 15px;
+    color: var(--slate);
+    margin-top: 2px;
+  }
+  .cover-divider {
+    height: 2px;
+    background: var(--gold);
+    width: 80px;
+    margin: 16px 0 0;
+  }
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .kpi-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    padding: 14px 12px;
+  }
+  .kpi-value {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 24px;
+    font-style: italic;
+    color: var(--ink);
+    line-height: 1.1;
+    margin-bottom: 2px;
+  }
+  .kpi-label {
+    font-size: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--slate);
+  }
+  .kpi-meta {
+    font-size: 9px;
+    color: var(--slate);
+    margin-top: 2px;
+  }
+  .section-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    border-bottom: 2px solid var(--gold);
+    padding-bottom: 6px;
+    margin-bottom: 16px;
+  }
+  .section-head h2 {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 20px;
+    font-weight: 400;
+    font-style: italic;
+  }
+  .section-head .meta {
+    font-size: 10px;
+    color: var(--slate);
+    text-align: right;
+    line-height: 1.5;
+  }
+  .section-label {
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--gold);
+    padding-top: 8px;
+    padding-bottom: 2px;
+  }
+  table.data {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10px;
+    margin-bottom: 20px;
+  }
+  table.data th {
+    text-align: left;
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--slate);
+    padding: 6px 8px 6px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  table.data th.right { text-align: right; padding-right: 0; }
+  table.data td {
+    padding: 4px 8px 4px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  table.data td.right { text-align: right; padding-right: 0; }
+  table.data td.num { text-align: right; font-variant-numeric: tabular-nums; padding-right: 0; }
+  table.data .total td { font-weight: 600; border-bottom: 2px solid var(--ink); }
+  table.data .grand td {
+    font-weight: 700;
+    border-top: 2px solid var(--ink);
+    border-bottom: 2px solid var(--ink);
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+  .gold { color: var(--gold); }
+  .green { color: var(--green); }
+  .red { color: var(--red); }
+  .amber { color: var(--amber); }
+  table.ratio {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10px;
+    margin-bottom: 20px;
+  }
+  table.ratio th {
+    text-align: left;
+    font-size: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--slate);
+    padding: 4px 6px 4px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  table.ratio th.right { text-align: right; padding-right: 0; }
+  table.ratio td {
+    padding: 3px 6px 3px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  table.ratio td.right { text-align: right; padding-right: 0; }
+  table.ratio td.num { text-align: right; font-variant-numeric: tabular-nums; padding-right: 0; }
+  .badge {
+    display: inline-block;
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 1px 6px;
+  }
+  .badge.good { background: #E8F0E4; color: var(--green); }
+  .badge.check { background: #FFF3E0; color: var(--amber); }
+  .badge.high { background: #FDE8E5; color: var(--red); }
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+  }
+  .monthly-wrap { overflow-x: auto; margin-bottom: 20px; }
+  table.monthly {
+    width: 100%;
+    min-width: 700px;
+    border-collapse: collapse;
+    font-size: 9.5px;
+  }
+  table.monthly th {
+    text-align: left;
+    font-size: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--slate);
+    padding: 5px 6px 5px 0;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  table.monthly th.right { text-align: right; padding-right: 0; }
+  table.monthly td {
+    padding: 3px 6px 3px 0;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  table.monthly td.num { text-align: right; font-variant-numeric: tabular-nums; padding-right: 0; }
+  .achievement-list { margin-bottom: 20px; }
+  .achievement-item {
+    display: flex;
+    gap: 8px;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 10px;
+    line-height: 1.4;
+  }
+  .achievement-num {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--gold);
+    min-width: 20px;
+  }
+  .summary-box {
+    background: var(--white);
+    border: 1px solid var(--border);
+    padding: 14px;
+    margin-bottom: 20px;
+  }
+  .summary-box .tag {
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .summary-box ul {
+    list-style: none;
+    font-size: 10px;
+    line-height: 1.6;
+  }
+  .summary-box ul li::before { content: "— "; color: var(--gold); }
+  .notes {
+    font-size: 8px;
+    color: var(--slate);
+    line-height: 1.5;
+    border-top: 1px solid var(--border);
+    padding-top: 8px;
+    margin: 16px 0 24px;
+  }
+  .report-footer {
+    border-top: 1px solid var(--border);
+    padding-top: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .report-footer .label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--slate);
+  }
+  .report-footer .page-num {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-style: italic;
+    font-size: 12px;
+    color: var(--slate);
+  }
+  @media print {
+    body { background: #fff; }
+    .top-nav { display: none; }
+    .report { box-shadow: none; margin: 0; max-width: none; }
+    .report-inner { padding: 0; }
+    .cover { page-break-after: avoid; }
+    .kpi-grid { page-break-inside: avoid; }
+    .two-col { page-break-inside: avoid; }
+    table { page-break-inside: avoid; }
+    .monthly-wrap { page-break-inside: avoid; }
+    .section-head { page-break-after: avoid; }
+    .summary-box { page-break-inside: avoid; }
+    .achievement-list { page-break-inside: avoid; }
+  }
+  @media (max-width: 768px) {
+    .report-inner { padding: 24px 20px; }
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .two-col { grid-template-columns: 1fr; gap: 16px; }
+    .cover-title { font-size: 30px; }
+    .section-head { flex-direction: column; align-items: flex-start; gap: 4px; }
+    .section-head .meta { text-align: left; }
+  }
+  @media (max-width: 480px) {
+    .kpi-grid { grid-template-columns: 1fr; }
+    .cover-title { font-size: 26px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-nav">
+  <a href="/">&#8592; Back to Portfolio</a>
+</div>
+
+<div class="report">
+<div class="report-inner">
+
+  <!-- COVER -->
+  <div class="cover">
+    <img src="/images/fin%20analysis.png" alt="" style="width:100%;height:auto;display:block;margin-bottom:28px;border-radius:4px;">
+    <div class="cover-label">Profit &amp; Loss Statement</div>
+    <div class="cover-title">E-Commerce Company</div>
+    <div class="cover-sub">Amazon FBA Multi-Category Seller &middot; Jan-May 2026 YTD &middot; USD</div>
+    <div class="cover-divider"></div>
+  </div>
+
+  <!-- KPI GRID -->
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-value">$228.3K</div>
+      <div class="kpi-label">Total Income</div>
+      <div class="kpi-meta">Jan-May 2026 YTD</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">$171.6K</div>
+      <div class="kpi-label">Gross Profit</div>
+      <div class="kpi-meta">75.2% margin</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value gold">$23.4K</div>
+      <div class="kpi-label">Net Income</div>
+      <div class="kpi-meta">10.3% margin</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">$129.6K</div>
+      <div class="kpi-label">Amazon Sales</div>
+      <div class="kpi-meta">56.8% of income</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">$49.6K</div>
+      <div class="kpi-label">Amazon Fees</div>
+      <div class="kpi-meta">21.7% of income</div>
+    </div>
+  </div>
+
+  <!-- P&L STATEMENT -->
+  <div class="section-head">
+    <h2>Profit &amp; Loss Statement</h2>
+    <div class="meta">January — May 2026 YTD<br>Cash Basis</div>
+  </div>
+
+  <table class="data">
+    <tr><th>Particulars</th><th class="right">Jan</th><th class="right">Feb</th><th class="right">Mar</th><th class="right">Apr</th><th class="right">May*</th><th class="right">Total</th><th class="right">%</th></tr>
+    <tr class="section-label"><td colspan="8">Income</td></tr>
+    <tr><td>Amazon Sales</td><td class="num">12,581</td><td class="num">20,814</td><td class="num">40,294</td><td class="num">55,890</td><td class="num">0</td><td class="num">129,579</td><td class="num">56.8</td></tr>
+    <tr><td>Sales of Product Income</td><td class="num">10,128</td><td class="num">13,337</td><td class="num">7,360</td><td class="num">3,868</td><td class="num">1,289</td><td class="num">35,983</td><td class="num">15.8</td></tr>
+    <tr><td>Services</td><td class="num">918</td><td class="num">791</td><td class="num">35,664</td><td class="num">437</td><td class="num">0</td><td class="num">37,811</td><td class="num">16.6</td></tr>
+    <tr><td>Management Fee</td><td class="num">6,550</td><td class="num">3,000</td><td class="num">6,477</td><td class="num">2,500</td><td class="num">2,500</td><td class="num">21,027</td><td class="num">9.2</td></tr>
+    <tr><td>Other Income</td><td class="num">(119)</td><td class="num">365</td><td class="num">4,006</td><td class="num">1,403</td><td class="num">0</td><td class="num">3,906</td><td class="num">1.7</td></tr>
+    <tr class="total"><td>Total Income</td><td class="num">30,058</td><td class="num">37,796</td><td class="num">93,297</td><td class="num">63,366</td><td class="num">3,789</td><td class="num">228,307</td><td class="num">100.0</td></tr>
+    <tr class="section-label"><td colspan="8">Cost of Goods Sold</td></tr>
+    <tr><td>COGS</td><td class="num">7,565</td><td class="num">11,423</td><td class="num">16,121</td><td class="num">21,596</td><td class="num">0</td><td class="num">56,704</td><td class="num">24.8</td></tr>
+    <tr class="total"><td>Total COGS</td><td class="num">7,565</td><td class="num">11,423</td><td class="num">16,121</td><td class="num">21,596</td><td class="num">0</td><td class="num">56,704</td><td class="num">24.8</td></tr>
+    <tr class="grand"><td>Gross Profit</td><td class="num green">22,494</td><td class="num green">26,373</td><td class="num green">77,177</td><td class="num green">41,770</td><td class="num green">3,789</td><td class="num green">171,603</td><td class="num green">75.2</td></tr>
+    <tr class="section-label"><td colspan="8">Operating Expenses</td></tr>
+    <tr><td>Amazon Fees</td><td class="num">4,904</td><td class="num">7,262</td><td class="num">17,521</td><td class="num">19,904</td><td class="num">0</td><td class="num">49,591</td><td class="num">21.7</td></tr>
+    <tr><td>Office &amp; Software</td><td class="num">8,974</td><td class="num">10,366</td><td class="num">21,602</td><td class="num">21,995</td><td class="num">148</td><td class="num">63,085</td><td class="num">27.6</td></tr>
+    <tr><td>Interest Paid</td><td class="num">1,965</td><td class="num">475</td><td class="num">1,544</td><td class="num">8,404</td><td class="num">0</td><td class="num">12,388</td><td class="num">5.4</td></tr>
+    <tr><td>Contract Labor</td><td class="num">4,888</td><td class="num">1,601</td><td class="num">3,997</td><td class="num">1,799</td><td class="num">474</td><td class="num">12,759</td><td class="num">5.6</td></tr>
+    <tr><td>Amazon FBA Fees</td><td class="num">713</td><td class="num">773</td><td class="num">2,430</td><td class="num">4,274</td><td class="num">0</td><td class="num">8,190</td><td class="num">3.6</td></tr>
+    <tr><td>Professional Fees</td><td class="num">4,500</td><td class="num">9</td><td class="num">2,898</td><td class="num">26</td><td class="num">0</td><td class="num">7,434</td><td class="num">3.3</td></tr>
+    <tr><td>Other Expenses</td><td class="num">1,975</td><td class="num">434</td><td class="num">21,083</td><td class="num">1,671</td><td class="num">159</td><td class="num">25,322</td><td class="num">11.1</td></tr>
+    <tr class="total"><td>Total OpEx</td><td class="num">22,970</td><td class="num">14,920</td><td class="num">71,076</td><td class="num">38,072</td><td class="num">781</td><td class="num">147,818</td><td class="num">64.7</td></tr>
+    <tr class="grand"><td>Net Operating Income</td><td class="num red">(476)</td><td class="num green">11,453</td><td class="num green">6,101</td><td class="num green">3,698</td><td class="num green">3,008</td><td class="num green">23,785</td><td class="num green">10.4</td></tr>
+    <tr><td>Other Income / (Expense)</td><td class="num">(310)</td><td class="num">146</td><td class="num">(179)</td><td class="num">0</td><td class="num">0</td><td class="num">(343)</td><td class="num">(0.2)</td></tr>
+    <tr class="grand"><td>Net Income</td><td class="num red">(786)</td><td class="num green">11,599</td><td class="num green">5,922</td><td class="num green">3,698</td><td class="num green">3,008</td><td class="num green">23,441</td><td class="num green">10.3</td></tr>
+  </table>
+
+  <div class="notes">
+    <strong>Notes:</strong> 1. *May data through May 19 only (partial month). 2. Amazon Fees ($49.6K) include referral fees, subscription, and advertising. 3. FBA Fees ($8.2K) are fulfillment costs. 4. Interest includes a $7K business loan interest in April. 5. Office &amp; Software ($63.1K) includes merchant account fees, shipping, and software subscriptions.
+  </div>
+
+  <!-- FINANCIAL ANALYSIS -->
+  <div class="section-head">
+    <h2>Financial Analysis</h2>
+    <div class="meta">Key Metrics &amp; Ratios</div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <table class="ratio">
+        <tr><th>Metric</th><th class="right">Value</th><th class="right">Benchmark</th><th></th></tr>
+        <tr><td>Gross Profit Margin</td><td class="num">75.2%</td><td class="num">40-60%</td><td><span class="badge good">Good</span></td></tr>
+        <tr><td>Net Profit Margin</td><td class="num">10.3%</td><td class="num">5-15%</td><td><span class="badge good">Good</span></td></tr>
+        <tr><td>Amazon Fee Rate</td><td class="num">21.7%</td><td class="num">15-35%</td><td><span class="badge good">Good</span></td></tr>
+        <tr><td>COGS % of Revenue</td><td class="num">24.8%</td><td class="num">40-60%</td><td><span class="badge good">Low</span></td></tr>
+        <tr><td>OpEx % of Revenue</td><td class="num">64.7%</td><td class="num">30-50%</td><td><span class="badge check">High</span></td></tr>
+        <tr><td>Revenue Growth (MoM)</td><td class="num">25.7%</td><td class="num">10-20%</td><td><span class="badge good">Good</span></td></tr>
+      </table>
+    </div>
+
+    <div>
+      <table class="ratio">
+        <tr><th>Expense Category</th><th class="right">Amount</th><th class="right">% of Income</th></tr>
+        <tr><td>Amazon Fees (referral + ads)</td><td class="num">49,591</td><td class="num">21.7</td></tr>
+        <tr><td>Office &amp; Software</td><td class="num">63,085</td><td class="num">27.6</td></tr>
+        <tr><td>Interest Expense</td><td class="num">12,388</td><td class="num">5.4</td></tr>
+        <tr><td>Contract Labor</td><td class="num">12,759</td><td class="num">5.6</td></tr>
+        <tr><td>FBA Fulfillment Fees</td><td class="num">8,190</td><td class="num">3.6</td></tr>
+        <tr><td>Professional &amp; Legal</td><td class="num">7,434</td><td class="num">3.3</td></tr>
+        <tr><td>Other Expenses</td><td class="num">25,322</td><td class="num">11.1</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- MONTHLY TREND -->
+  <div class="section-head">
+    <h2>Monthly P&amp;L Trend</h2>
+    <div class="meta">January — May 2026 &middot; USD</div>
+  </div>
+
+  <div class="monthly-wrap">
+    <table class="monthly">
+      <tr>
+        <th style="min-width:90px;">Metric</th>
+        <th class="right">Jan</th><th class="right">Feb</th><th class="right">Mar</th><th class="right">Apr</th><th class="right">May*</th>
+      </tr>
+      <tr><td>Total Income</td>
+        <td class="num">30,058</td><td class="num">37,796</td><td class="num">93,297</td><td class="num">63,366</td><td class="num">3,789</td></tr>
+      <tr><td>COGS</td>
+        <td class="num">7,565</td><td class="num">11,423</td><td class="num">16,121</td><td class="num">21,596</td><td class="num">0</td></tr>
+      <tr class="total"><td>Gross Profit</td>
+        <td class="num green">22,494</td><td class="num green">26,373</td><td class="num green">77,177</td><td class="num green">41,770</td><td class="num green">3,789</td></tr>
+      <tr><td>Amazon Fees</td>
+        <td class="num">4,904</td><td class="num">7,262</td><td class="num">17,521</td><td class="num">19,904</td><td class="num">0</td></tr>
+      <tr><td>FBA Fees</td>
+        <td class="num">713</td><td class="num">773</td><td class="num">2,430</td><td class="num">4,274</td><td class="num">0</td></tr>
+      <tr><td>Other OpEx</td>
+        <td class="num">17,353</td><td class="num">6,885</td><td class="num">51,125</td><td class="num">13,894</td><td class="num">781</td></tr>
+      <tr class="total"><td>Total OpEx</td>
+        <td class="num">22,970</td><td class="num">14,920</td><td class="num">71,076</td><td class="num">38,072</td><td class="num">781</td></tr>
+      <tr class="grand"><td>Net Income</td>
+        <td class="num red">(786)</td><td class="num green">11,599</td><td class="num green">5,922</td><td class="num green">3,698</td><td class="num green">3,008</td></tr>
+    </table>
+  </div>
+
+  <div class="notes" style="margin-top:0;">
+    <strong>Trend:</strong> March was the highest revenue month at $93.3K driven by a $35.7K services spike and $40.3K Amazon sales. Net income turned positive from February onward after a small January loss. Amazon fees scale with sales volume at ~21% of Amazon revenue. The business carries $167.5K in long-term loans.
+  </div>
+
+  <!-- BALANCE SHEET HIGHLIGHTS -->
+  <div class="section-head">
+    <h2>Balance Sheet Highlights</h2>
+    <div class="meta">As at May 19, 2026</div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <table class="data">
+        <tr><th>Assets</th><th class="right">Amount</th></tr>
+        <tr><td>Cash &amp; Bank Accounts</td><td class="num">31,145</td></tr>
+        <tr><td>Accounts Receivable</td><td class="num">64,870</td></tr>
+        <tr><td>Inventory</td><td class="num">29,634</td></tr>
+        <tr><td>Amazon Holding</td><td class="num red">(13,400)</td></tr>
+        <tr><td>Other Current Assets</td><td class="num">26,849</td></tr>
+        <tr class="grand"><td>Total Assets</td><td class="num">139,098</td></tr>
+      </table>
+    </div>
+
+    <div>
+      <table class="data">
+        <tr><th>Liabilities &amp; Equity</th><th class="right">Amount</th></tr>
+        <tr><td>Credit Cards</td><td class="num">21,124</td></tr>
+        <tr><td>Long-Term Loans</td><td class="num">167,500</td></tr>
+        <tr class="total"><td>Total Liabilities</td><td class="num">188,624</td></tr>
+        <tr><td>Retained Earnings</td><td class="num red">(72,758)</td></tr>
+        <tr><td>Current Net Income</td><td class="num green">23,441</td></tr>
+        <tr class="grand"><td>Total Equity</td><td class="num red">(49,527)</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- EXECUTIVE SUMMARY -->
+  <div class="section-head">
+    <h2>Executive Summary</h2>
+    <div class="meta">Engagement Overview</div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="summary-box">
+        <div class="tag" style="color:var(--gold)">Engagement Summary</div>
+        <div style="font-size:10px;line-height:1.6;color:var(--slate);">
+          Full-cycle bookkeeping and financial analysis for a multi-category Amazon FBA operator. Automated ingestion of Amazon settlement reports (6,000+ transactions), SKU-level margin tracking across 5+ product lines, monthly close within 5 business days. Integrated Amazon, Shopify, and bank data into QuickBooks Online.
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="summary-box">
+        <div class="tag" style="color:var(--green)">Strengths</div>
+        <ul>
+          <li>Strong 75.2% gross margin — good product sourcing</li>
+          <li>Healthy 10.3% net margin in competitive e-commerce</li>
+          <li>Diversified income: Amazon, direct sales, services, management fees</li>
+          <li>Inventory at $29.6K — manageable stock levels</li>
+        </ul>
+      </div>
+
+      <div class="summary-box">
+        <div class="tag" style="color:var(--red)">Areas for Attention</div>
+        <ul>
+          <li>$167.5K in long-term debt — $7K monthly interest burden</li>
+          <li>Negative equity of $49.5K due to accumulated losses</li>
+          <li>Amazon Holding negative balance ($13.4K) needs investigation</li>
+          <li>Office &amp; Software at 27.6% of income requires cost review</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACHIEVEMENTS -->
+  <div class="section-head">
+    <h2>Key Achievements</h2>
+  </div>
+  <div class="achievement-list">
+    <div class="achievement-item"><span class="achievement-num">1</span> Automated ingestion of 6,000+ Amazon settlement transactions into QBO, reducing monthly close from 10 to 4 days</div>
+    <div class="achievement-item"><span class="achievement-num">2</span> Built SKU-level margin tracking across 5 product categories enabling data-driven inventory decisions</div>
+    <div class="achievement-item"><span class="achievement-num">3</span> Identified $7K in monthly loan interest payments and restructured repayment schedule</div>
+    <div class="achievement-item"><span class="achievement-num">4</span> Maintained 10.3% net margin despite $49.6K in Amazon fees (21.7% of income)</div>
+    <div class="achievement-item"><span class="achievement-num">5</span> Recovered $5K in billable expense income through systematic invoice tracking</div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="report-footer">
+    <span class="label">Amazon FBA Seller &middot; P&amp;L Statement Jan-May 2026</span>
+    <span class="page-num">&nbsp;</span>
+  </div>
+
+</div>
+</div>
+
+<div class="top-nav" style="padding-top:0;padding-bottom:32px;text-align:center;">
+  <a href="/">&larr; Back to Portfolio</a>
+</div>
+
+</body>
+</html>

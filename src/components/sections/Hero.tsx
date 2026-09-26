@@ -4,7 +4,8 @@ import { Canvas } from "@react-three/fiber"
 import { OrbitControls, Float, MeshDistortMaterial } from "@react-three/drei"
 import { useRef, useMemo } from "react"
 import * as THREE from "three"
-import { CaretDown } from "phosphor-react"
+import { CaretDown, WhatsappLogo } from "phosphor-react"
+import PhotoPlaceholder from "@/components/PhotoPlaceholder"
 
 function Scene() {
   const meshRef = useRef<THREE.Mesh>(null)
@@ -74,19 +75,36 @@ export default function Hero() {
 
       <div className="absolute inset-0 bg-gradient-to-b from-ink/20 via-transparent to-ink" />
 
-      <div className="relative z-10 text-center px-6 max-w-3xl">
-        <p className="text-lime font-mono text-sm tracking-widest uppercase mb-4">
-          Finance Engineer
-        </p>
-        <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight leading-[0.95] mb-6">
-          Muhammad
-          <br />
-          Nabeel
-        </h1>
-        <p className="text-muted text-lg sm:text-xl max-w-xl mx-auto leading-relaxed">
-          I build financial systems, automate workflows, and turn messy data
-          into decisions that drive growth.
-        </p>
+      <div className="relative z-10 flex flex-col md:flex-row items-center gap-8 md:gap-16 px-6 max-w-5xl mx-auto">
+        <div className="shrink-0">
+          <PhotoPlaceholder
+            name="profile.jpeg"
+            className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-full border-2 border-lime/30 shadow-[0_0_30px_#c8f60322]"
+          />
+        </div>
+        <div className="text-center md:text-left">
+          <p className="text-lime font-mono text-sm tracking-widest uppercase mb-4">
+            Finance Engineer | Bookkeeping &amp; Automation | QuickBooks Pro
+          </p>
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[0.95] mb-6">
+            Muhammad
+            <br />
+            Nabeel
+          </h1>
+          <p className="text-muted text-base sm:text-lg md:text-xl max-w-xl leading-relaxed">
+            I build financial systems, automate workflows, and turn messy data
+            into decisions that drive growth.
+          </p>
+          <a
+            href="https://wa.me/923410224988"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-6 inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl bg-lime text-ink font-semibold text-xs sm:text-sm hover:shadow-[0_0_30px_#c8f60344] transition-all duration-300"
+          >
+            <WhatsappLogo size={18} />
+            Let's Talk
+          </a>
+        </div>
       </div>
 
       <a

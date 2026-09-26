@@ -1,0 +1,909 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="light dark" />
+  <link rel="icon" href="data:," />
+  <title>Cursor Tracking Playbook</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+    :root {
+      color-scheme: light dark;
+      --bg: #f4f2ec;
+      --paper: #fffefa;
+      --ink: #171816;
+      --muted: #60645e;
+      --faint: #e3e0d8;
+      --line: #c9c7bf;
+      --hot: #e14d2a;
+      --hot-soft: #ffd8ca;
+      --cool: #087f8c;
+      --cool-soft: #caedf0;
+      --code: #191c1b;
+      --code-ink: #e9eee9;
+      --shadow: 0 18px 55px rgba(48, 42, 28, .10);
+      --mx: 50vw;
+      --my: 30vh;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #111311;
+        --paper: #191c19;
+        --ink: #f1f0e9;
+        --muted: #b4b7af;
+        --faint: #2a2e2a;
+        --line: #3c413c;
+        --hot: #ff7450;
+        --hot-soft: #4c261e;
+        --cool: #55c7cf;
+        --cool-soft: #173d40;
+        --code: #090b0a;
+        --code-ink: #e8eee8;
+        --shadow: 0 18px 55px rgba(0, 0, 0, .26);
+      }
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-width: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Manrope", sans-serif;
+      line-height: 1.58;
+      overflow-x: hidden;
+    }
+    a { color: inherit; }
+    button, input { font: inherit; }
+    button { color: inherit; }
+    code, pre { font-family: "DM Mono", monospace; }
+
+    .ambient {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background:
+        radial-gradient(460px circle at var(--mx) var(--my), color-mix(in srgb, var(--cool) 12%, transparent), transparent 68%);
+      opacity: .9;
+    }
+
+    .cursor-dot, .cursor-ring {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 9999;
+      pointer-events: none;
+      opacity: 0;
+      transform: translate3d(-100px,-100px,0) translate(-50%,-50%);
+      will-change: transform;
+    }
+    .cursor-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--hot);
+    }
+    .cursor-ring {
+      width: 38px;
+      height: 38px;
+      border: 1.5px solid var(--hot);
+      border-radius: 50%;
+      transition: width .2s ease, height .2s ease, background .2s ease;
+    }
+    .cursor-dot.is-visible, .cursor-ring.is-visible { opacity: 1; }
+    .cursor-ring.is-active { width: 58px; height: 58px; background: color-mix(in srgb, var(--hot) 15%, transparent); }
+    html.hide-native, html.hide-native * { cursor: none !important; }
+
+    #trailCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9997;
+    }
+
+    .wrap { width: min(1160px, calc(100% - 40px)); margin: 0 auto; }
+    .hero {
+      min-height: 82vh;
+      display: grid;
+      grid-template-columns: 1.15fr .85fr;
+      align-items: center;
+      gap: clamp(36px, 7vw, 94px);
+      padding: 76px 0 66px;
+    }
+    .kicker {
+      margin: 0 0 18px;
+      color: var(--hot);
+      font-family: "DM Mono", monospace;
+      font-size: .82rem;
+      font-weight: 500;
+      letter-spacing: .03em;
+    }
+    h1 {
+      max-width: 720px;
+      margin: 0;
+      font-size: clamp(3rem, 6.5vw, 6rem);
+      line-height: .96;
+      letter-spacing: -.065em;
+      font-weight: 800;
+    }
+    .lead {
+      max-width: 650px;
+      margin: 26px 0 0;
+      color: var(--muted);
+      font-size: clamp(1.05rem, 1.8vw, 1.32rem);
+    }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
+    .btn {
+      border: 1px solid var(--ink);
+      background: var(--ink);
+      color: var(--bg);
+      padding: 12px 18px;
+      border-radius: 7px;
+      text-decoration: none;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .btn.secondary { background: transparent; color: var(--ink); }
+    .btn:focus-visible, a:focus-visible { outline: 3px solid var(--cool); outline-offset: 3px; }
+
+    .hero-demo {
+      position: relative;
+      min-height: 430px;
+      border: 1px solid var(--line);
+      border-radius: 22px 5px 22px 5px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+    .hero-demo::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(250px circle at var(--card-x, 50%) var(--card-y, 50%), color-mix(in srgb, var(--hot) 25%, transparent), transparent 65%);
+      opacity: .75;
+      pointer-events: none;
+    }
+    .gridlines {
+      position: absolute;
+      inset: 0;
+      opacity: .4;
+      background-image:
+        linear-gradient(var(--faint) 1px, transparent 1px),
+        linear-gradient(90deg, var(--faint) 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+    .demo-content {
+      position: relative;
+      z-index: 1;
+      height: 100%;
+      min-height: 430px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .coordinates { display: flex; justify-content: space-between; gap: 12px; color: var(--muted); font-family: "DM Mono", monospace; font-size: .77rem; }
+    .target {
+      align-self: center;
+      width: 156px;
+      height: 156px;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      position: relative;
+    }
+    .target::before, .target::after { content: ""; position: absolute; background: var(--line); }
+    .target::before { width: 204px; height: 1px; }
+    .target::after { width: 1px; height: 204px; }
+    .target span {
+      width: 58px;
+      height: 58px;
+      background: var(--hot);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font: 500 .7rem "DM Mono", monospace;
+      z-index: 1;
+    }
+    .demo-note { margin: 0; color: var(--muted); max-width: 30ch; font-size: .9rem; }
+
+    .labbar {
+      position: sticky;
+      top: 12px;
+      z-index: 50;
+      margin: -25px auto 90px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      width: min(940px, calc(100% - 40px));
+      padding: 13px 15px 13px 20px;
+      background: color-mix(in srgb, var(--paper) 93%, transparent);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      box-shadow: 0 10px 35px rgba(20,20,18,.12);
+      backdrop-filter: blur(12px);
+    }
+    .labbar strong { font-size: .9rem; }
+    .labbar small { display: block; color: var(--muted); }
+    .toggles { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+    .toggle {
+      border: 1px solid var(--line);
+      background: var(--bg);
+      padding: 7px 11px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: .8rem;
+      font-weight: 700;
+    }
+    .toggle[aria-pressed="true"] { color: var(--paper); background: var(--cool); border-color: var(--cool); }
+    .toggle:disabled { opacity: .45; cursor: not-allowed; }
+
+    section { padding: 88px 0; border-top: 1px solid var(--line); }
+    .section-head {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 28px;
+      align-items: start;
+      margin-bottom: 48px;
+    }
+    .section-no { font: 500 .82rem "DM Mono", monospace; color: var(--hot); }
+    h2 { margin: 0; font-size: clamp(2rem, 4.5vw, 3.7rem); line-height: 1.04; letter-spacing: -.045em; }
+    .section-intro { max-width: 760px; margin: 16px 0 0; color: var(--muted); font-size: 1.08rem; }
+
+    .principles { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--line); background: var(--paper); }
+    .principle { padding: 25px; min-height: 190px; border-right: 1px solid var(--line); }
+    .principle:last-child { border-right: 0; }
+    .principle b { display: block; color: var(--hot); font: 500 .75rem "DM Mono", monospace; margin-bottom: 38px; }
+    .principle h3 { margin: 0 0 8px; font-size: 1rem; }
+    .principle p { color: var(--muted); margin: 0; font-size: .88rem; }
+
+    .recipe-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+    .recipe {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 5px 18px 5px 18px;
+      overflow: hidden;
+      min-width: 0;
+    }
+    .recipe.wide { grid-column: 1 / -1; }
+    .recipe-head { padding: 24px 24px 18px; }
+    .recipe-index { color: var(--cool); font: 500 .75rem "DM Mono", monospace; }
+    .recipe h3 { margin: 7px 0 6px; font-size: 1.45rem; letter-spacing: -.025em; }
+    .recipe p { margin: 0; color: var(--muted); }
+    .code-wrap { position: relative; background: var(--code); }
+    pre {
+      margin: 0;
+      padding: 24px;
+      color: var(--code-ink);
+      font-size: .78rem;
+      line-height: 1.65;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      tab-size: 2;
+    }
+    .copy {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      border: 1px solid #4b504c;
+      background: #242826;
+      color: #eef1ee;
+      padding: 6px 9px;
+      border-radius: 5px;
+      font: 500 .7rem "DM Mono", monospace;
+      cursor: pointer;
+    }
+    .copy:hover { background: #333936; }
+    .source-line { padding: 11px 24px 15px; border-top: 1px solid var(--faint); color: var(--muted); font-size: .75rem; }
+    .source-line a { text-underline-offset: 3px; }
+
+    .effect-stage {
+      margin: 0 24px 24px;
+      min-height: 220px;
+      background: var(--code);
+      color: var(--code-ink);
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .effect-stage::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(180px circle at var(--stage-x, 50%) var(--stage-y, 50%), rgba(85,199,207,.36), transparent 68%);
+    }
+    .magnetic-wrap { padding: 70px; position: relative; z-index: 1; }
+    .magnetic {
+      border: 0;
+      padding: 15px 22px;
+      border-radius: 999px;
+      background: var(--hot);
+      color: #fff;
+      font-weight: 800;
+      cursor: pointer;
+      will-change: transform;
+    }
+
+    .decision { display: grid; grid-template-columns: 1.05fr .95fr; gap: 28px; align-items: start; }
+    .chooser { border-top: 1px solid var(--line); }
+    .choose-row { display: grid; grid-template-columns: 150px 1fr auto; gap: 18px; align-items: center; padding: 20px 0; border-bottom: 1px solid var(--line); }
+    .choose-row strong { font-size: .95rem; }
+    .choose-row p { margin: 0; color: var(--muted); font-size: .9rem; }
+    .tag { font: 500 .7rem "DM Mono", monospace; color: var(--cool); border: 1px solid var(--cool); padding: 4px 7px; border-radius: 4px; white-space: nowrap; }
+    .production-note { background: var(--ink); color: var(--bg); padding: 30px; border-radius: 4px 22px 4px 22px; position: sticky; top: 96px; }
+    .production-note h3 { margin: 0 0 12px; font-size: 1.35rem; }
+    .production-note p { margin: 0; opacity: .78; }
+    .production-note code { color: color-mix(in srgb, var(--cool) 55%, white); }
+
+    .checks { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); border: 1px solid var(--line); }
+    .checks li { background: var(--paper); padding: 22px; display: grid; grid-template-columns: 34px 1fr; gap: 12px; }
+    .check-mark { width: 24px; height: 24px; border: 1px solid var(--cool); color: var(--cool); border-radius: 50%; display: grid; place-items: center; font: 500 .75rem "DM Mono", monospace; }
+    .checks strong { display: block; margin-bottom: 4px; }
+    .checks p { margin: 0; color: var(--muted); font-size: .88rem; }
+
+    .resource-list { display: grid; gap: 0; border-top: 1px solid var(--line); }
+    .resource {
+      display: grid;
+      grid-template-columns: 52px 1fr auto;
+      align-items: start;
+      gap: 20px;
+      padding: 22px 0;
+      border-bottom: 1px solid var(--line);
+      text-decoration: none;
+    }
+    .resource:hover .resource-title { color: var(--hot); }
+    .resource-n { color: var(--muted); font: 500 .76rem "DM Mono", monospace; }
+    .resource-title { display: block; font-weight: 800; margin-bottom: 3px; transition: color .2s; }
+    .resource-desc { display: block; color: var(--muted); font-size: .88rem; }
+    .resource-arrow { font-size: 1.2rem; }
+    .resource-status { display: inline-block; margin-top: 7px; padding: 3px 6px; background: var(--hot-soft); color: var(--hot); border-radius: 4px; font: 500 .7rem "DM Mono", monospace; }
+
+    .library-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 45px; }
+    .library { padding: 22px; border: 1px solid var(--line); background: var(--paper); }
+    .library h3 { margin: 0 0 6px; font-size: 1.05rem; }
+    .library p { margin: 0; color: var(--muted); font-size: .86rem; }
+    .library a { display: inline-block; margin-top: 13px; color: var(--cool); font-weight: 700; font-size: .83rem; }
+
+    .verification {
+      margin-top: 54px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+    .verification article { padding: 26px; border: 1px solid var(--line); background: var(--paper); }
+    .verification h3 { margin: 0 0 8px; }
+    .verification p { margin: 0; color: var(--muted); }
+    .verification a { color: var(--cool); }
+
+    footer { padding: 42px 0 62px; border-top: 1px solid var(--line); color: var(--muted); font-size: .83rem; }
+    footer .wrap { display: flex; justify-content: space-between; gap: 24px; }
+
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; min-height: auto; padding-top: 58px; }
+      .hero-demo { min-height: 370px; }
+      .demo-content { min-height: 370px; }
+      .section-head { grid-template-columns: 1fr; gap: 10px; }
+      .principles { grid-template-columns: 1fr 1fr; }
+      .principle:nth-child(2) { border-right: 0; }
+      .principle:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+      .recipe-grid, .decision { grid-template-columns: 1fr; }
+      .production-note { position: static; }
+      .library-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 620px) {
+      .wrap { width: min(100% - 28px, 1160px); }
+      h1 { font-size: clamp(2.7rem, 15vw, 4.2rem); }
+      .hero { gap: 38px; padding: 48px 0 55px; }
+      .hero-demo, .demo-content { min-height: 320px; }
+      .demo-content { padding: 20px; }
+      .target { width: 116px; height: 116px; }
+      .target::before { width: 160px; }
+      .target::after { height: 160px; }
+      .labbar { position: relative; top: auto; margin-bottom: 60px; align-items: flex-start; flex-direction: column; }
+      .toggles { justify-content: flex-start; }
+      section { padding: 66px 0; }
+      .principles { grid-template-columns: 1fr; }
+      .principle { border-right: 0; border-bottom: 1px solid var(--line); min-height: auto; }
+      .principle:last-child { border-bottom: 0; }
+      .principle b { margin-bottom: 20px; }
+      .recipe.wide { grid-column: auto; }
+      .recipe-head, pre { padding-left: 18px; padding-right: 18px; }
+      pre { font-size: .72rem; }
+      .source-line { padding-left: 18px; padding-right: 18px; }
+      .effect-stage { margin-left: 18px; margin-right: 18px; }
+      .choose-row { grid-template-columns: 1fr; gap: 7px; }
+      .choose-row .tag { justify-self: start; }
+      .checks { grid-template-columns: 1fr; }
+      .resource { grid-template-columns: 36px 1fr; }
+      .resource-arrow { display: none; }
+      .library-grid, .verification { grid-template-columns: 1fr; }
+      footer .wrap { flex-direction: column; }
+    }
+
+    @media (hover: none), (pointer: coarse) {
+      .cursor-dot, .cursor-ring, #trailCanvas { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .cursor-dot, .cursor-ring, #trailCanvas { display: none; }
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="trailCanvas" aria-hidden="true"></canvas>
+  <div class="ambient" aria-hidden="true"></div>
+  <div class="cursor-dot" aria-hidden="true"></div>
+  <div class="cursor-ring" aria-hidden="true"></div>
+
+  <main>
+    <div class="wrap hero">
+      <div>
+        <p class="kicker">A practical front-end field guide</p>
+        <h1>Make the pointer feel alive.</h1>
+        <p class="lead">Build smooth cursor followers, card spotlights, magnetic buttons, tilt and particle trails from the same tiny coordinate loop. Then ship them without jank or broken accessibility.</p>
+        <div class="hero-actions">
+          <a class="btn magnetic" href="#recipes" data-cursor>Start with the recipes</a>
+          <a class="btn secondary" href="#production" data-cursor>Production checklist</a>
+        </div>
+      </div>
+
+      <div class="hero-demo tilt-card" aria-label="Interactive cursor tracking demonstration">
+        <div class="gridlines" aria-hidden="true"></div>
+        <div class="demo-content">
+          <div class="coordinates"><span>POINTER LAB</span><span id="coords">x — · y —</span></div>
+          <div class="target" aria-hidden="true"><span>MOVE</span></div>
+          <p class="demo-note">Move over this panel. Its spotlight uses card-local coordinates; the tilt maps the same position to rotation.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="labbar" aria-label="Live effect controls">
+      <div><strong>Live effects</strong><small id="labStatus">Fine pointer detected</small></div>
+      <div class="toggles">
+        <button class="toggle" id="cursorToggle" type="button" aria-pressed="true">Follower</button>
+        <button class="toggle" id="nativeToggle" type="button" aria-pressed="false">Hide native</button>
+        <button class="toggle" id="particlesToggle" type="button" aria-pressed="false">Particles</button>
+      </div>
+    </div>
+
+    <section>
+      <div class="wrap">
+        <div class="section-head">
+          <span class="section-no">01 / FOUNDATION</span>
+          <div>
+            <h2>One primitive, many effects.</h2>
+            <p class="section-intro">Read viewport coordinates once, store them, and let one animation frame update decorative layers. The visual treatment changes; the architecture stays stable.</p>
+          </div>
+        </div>
+        <div class="principles">
+          <article class="principle"><b>INPUT</b><h3><code>clientX / clientY</code></h3><p>Viewport-relative pointer coordinates pair naturally with fixed-position followers.</p></article>
+          <article class="principle"><b>STATE</b><h3>Store, don’t render</h3><p>The pointer handler records a target. It should not perform every visual write itself.</p></article>
+          <article class="principle"><b>FRAME</b><h3><code>requestAnimationFrame</code></h3><p>Interpolate toward the target and write transforms once per screen frame.</p></article>
+          <article class="principle"><b>OUTPUT</b><h3>Transforms or CSS vars</h3><p>Move followers with transforms. Feed local spotlights through <code>--x</code> and <code>--y</code>.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="recipes">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="section-no">02 / RECIPES</span>
+          <div>
+            <h2>Build it from scratch.</h2>
+            <p class="section-intro">These vanilla patterns cover the core effect shown in cursor-tracking reels and the most useful extensions. Copy a recipe, then tune the numbers to your project.</p>
+          </div>
+        </div>
+
+        <div class="recipe-grid">
+          <article class="recipe">
+            <div class="recipe-head"><span class="recipe-index">A. DOT + RING</span><h3>Fixed followers</h3><p>Center both shapes on the pointer and let clicks pass through them.</p></div>
+            <div class="code-wrap"><button class="copy" type="button">Copy</button><pre><code>&lt;div class="cursor-dot"&gt;&lt;/div&gt;
+&lt;div class="cursor-ring"&gt;&lt;/div&gt;
+
+.cursor-dot, .cursor-ring {
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  border-radius: 50%;
+  will-change: transform;
+}
+
+const mouse = { x: innerWidth/2, y: innerHeight/2 };
+addEventListener('mousemove', e =&gt; {
+  mouse.x = e.clientX;
+  mouse.y = e.clientY;
+}, { passive: true });</code></pre></div>
+            <div class="source-line">Pattern: <a href="https://dev.to/lensco825/how-to-make-a-custom-cursor-cursor-hover-effects-1ikg" target="_blank" rel="noopener">DEV Community custom cursor guide</a></div>
+          </article>
+
+          <article class="recipe">
+            <div class="recipe-head"><span class="recipe-index">B. LERP LOOP</span><h3>Smooth trailing</h3><p>A tight dot and a loose ring create the familiar premium lag.</p></div>
+            <div class="code-wrap"><button class="copy" type="button">Copy</button><pre><code>const lerp = (a, b, t) =&gt; a + (b - a) * t;
+let dotPos = {...mouse};
+let ringPos = {...mouse};
+
+function frame() {
+  dotPos.x = lerp(dotPos.x, mouse.x, .35);
+  dotPos.y = lerp(dotPos.y, mouse.y, .35);
+  ringPos.x = lerp(ringPos.x, mouse.x, .12);
+  ringPos.y = lerp(ringPos.y, mouse.y, .12);
+
+  dot.style.transform =
+    `translate3d(${dotPos.x}px,${dotPos.y}px,0)
+     translate(-50%,-50%)`;
+  ring.style.transform =
+    `translate3d(${ringPos.x}px,${ringPos.y}px,0)
+     translate(-50%,-50%)`;
+  requestAnimationFrame(frame);
+}
+frame();</code></pre></div>
+            <div class="source-line">Demo: <a href="https://codepen.io/daniel-hult/pen/mdVXPOG" target="_blank" rel="noopener">Daniel Hult’s vanilla lerp follower</a></div>
+          </article>
+
+          <article class="recipe">
+            <div class="recipe-head"><span class="recipe-index">C. SPOTLIGHT</span><h3>Gradient at the pointer</h3><p>Set two custom properties and let CSS place a radial gradient.</p></div>
+            <div class="code-wrap"><button class="copy" type="button">Copy</button><pre><code>.spotlight {
+  background: radial-gradient(
+    600px circle at var(--x, 50%) var(--y, 50%),
+    rgb(8 127 140 / .18),
+    transparent 70%
+  );
+}
+
+const root = document.documentElement;
+addEventListener('mousemove', e =&gt; {
+  root.style.setProperty('--x', e.clientX + 'px');
+  root.style.setProperty('--y', e.clientY + 'px');
+}, { passive: true });</code></pre></div>
+            <div class="source-line">Pattern: <a href="https://cruip.com/how-to-create-a-spotlight-card-hover-effect-with-tailwind-css/" target="_blank" rel="noopener">Cruip spotlight card tutorial</a></div>
+          </article>
+
+          <article class="recipe">
+            <div class="recipe-head"><span class="recipe-index">D. CARD-LOCAL</span><h3>Glow and 3D tilt</h3><p>Subtract the card’s bounding box to get coordinates inside the card.</p></div>
+            <div class="code-wrap"><button class="copy" type="button">Copy</button><pre><code>card.addEventListener('mousemove', e =&gt; {
+  const r = card.getBoundingClientRect();
+  const x = e.clientX - r.left;
+  const y = e.clientY - r.top;
+  card.style.setProperty('--mx', x + 'px');
+  card.style.setProperty('--my', y + 'px');
+
+  const px = x / r.width - .5;
+  const py = y / r.height - .5;
+  card.style.transform = `perspective(800px)
+    rotateY(${px * 12}deg)
+    rotateX(${-py * 12}deg)`;
+});</code></pre></div>
+            <div class="source-line">The key: <code>event coordinate − rect edge</code> gives the local pointer position.</div>
+          </article>
+
+          <article class="recipe wide">
+            <div class="recipe-head"><span class="recipe-index">E. MAGNETIC BUTTON</span><h3>Pull toward the pointer, then snap home</h3><p>Measure from the element’s center, multiply by a restrained strength, and transform the visual layer.</p></div>
+            <div class="effect-stage spotlight-stage">
+              <div class="magnetic-wrap"><button class="magnetic" type="button" data-cursor>Hover the field</button></div>
+            </div>
+            <div class="code-wrap"><button class="copy" type="button">Copy</button><pre><code>button.addEventListener('mousemove', e =&gt; {
+  const r = button.getBoundingClientRect();
+  const x = e.clientX - (r.left + r.width / 2);
+  const y = e.clientY - (r.top + r.height / 2);
+  const strength = .35; // .25–.4 is a practical range
+
+  button.style.transform =
+    `translate(${x * strength}px, ${y * strength}px)`;
+});
+
+button.addEventListener('mouseleave', () =&gt; {
+  button.style.transition =
+    'transform .5s cubic-bezier(.22,1,.36,1)';
+  button.style.transform = 'translate(0,0)';
+});</code></pre></div>
+            <div class="source-line">Tutorial: <a href="https://www.codingsnow.com/2024/04/tutorial81.html" target="_blank" rel="noopener">Coding Snow magnetic elements</a> · Video: <a href="https://www.youtube.com/embed/33bMIZ6aciY" target="_blank" rel="noopener">watch on YouTube</a></div>
+          </article>
+
+          <article class="recipe wide">
+            <div class="recipe-head"><span class="recipe-index">F. GSAP OPTION</span><h3>Use <code>quickTo</code> when GSAP is already installed</h3><p>It re-targets a cached tween instead of creating a new tween for every pointer event.</p></div>
+            <div class="code-wrap"><button class="copy" type="button">Copy</button><pre><code>gsap.set([dot, ring], { xPercent: -50, yPercent: -50 });
+const dotX = gsap.quickTo(dot, 'x', { duration: .15, ease: 'power3' });
+const dotY = gsap.quickTo(dot, 'y', { duration: .15, ease: 'power3' });
+const ringX = gsap.quickTo(ring, 'x', { duration: .5, ease: 'power3' });
+const ringY = gsap.quickTo(ring, 'y', { duration: .5, ease: 'power3' });
+
+addEventListener('mousemove', e =&gt; {
+  dotX(e.clientX); dotY(e.clientY);
+  ringX(e.clientX); ringY(e.clientY);
+});</code></pre></div>
+            <div class="source-line">Reference: <a href="https://gsap.com/docs/v3/" target="_blank" rel="noopener">GSAP v3 documentation</a></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="section-head">
+          <span class="section-no">03 / CHOOSE</span>
+          <div><h2>Match the effect to the job.</h2><p class="section-intro">A restrained interaction often feels better than stacking every trick on one page.</p></div>
+        </div>
+        <div class="decision">
+          <div class="chooser">
+            <div class="choose-row"><strong>Brand pointer</strong><p>Dot + ring with lerp. Keep the native click point accurate.</p><span class="tag">rAF + transform</span></div>
+            <div class="choose-row"><strong>Dark landing page</strong><p>Ambient or card-local spotlight. No extra follower required.</p><span class="tag">CSS variables</span></div>
+            <div class="choose-row"><strong>Primary CTA</strong><p>Magnetic pull with a padded trigger area and restrained travel.</p><span class="tag">local coordinates</span></div>
+            <div class="choose-row"><strong>Portfolio media</strong><p>Cursor state labels such as “view” or “play” over intentional targets.</p><span class="tag">data-cursor</span></div>
+            <div class="choose-row"><strong>Decorative moment</strong><p>Short canvas trail with a hard particle cap.</p><span class="tag">canvas</span></div>
+          </div>
+          <aside class="production-note">
+            <h3>The reliable architecture</h3>
+            <p>Pointer events update a tiny target object. One <code>requestAnimationFrame</code> loop reads it, interpolates current values, and writes transforms. Card-local gradients may write CSS variables directly, but frameworks should still avoid storing pointer position in rendered state.</p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section id="production">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="section-no">04 / SHIP SAFELY</span>
+          <div><h2>Performance and accessibility are part of the effect.</h2><p class="section-intro">A cursor flourish is progressive enhancement. The page must remain usable when the flourish is off.</p></div>
+        </div>
+        <ul class="checks">
+          <li><span class="check-mark">01</span><div><strong>Gate on a real mouse</strong><p>Initialize only when <code>(hover: hover) and (pointer: fine)</code> matches. Touch has no cursor.</p></div></li>
+          <li><span class="check-mark">02</span><div><strong>Honor reduced motion</strong><p>Disable trails, lag and magnetic pull when <code>prefers-reduced-motion: reduce</code> is active.</p></div></li>
+          <li><span class="check-mark">03</span><div><strong>Never intercept clicks</strong><p>Every decorative follower or canvas needs <code>pointer-events: none</code>.</p></div></li>
+          <li><span class="check-mark">04</span><div><strong>Transform, don’t position</strong><p>Animate <code>translate3d()</code>, not <code>top</code> or <code>left</code>, to avoid layout work.</p></div></li>
+          <li><span class="check-mark">05</span><div><strong>Hide native conditionally</strong><p>Only apply <code>cursor: none</code> after the custom cursor is active. Consider excluding text inputs and selects.</p></div></li>
+          <li><span class="check-mark">06</span><div><strong>Keep the click point honest</strong><p>The decorative ring may lag. Interaction and hover still come from the real pointer position.</p></div></li>
+          <li><span class="check-mark">07</span><div><strong>Cap canvas work</strong><p>Limit particle count and reset canvas pixel dimensions after resize so the output stays crisp.</p></div></li>
+          <li><span class="check-mark">08</span><div><strong>Clean up frameworks</strong><p>Remove listeners and cancel animation frames on unmount. Do not put mouse coordinates in React state.</p></div></li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="section-head">
+          <span class="section-no">05 / WATCH + STUDY</span>
+          <div><h2>A focused learning path.</h2><p class="section-intro">Start with the short vanilla build, then move into magnetic motion and richer GSAP treatments.</p></div>
+        </div>
+
+        <div class="resource-list">
+          <a class="resource" href="https://www.youtube.com/watch?v=-gtpBcfrmNY" target="_blank" rel="noopener"><span class="resource-n">01</span><span><span class="resource-title">Build a Custom Cursor Fast — LearnCodeEasy</span><span class="resource-desc">A roughly three-minute beginner build: smooth following and hover animation over links and buttons.</span></span><span class="resource-arrow">↗</span></a>
+          <a class="resource" href="https://www.youtube.com/watch?v=zuoUmupHMjs" target="_blank" rel="noopener"><span class="resource-n">02</span><span><span class="resource-title">Build a Liquid Magnetic Cursor with SVG &amp; GSAP — ITMaster</span><span class="resource-desc">A deeper treatment of interpolation, gooey SVG filters, magnetic navigation, trails, click ripples and elastic motion.</span></span><span class="resource-arrow">↗</span></a>
+          <a class="resource" href="https://www.youtube.com/watch?v=zwplxgaIn9M" target="_blank" rel="noopener"><span class="resource-n">03</span><span><span class="resource-title">Create a Magnetic Button Animation</span><span class="resource-desc">Focused use of <code>getBoundingClientRect()</code>, GSAP pull and smooth return-to-origin.</span></span><span class="resource-arrow">↗</span></a>
+          <a class="resource" href="https://www.youtube.com/embed/UMdvufdewD8" target="_blank" rel="noopener"><span class="resource-n">04</span><span><span class="resource-title">Custom Cursor Without Frameworks — codewithsadee</span><span class="resource-desc">A framework-free HTML, CSS and JavaScript walkthrough.</span></span><span class="resource-arrow">↗</span></a>
+          <a class="resource" href="https://codepen.io/dionarodrigues/pen/YzBPoag" target="_blank" rel="noopener"><span class="resource-n">05</span><span><span class="resource-title">GSAP cursor follower — CodePen</span><span class="resource-desc">A compact working demo to inspect and remix.</span></span><span class="resource-arrow">↗</span></a>
+          <a class="resource" href="https://codepen.io/OkiDokiTokiLoki/full/VwNRJOg" target="_blank" rel="noopener"><span class="resource-n">06</span><span><span class="resource-title">Speed-based cursor rotation — CodePen</span><span class="resource-desc">An advanced variation that maps pointer velocity to shape rotation.</span></span><span class="resource-arrow">↗</span></a>
+        </div>
+
+        <div class="library-grid">
+          <article class="library"><h3>animated-cursor</h3><p>Dependency-free dot + trailing ring with hover and blend variants.</p><a href="https://github.com/stephenscaff/animated-cursor" target="_blank" rel="noopener">View repository ↗</a></article>
+          <article class="library"><h3>CrosshairJs</h3><p>A small crosshair cursor with magnetic snapping and SPA-aware target detection.</p><a href="https://github.com/CodCatDev/CrosshairJs" target="_blank" rel="noopener">View repository ↗</a></article>
+          <article class="library"><h3>Magnetic Elements</h3><p>Reusable magnetic elements with trigger area, force and interpolation options.</p><a href="https://www.cssscript.com/cursor-magnetic-element/" target="_blank" rel="noopener">Read overview ↗</a></article>
+        </div>
+
+        <div class="verification">
+          <article>
+            <h3>About the original reel</h3>
+            <p>The supplied <a href="https://www.facebook.com/share/r/18CNQcSdmf/" target="_blank" rel="noopener">Facebook reel</a> could not be verified through the public web index during research. Its “designbyshiv” attribution also did not surface in public search, so the exact code shown there remains an open question.</p>
+          </article>
+          <article>
+            <h3>What is confirmed</h3>
+            <p>The underlying cursor-tracking technique is well documented across the tutorials and demos above: viewport pointer coordinates, fixed decorative layers, CSS transforms, interpolation, and card-local coordinate math.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap"><span>Researched September 18, 2026</span><span>Vanilla HTML · CSS · JavaScript</span></div>
+  </footer>
+
+  <script>
+    (() => {
+      const finePointer = matchMedia('(hover: hover) and (pointer: fine)').matches;
+      const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const canAnimate = finePointer && !reduceMotion;
+      const dot = document.querySelector('.cursor-dot');
+      const ring = document.querySelector('.cursor-ring');
+      const cursorToggle = document.querySelector('#cursorToggle');
+      const nativeToggle = document.querySelector('#nativeToggle');
+      const particlesToggle = document.querySelector('#particlesToggle');
+      const status = document.querySelector('#labStatus');
+      const coords = document.querySelector('#coords');
+      const root = document.documentElement;
+
+      let followerOn = canAnimate;
+      let particlesOn = false;
+      let nativeHidden = false;
+      let pointerSeen = false;
+      const mouse = { x: innerWidth / 2, y: innerHeight / 2 };
+      const dotPos = { ...mouse };
+      const ringPos = { ...mouse };
+      const lerp = (a, b, t) => a + (b - a) * t;
+
+      if (!canAnimate) {
+        cursorToggle.disabled = true;
+        nativeToggle.disabled = true;
+        particlesToggle.disabled = true;
+        cursorToggle.setAttribute('aria-pressed', 'false');
+        status.textContent = reduceMotion ? 'Reduced motion is active' : 'Touch or coarse pointer detected';
+      }
+
+      addEventListener('mousemove', e => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+        root.style.setProperty('--mx', e.clientX + 'px');
+        root.style.setProperty('--my', e.clientY + 'px');
+        if (!pointerSeen && canAnimate) {
+          pointerSeen = true;
+          dot.classList.add('is-visible');
+          ring.classList.add('is-visible');
+        }
+        if (coords) coords.textContent = `x ${Math.round(e.clientX)} · y ${Math.round(e.clientY)}`;
+        if (particlesOn) spawnParticles(e.clientX, e.clientY);
+      }, { passive: true });
+
+      function frame() {
+        if (followerOn && canAnimate) {
+          dotPos.x = lerp(dotPos.x, mouse.x, .38);
+          dotPos.y = lerp(dotPos.y, mouse.y, .38);
+          ringPos.x = lerp(ringPos.x, mouse.x, .13);
+          ringPos.y = lerp(ringPos.y, mouse.y, .13);
+          dot.style.transform = `translate3d(${dotPos.x}px,${dotPos.y}px,0) translate(-50%,-50%)`;
+          ring.style.transform = `translate3d(${ringPos.x}px,${ringPos.y}px,0) translate(-50%,-50%)`;
+        }
+        drawParticles();
+        requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+
+      cursorToggle.addEventListener('click', () => {
+        followerOn = !followerOn;
+        cursorToggle.setAttribute('aria-pressed', String(followerOn));
+        dot.style.display = followerOn ? '' : 'none';
+        ring.style.display = followerOn ? '' : 'none';
+        if (!followerOn && nativeHidden) nativeToggle.click();
+      });
+
+      nativeToggle.addEventListener('click', () => {
+        nativeHidden = !nativeHidden;
+        nativeToggle.setAttribute('aria-pressed', String(nativeHidden));
+        root.classList.toggle('hide-native', nativeHidden);
+      });
+
+      particlesToggle.addEventListener('click', () => {
+        particlesOn = !particlesOn;
+        particlesToggle.setAttribute('aria-pressed', String(particlesOn));
+      });
+
+      document.addEventListener('mouseover', e => {
+        if (e.target.closest('a, button, [data-cursor]')) ring.classList.add('is-active');
+      });
+      document.addEventListener('mouseout', e => {
+        if (e.target.closest('a, button, [data-cursor]')) ring.classList.remove('is-active');
+      });
+
+      document.querySelectorAll('.tilt-card').forEach(card => {
+        card.addEventListener('mousemove', e => {
+          if (!canAnimate) return;
+          const r = card.getBoundingClientRect();
+          const x = e.clientX - r.left;
+          const y = e.clientY - r.top;
+          card.style.setProperty('--card-x', x + 'px');
+          card.style.setProperty('--card-y', y + 'px');
+          const px = x / r.width - .5;
+          const py = y / r.height - .5;
+          card.style.transform = `perspective(900px) rotateY(${px * 7}deg) rotateX(${-py * 7}deg)`;
+        });
+        card.addEventListener('mouseleave', () => {
+          card.style.transition = 'transform .45s cubic-bezier(.22,1,.36,1)';
+          card.style.transform = 'perspective(900px) rotateY(0) rotateX(0)';
+          setTimeout(() => card.style.transition = '', 460);
+        });
+      });
+
+      document.querySelectorAll('.spotlight-stage').forEach(stage => {
+        stage.addEventListener('mousemove', e => {
+          const r = stage.getBoundingClientRect();
+          stage.style.setProperty('--stage-x', (e.clientX - r.left) + 'px');
+          stage.style.setProperty('--stage-y', (e.clientY - r.top) + 'px');
+        });
+      });
+
+      document.querySelectorAll('.magnetic').forEach(el => {
+        el.addEventListener('mousemove', e => {
+          if (!canAnimate) return;
+          const r = el.getBoundingClientRect();
+          const x = e.clientX - (r.left + r.width / 2);
+          const y = e.clientY - (r.top + r.height / 2);
+          el.style.transition = 'transform .08s linear';
+          el.style.transform = `translate(${x * .28}px,${y * .28}px)`;
+        });
+        el.addEventListener('mouseleave', () => {
+          el.style.transition = 'transform .5s cubic-bezier(.22,1,.36,1)';
+          el.style.transform = 'translate(0,0)';
+        });
+      });
+
+      document.querySelectorAll('.copy').forEach(button => {
+        button.addEventListener('click', async () => {
+          const code = button.nextElementSibling.innerText;
+          try {
+            await navigator.clipboard.writeText(code);
+            button.textContent = 'Copied';
+            setTimeout(() => button.textContent = 'Copy', 1200);
+          } catch {
+            button.textContent = 'Select code';
+            setTimeout(() => button.textContent = 'Copy', 1200);
+          }
+        });
+      });
+
+      const canvas = document.querySelector('#trailCanvas');
+      const ctx = canvas.getContext('2d');
+      const particles = [];
+      let dpr = 1;
+
+      function resizeCanvas() {
+        dpr = Math.min(devicePixelRatio || 1, 2);
+        canvas.width = Math.round(innerWidth * dpr);
+        canvas.height = Math.round(innerHeight * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+      resizeCanvas();
+      addEventListener('resize', resizeCanvas, { passive: true });
+
+      function spawnParticles(x, y) {
+        if (particles.length > 140) return;
+        for (let i = 0; i < 2; i++) {
+          particles.push({
+            x, y,
+            vx: (Math.random() - .5) * 1.6,
+            vy: (Math.random() - .5) * 1.6,
+            size: 2 + Math.random() * 2.5,
+            life: 1
+          });
+        }
+      }
+
+      function drawParticles() {
+        ctx.clearRect(0, 0, innerWidth, innerHeight);
+        ctx.globalCompositeOperation = 'lighter';
+        for (let i = particles.length - 1; i >= 0; i--) {
+          const p = particles[i];
+          p.x += p.vx;
+          p.y += p.vy;
+          p.life -= .028;
+          if (p.life <= 0 || !particlesOn) {
+            particles.splice(i, 1);
+            continue;
+          }
+          ctx.globalAlpha = p.life;
+          ctx.fillStyle = getComputedStyle(root).getPropertyValue('--hot').trim();
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+        ctx.globalCompositeOperation = 'source-over';
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -66,7 +66,7 @@ function TimelineItem({
           setTimeout(() => setVisible(true), index * 120)
         }
       },
-      { threshold: 0.15 },
+      { threshold: 0.1 },
     )
     if (ref.current) observer.observe(ref.current)
     return () => observer.disconnect()
@@ -76,7 +76,7 @@ function TimelineItem({
     <div
       ref={ref}
       className={cn(
-        "relative pl-8 pb-16 last:pb-0 border-l border-border transition-all duration-700",
+        "relative pl-6 sm:pl-8 pb-12 sm:pb-16 last:pb-0 border-l border-border transition-all duration-700",
         visible
           ? "opacity-100 translate-y-0"
           : "opacity-0 translate-y-8",
@@ -84,23 +84,23 @@ function TimelineItem({
     >
       <div
         className={cn(
-          "absolute left-0 top-0 w-3 h-3 -translate-x-[6.5px] rounded-full border-2 transition-all duration-500",
+          "absolute left-0 top-0 w-2.5 sm:w-3 h-2.5 sm:h-3 -translate-x-[5.5px] sm:-translate-x-[6.5px] rounded-full border-2 transition-all duration-500",
           visible
             ? "bg-lime border-lime shadow-[0_0_10px_#c8f60355]"
             : "bg-surface border-border",
         )}
       />
-      <span className="text-lime font-mono text-xs tracking-wider">
+      <span className="text-lime font-mono text-[11px] sm:text-xs tracking-wider">
         {role.period}
       </span>
-      <h3 className="text-xl font-semibold mt-1">{role.title}</h3>
-      <p className="text-muted text-sm mb-4">{role.company}</p>
-      <ul className="space-y-2">
+      <h3 className="text-lg sm:text-xl font-semibold mt-1">{role.title}</h3>
+      <p className="text-muted text-xs sm:text-sm mb-3 sm:mb-4">{role.company}</p>
+      <ul className="space-y-1.5 sm:space-y-2">
         {role.bullets.map((bullet, i) => (
           <li
             key={i}
             className={cn(
-              "text-muted text-sm leading-relaxed pl-4 relative transition-all duration-500",
+              "text-muted text-xs sm:text-sm leading-relaxed pl-3 sm:pl-4 relative transition-all duration-500",
               visible
                 ? "opacity-100 translate-y-0"
                 : "opacity-0 translate-y-4",
@@ -109,7 +109,7 @@ function TimelineItem({
               transitionDelay: visible ? `${300 + i * 100}ms` : "0ms",
             }}
           >
-            <span className="absolute left-0 top-[0.6em] w-1.5 h-1.5 rounded-full bg-lime/50" />
+            <span className="absolute left-0 top-[0.6em] w-1 h-1.5 sm:w-1.5 sm:h-1.5 rounded-full bg-lime/50" />
             {bullet}
           </li>
         ))}
@@ -120,12 +120,12 @@ function TimelineItem({
 
 export default function Experience() {
   return (
-    <section id="experience" className="py-32 px-6">
+    <section id="experience" className="py-20 sm:py-32 px-6">
       <div className="max-w-3xl mx-auto">
         <p className="text-lime font-mono text-sm tracking-widest uppercase mb-3 text-center">
           Experience
         </p>
-        <h2 className="text-3xl sm:text-4xl font-bold mb-16 text-center tracking-tight">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-10 sm:mb-16 text-center tracking-tight">
           Where I&apos;ve worked
         </h2>
         <div>

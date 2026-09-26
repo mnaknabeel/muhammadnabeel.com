@@ -2,12 +2,14 @@
 
 import { useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
+import { List, X } from "phosphor-react"
 
-const sections = ["hero", "summary", "experience", "cases", "skills", "contact"]
+const sections = ["hero", "summary", "experience", "cases", "portfolio", "skills", "contact"]
 
 export default function Nav() {
   const [active, setActive] = useState("hero")
   const [scrolled, setScrolled] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
     const onScroll = () => {
@@ -38,6 +40,14 @@ export default function Nav() {
         <a href="#hero" className="text-lime font-mono text-sm tracking-wider">
           MN
         </a>
+
+        <button
+          className="sm:hidden text-muted hover:text-lime transition-colors"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          {menuOpen ? <X size={20} /> : <List size={20} />}
+        </button>
+
         <div className="hidden sm:flex items-center gap-6">
           {sections.slice(1).map((s) => (
             <a
@@ -53,6 +63,26 @@ export default function Nav() {
           ))}
         </div>
       </div>
+
+      {menuOpen && (
+        <div className="sm:hidden bg-surface/95 backdrop-blur-xl border-b border-border">
+          <div className="flex flex-col px-6 py-4 gap-3">
+            {sections.slice(1).map((s) => (
+              <a
+                key={s}
+                href={`#${s}`}
+                onClick={() => setMenuOpen(false)}
+                className={cn(
+                  "text-sm uppercase tracking-widest font-mono transition-colors",
+                  active === s ? "text-lime" : "text-muted",
+                )}
+              >
+                {s === "cases" ? "Case Studies" : s}
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
     </nav>
   )
 }
