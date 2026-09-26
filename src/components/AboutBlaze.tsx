@@ -63,7 +63,7 @@ export default function AboutBlaze() {
           <h2 className="mt-4 text-3xl font-black tracking-tight text-black sm:text-4xl lg:text-5xl">
             Finance Engineer. Tax Consultant. Automation Specialist.
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-base font-bold text-black sm:text-lg">
+          <p className="mx-auto mt-4 max-w-2xl text-base text-black sm:text-lg">
             No junior account managers, no outsourced offshore mills, no bot responses.
             You work directly with an engineer who understands both ledger math and code.
           </p>
@@ -104,7 +104,7 @@ export default function AboutBlaze() {
 
                 {/* Card Sub-Banner */}
                 <div className="border-t-2 border-black bg-[#f4f4f0] p-4 text-xs font-medium text-black">
-                  <p className="italic font-bold text-black">
+                  <p className="italic text-black">
                     &ldquo;My philosophy is simple: clean books prevent costly audits, and automation frees you to grow your business.&rdquo;
                   </p>
                   <div className="mt-3 flex items-center justify-between border-t border-black/10 pt-2 text-[11px] font-bold">
@@ -112,7 +112,7 @@ export default function AboutBlaze() {
                       <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse inline-block" />
                       Active on WhatsApp
                     </span>
-                    <span className="text-black font-black">+92 341 0224988</span>
+                    <span className="text-black font-semibold">+92 341 0224988</span>
                   </div>
                 </div>
               </div>
@@ -131,7 +131,7 @@ export default function AboutBlaze() {
               <h3 className="text-xl font-black text-black sm:text-2xl">
                 Bridging Finance, Python &amp; Tax Compliance
               </h3>
-              <p className="mt-3 text-sm leading-relaxed text-neutral-900 font-semibold sm:text-base">
+              <p className="mt-3 text-sm leading-relaxed text-black sm:text-base">
                 Over the past 5+ years, I have specialized in transforming neglected ledgers into audit-ready financial reporting systems. Whether you sell on Amazon FBA, operate a regional logistics fleet, or need to file 100% compliant Pakistan income tax returns under Section 116/154A, every transaction is reconciled with mathematical precision.
               </p>
               <div className="mt-4 flex flex-wrap gap-2 pt-2">
@@ -146,7 +146,7 @@ export default function AboutBlaze() {
                 ].map((skill) => (
                   <span
                     key={skill}
-                    className="rounded-full border-2 border-black bg-[#f4f4f0] px-3 py-1 text-xs font-black text-black"
+                    className="rounded-full border border-black bg-[#f4f4f0] px-3 py-1 text-xs font-semibold text-black"
                   >
                     {skill}
                   </span>
@@ -167,13 +167,13 @@ export default function AboutBlaze() {
                       <div className="flex h-9 w-9 items-center justify-center rounded-lg border-2 border-black bg-[#c8f603] text-black">
                         <Icon size={20} weight="bold" />
                       </div>
-                      <span className="rounded border-2 border-black bg-neutral-100 px-2 py-0.5 text-[10px] font-black uppercase tracking-wider text-black">
+                      <span className="rounded border border-black bg-neutral-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-black">
                         {c.badge}
                       </span>
                     </div>
                     <h4 className="mt-3 text-base font-black text-black">{c.title}</h4>
-                    <p className="text-xs font-black text-black">{c.org}</p>
-                    <p className="mt-2 text-xs leading-relaxed font-bold text-black">
+                    <p className="text-xs font-semibold text-black">{c.org}</p>
+                    <p className="mt-2 text-xs leading-relaxed text-black">
                       {c.desc}
                     </p>
                   </div>

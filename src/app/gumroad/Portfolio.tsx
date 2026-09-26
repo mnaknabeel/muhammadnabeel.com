@@ -56,7 +56,7 @@ export default function Portfolio() {
             <h2 className="mt-3 text-3xl font-black tracking-tight text-black sm:text-4xl lg:text-5xl">
               Real Work. Real Spreadsheets. Real Impact.
             </h2>
-            <p className="mt-3 max-w-2xl text-base font-bold text-black sm:text-lg">
+            <p className="mt-3 max-w-2xl text-base text-black sm:text-lg">
               Explore 12 interactive financial deliverables built for actual clients. Anonymized data, real formulas, automated reconciliation pipelines, and audit-ready reports.
             </p>
           </div>
@@ -69,7 +69,7 @@ export default function Portfolio() {
                 <button
                   key={cat.id}
                   onClick={() => setActiveFilter(cat.id)}
-                  className={`rounded-full border-2 border-black px-4 py-1.5 text-xs font-black uppercase tracking-wider transition ${
+                  className={`rounded-full border-2 border-black px-4 py-1.5 text-xs font-bold uppercase tracking-wider transition ${
                     active
                       ? "bg-black text-[#c8f603] shadow-[2px_2px_0_#c8f603]"
                       : "bg-white text-black hover:bg-neutral-200 shadow-[2px_2px_0_#000]"
@@ -109,13 +109,13 @@ export default function Portfolio() {
                   />
 
                   {/* Top-Right Badge Tag */}
-                  <span className="absolute right-3 top-3 rounded-md border border-black bg-white/95 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-black shadow-[2px_2px_0_#000]">
+                  <span className="absolute right-3 top-3 rounded-md border border-black bg-white/95 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-black shadow-[2px_2px_0_#000]">
                     Verified
                   </span>
 
                   {/* Hover Overlay Button */}
                   <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 backdrop-blur-[2px] transition-opacity duration-300 group-hover:opacity-100">
-                    <span className="inline-flex items-center gap-1.5 rounded-xl border-2 border-black bg-[#c8f603] px-4 py-2 text-xs font-black text-black shadow-[3px_3px_0_#000]">
+                    <span className="inline-flex items-center gap-1.5 rounded-xl border-2 border-black bg-[#c8f603] px-4 py-2 text-xs font-bold text-black shadow-[3px_3px_0_#000]">
                       <Eye size={16} weight="bold" />
                       <span>Inspect Deliverable</span>
                       <ArrowUpRight size={14} weight="bold" />
@@ -125,7 +125,7 @@ export default function Portfolio() {
 
                 {/* Card Content */}
                 <div className="flex flex-1 flex-col p-5 sm:p-6">
-                  <div className="flex items-center justify-between text-xs text-black font-black uppercase tracking-wider">
+                  <div className="flex items-center justify-between text-xs text-black font-semibold uppercase tracking-wider">
                     <span>{item.subtitle}</span>
                     <ArrowUpRight size={16} className="text-black transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                   </div>
@@ -134,7 +134,7 @@ export default function Portfolio() {
                     {item.title}
                   </h3>
 
-                  <p className="mt-2 line-clamp-3 text-xs leading-relaxed font-bold text-black sm:text-sm">
+                  <p className="mt-2 line-clamp-3 text-xs leading-relaxed text-black sm:text-sm">
                     {item.description}
                   </p>
 
@@ -143,7 +143,7 @@ export default function Portfolio() {
                     {item.tags.map((t) => (
                       <span
                         key={t}
-                        className="rounded-md border-2 border-black bg-[#f4f4f0] px-2.5 py-0.5 text-[10px] font-black text-black"
+                        className="rounded-md border border-black bg-[#f4f4f0] px-2.5 py-0.5 text-[10px] font-semibold text-black"
                       >
                         {t}
                       </span>

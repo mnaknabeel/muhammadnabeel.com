@@ -94,21 +94,21 @@ export default function Experience() {
           >
             <div className="mb-4 flex flex-wrap items-center justify-between gap-2 border-b-2 border-black/20 pb-4">
               <span
-                className="rounded-md border-2 border-black px-2.5 py-1 text-xs font-black tabular-nums text-black"
+                className="rounded-md border border-black px-2.5 py-0.5 text-xs font-semibold tabular-nums text-black"
                 style={{ background: i === 0 ? lime : yellow }}
               >
                 {role.period}
               </span>
-              <span className="text-xs font-black uppercase tracking-[0.14em] text-black">
+              <span className="text-xs font-semibold uppercase tracking-[0.14em] text-black">
                 {role.company}
               </span>
             </div>
-            <h3 className="mb-4 text-xl font-black tracking-tight text-black sm:text-2xl">
+            <h3 className="mb-4 text-xl font-bold tracking-tight text-black sm:text-2xl">
               {role.title}
             </h3>
             <ul className="space-y-2">
               {role.bullets.map((b) => (
-                <li key={b} className="relative pl-4 text-[15px] font-bold leading-relaxed text-black">
+                <li key={b} className="relative pl-4 text-[15px] leading-relaxed text-black">
                   <span
                     className="absolute left-0 top-[0.55em] h-2 w-2 rounded-full border border-black"
                     style={{ background: lime }}

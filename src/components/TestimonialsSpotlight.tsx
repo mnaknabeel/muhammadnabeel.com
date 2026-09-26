@@ -130,7 +130,7 @@ export default function TestimonialsSpotlight() {
             <h2 className="mt-3 text-[clamp(2.1rem,5vw,3.5rem)] font-extrabold tracking-tight text-black">
               Trusted by founders, engineers &amp; merchants.
             </h2>
-            <p className="mt-2 text-base font-bold text-black max-w-xl">
+            <p className="mt-2 text-base text-black max-w-xl">
               Real results across US e-commerce brands, software exporters, and busy salaried professionals.
             </p>
           </div>
@@ -202,8 +202,8 @@ export default function TestimonialsSpotlight() {
                     <p className="text-base font-black text-black">{current.author}</p>
                     <CheckCircle size={16} weight="fill" className="text-emerald-600" />
                   </div>
-                  <p className="text-xs font-bold text-black">
-                    {current.role} · <span className="font-black text-black">{current.company}</span>
+                  <p className="text-xs text-black">
+                    {current.role} · <span className="font-semibold text-black">{current.company}</span>
                   </p>
                 </div>
 

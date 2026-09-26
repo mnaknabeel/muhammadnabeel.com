@@ -182,7 +182,7 @@ export default function FeeEstimator() {
                   <h3 className="text-xl font-black text-black">
                     1. Select Your Taxpayer Category
                   </h3>
-                  <p className="mt-1 text-xs font-bold text-black sm:text-sm">
+                  <p className="mt-1 text-xs text-black sm:text-sm">
                     FBR Tax Year 2026 filings (Period: 1 July 2025 to 30 June 2026).
                   </p>
 
@@ -212,11 +212,11 @@ export default function FeeEstimator() {
                             className="h-4 w-4 accent-black"
                           />
                           <div>
-                            <p className="text-sm font-black text-black">{item.label}</p>
-                            <p className="text-xs font-bold text-black">{item.desc}</p>
+                            <p className="text-sm font-bold text-black">{item.label}</p>
+                            <p className="text-xs text-black">{item.desc}</p>
                           </div>
                         </div>
-                        <span className="rounded-md border border-black bg-black px-2.5 py-1 text-xs font-black text-[#c8f603]">
+                        <span className="rounded-md border border-black bg-black px-2.5 py-1 text-xs font-bold text-[#c8f603]">
                           {item.price}
                         </span>
                       </label>
@@ -228,17 +228,17 @@ export default function FeeEstimator() {
                   <h3 className="text-xl font-black text-black">
                     1. Configure Your Transaction Volume
                   </h3>
-                  <p className="mt-1 text-xs font-bold text-black sm:text-sm">
+                  <p className="mt-1 text-xs text-black sm:text-sm">
                     Drag the sliders to reflect your monthly activity.
                   </p>
 
                   {/* Monthly Transactions Slider */}
                   <div className="mt-6 rounded-xl border-2 border-black bg-[#fafaf8] p-4">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-black uppercase tracking-wider text-black">
+                      <span className="text-xs font-bold uppercase tracking-wider text-black">
                         Monthly Transactions
                       </span>
-                      <span className="rounded border border-black bg-[#c8f603] px-2 py-0.5 text-xs font-black text-black">
+                      <span className="rounded border border-black bg-[#c8f603] px-2 py-0.5 text-xs font-bold text-black">
                         {transactions} {transactions >= 500 ? "+" : ""} txns/mo
                       </span>
                     </div>
@@ -251,7 +251,7 @@ export default function FeeEstimator() {
                       onChange={(e) => setTransactions(Number(e.target.value))}
                       className="mt-3 w-full accent-black cursor-pointer"
                     />
-                    <div className="mt-1 flex justify-between text-[10px] font-black text-black">
+                    <div className="mt-1 flex justify-between text-[10px] text-black">
                       <span>30 (Small)</span>
                       <span>200 (Growing)</span>
                       <span>500+ (High Volume)</span>
@@ -261,10 +261,10 @@ export default function FeeEstimator() {
                   {/* Bank Accounts Slider */}
                   <div className="mt-4 rounded-xl border-2 border-black bg-[#fafaf8] p-4">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-black uppercase tracking-wider text-black">
+                      <span className="text-xs font-bold uppercase tracking-wider text-black">
                         Bank &amp; Credit Card Accounts
                       </span>
-                      <span className="rounded border border-black bg-[#c8f603] px-2 py-0.5 text-xs font-black text-black">
+                      <span className="rounded border border-black bg-[#c8f603] px-2 py-0.5 text-xs font-bold text-black">
                         {accounts} {accounts >= 5 ? "+" : ""} accounts
                       </span>
                     </div>
@@ -277,7 +277,7 @@ export default function FeeEstimator() {
                       onChange={(e) => setAccounts(Number(e.target.value))}
                       className="mt-3 w-full accent-black cursor-pointer"
                     />
-                    <div className="mt-1 flex justify-between text-[10px] font-black text-black">
+                    <div className="mt-1 flex justify-between text-[10px] text-black">
                       <span>1 Account</span>
                       <span>3 Accounts</span>
                       <span>6+ Accounts</span>

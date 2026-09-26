@@ -70,7 +70,7 @@ export default function TaxRatesPage() {
           <h1 className="mt-5 text-[clamp(2.25rem,6vw,4rem)] font-bold leading-[1.03] tracking-[-0.03em] text-black">
             Tax Rates &amp; Withholding Card.
           </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-base font-bold text-black sm:text-lg">
+          <p className="mx-auto mt-4 max-w-2xl text-base text-black sm:text-lg">
             The definitive statutory tax slabs for Tax Year 2026 and the official Filer vs. Non-Filer Withholding Tax penalties comparison.
           </p>
         </ScrollReveal>
@@ -83,7 +83,7 @@ export default function TaxRatesPage() {
             <h2 className="text-2xl font-bold tracking-tight text-black sm:text-3xl">
               1. Statutory Income Tax Slabs (TY 2026)
             </h2>
-            <p className="mt-1 text-sm font-bold text-black">
+            <p className="mt-1 text-sm text-black">
               First Schedule, Part I, Division I — Applicable for Fiscal Year 2025-2026
             </p>
           </div>
@@ -141,10 +141,10 @@ export default function TaxRatesPage() {
                         ? `Exceeding Rs. ${slab.min.toLocaleString()}`
                         : `Rs. ${slab.min.toLocaleString()} — Rs. ${slab.max.toLocaleString()}`}
                     </td>
-                    <td className="px-6 py-4 font-bold text-black">
+                    <td className="px-6 py-4 font-semibold text-black">
                       {slab.rate === 0 ? "0% (Exempt)" : `${Math.round(slab.rate * 100)}% of excess`}
                     </td>
-                    <td className="px-6 py-4 tabular-nums font-bold text-black">
+                    <td className="px-6 py-4 tabular-nums text-black">
                       {slab.baseTax === 0 ? "Rs. 0" : `Rs. ${slab.baseTax.toLocaleString()}`}
                     </td>
                   </tr>
@@ -152,7 +152,7 @@ export default function TaxRatesPage() {
               </tbody>
             </table>
           </div>
-          <div className="border-t border-black bg-[#f4f4f0] p-4 text-xs font-bold text-black">
+          <div className="border-t border-black bg-[#f4f4f0] p-4 text-xs text-black">
             <strong>Rule Distinction:</strong> An individual qualifies for salaried rates only if their salary represents <strong>more than 75%</strong> of their total taxable income for the year.
           </div>
         </div>
@@ -171,7 +171,7 @@ export default function TaxRatesPage() {
               <h2 className="mt-2 text-2xl font-bold tracking-tight text-black sm:text-3xl">
                 2. Withholding Tax Card (Filer vs. Non-Filer)
               </h2>
-              <p className="mt-1 text-sm font-bold text-black">
+              <p className="mt-1 text-sm text-black">
                 Compare withholding tax rates between Active Taxpayers (Filers) and Inactive persons (Non-Filers).
               </p>
             </div>
@@ -218,13 +218,13 @@ export default function TaxRatesPage() {
                         <span className="rounded-md border border-black bg-[#ffc900] px-2 py-0.5 text-xs font-bold text-black">
                           Section {item.section}
                         </span>
-                        <span className="text-xs font-black text-black uppercase tracking-wider">
+                        <span className="text-xs font-semibold text-black uppercase tracking-wider">
                           {item.category}
                         </span>
                       </div>
 
                       <h3 className="mt-3 text-lg font-bold text-black">{item.title}</h3>
-                      <p className="mt-2 text-xs leading-relaxed font-bold text-black">
+                      <p className="mt-2 text-xs leading-relaxed text-black">
                         {item.ruleExplanation}
                       </p>
                     </div>
@@ -251,7 +251,7 @@ export default function TaxRatesPage() {
                       </div>
 
                       <div className="mt-3 flex items-center justify-between text-xs">
-                        <span className="font-bold text-black">Penalty Multiplier:</span>
+                        <span className="text-black">Penalty Multiplier:</span>
                         <span className="rounded bg-black px-2 py-0.5 font-bold text-[#c8f603]">
                           {item.penaltyRatio}
                         </span>

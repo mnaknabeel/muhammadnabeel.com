@@ -153,7 +153,7 @@ export default function InteractiveCaseStudies() {
           <h2 className="mt-4 text-3xl font-black tracking-tight text-black sm:text-4xl lg:text-5xl">
             Real Financial Bottlenecks. Engineered Solutions.
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-base font-bold text-black sm:text-lg">
+          <p className="mx-auto mt-4 max-w-2xl text-base text-black sm:text-lg">
             Explore how mathematical rigor, automated Python workflows, and precision accounting transform chaotic books into high-margin growth engines.
           </p>
 
@@ -165,7 +165,7 @@ export default function InteractiveCaseStudies() {
                 <button
                   key={c.id}
                   onClick={() => setActiveId(c.id)}
-                  className={`rounded-full border-2 border-black px-4 py-2 text-xs font-black uppercase tracking-wider transition ${
+                  className={`rounded-full border-2 border-black px-4 py-2 text-xs font-bold uppercase tracking-wider transition ${
                     active
                       ? "bg-black text-[#c8f603] shadow-[3px_3px_0_#c8f603]"
                       : "bg-white text-black hover:bg-neutral-100 shadow-[2px_2px_0_#000]"
@@ -192,14 +192,14 @@ export default function InteractiveCaseStudies() {
               {/* Card Top Banner */}
               <div className="flex flex-wrap items-center justify-between gap-4 border-b-2 border-black bg-neutral-900 px-6 py-4 text-white sm:px-8">
                 <div className="flex items-center gap-3">
-                  <span className="rounded-md border border-black bg-[#c8f603] px-2.5 py-1 text-xs font-black uppercase tracking-wider text-black">
+                  <span className="rounded-md border border-black bg-[#c8f603] px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-black">
                     {currentCase.tag}
                   </span>
-                  <span className="text-xs font-bold text-neutral-300">
+                  <span className="text-xs font-medium text-neutral-300">
                     Client: {currentCase.client}
                   </span>
                 </div>
-                <div className="flex items-center gap-1.5 text-xs font-black uppercase tracking-widest text-[#c8f603]">
+                <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-[#c8f603]">
                   <span className="h-2 w-2 rounded-full bg-[#c8f603] animate-ping" />
                   Verified Engagement
                 </div>
@@ -210,7 +210,7 @@ export default function InteractiveCaseStudies() {
                 <h3 className="text-2xl font-black text-black sm:text-3xl lg:text-4xl">
                   {currentCase.title}
                 </h3>
-                <p className="mt-3 text-base font-bold text-black sm:text-lg">
+                <p className="mt-3 text-base text-black sm:text-lg">
                   {currentCase.summary}
                 </p>
 
@@ -218,18 +218,18 @@ export default function InteractiveCaseStudies() {
                 <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-12">
                   {/* The Bottleneck / Challenge */}
                   <div className="rounded-[18px] border-2 border-black bg-[#fafaf8] p-6 shadow-[4px_4px_0_#000] lg:col-span-5">
-                    <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-red-600">
+                    <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-red-600">
                       <WarningCircle size={18} weight="fill" />
                       <span>The Initial Bottleneck</span>
                     </div>
-                    <p className="mt-3 text-sm leading-relaxed font-bold text-black">
+                    <p className="mt-3 text-sm leading-relaxed text-black">
                       {currentCase.challenge}
                     </p>
                   </div>
 
                   {/* The Engineering Solution */}
                   <div className="rounded-[18px] border-2 border-black bg-neutral-950 p-6 text-white shadow-[4px_4px_0_#c8f603] lg:col-span-7">
-                    <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-[#c8f603]">
+                    <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#c8f603]">
                       <Code size={18} weight="bold" />
                       <span>The Engineering Solution</span>
                     </div>
@@ -246,7 +246,7 @@ export default function InteractiveCaseStudies() {
 
                 {/* Verified Metrics Row */}
                 <div className="mt-8">
-                  <p className="text-xs font-black uppercase tracking-wider text-black">
+                  <p className="text-xs font-bold uppercase tracking-wider text-black">
                     Verified Performance Metrics
                   </p>
                   <div className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -258,10 +258,10 @@ export default function InteractiveCaseStudies() {
                         <p className="text-3xl font-black text-black sm:text-4xl tabular-nums">
                           {m.value}
                         </p>
-                        <p className="mt-1 text-sm font-black text-black">
+                        <p className="mt-1 text-sm font-bold text-black">
                           {m.label}
                         </p>
-                        <p className="mt-0.5 text-xs font-bold text-black">
+                        <p className="mt-0.5 text-xs text-black">
                           {m.subtext}
                         </p>
                       </div>
@@ -273,10 +273,10 @@ export default function InteractiveCaseStudies() {
                 {currentCase.quote && (
                   <div className="mt-8 flex flex-col items-center justify-between gap-6 rounded-[16px] border-2 border-black bg-[#f4f4f0] p-6 sm:flex-row">
                     <div className="space-y-1 text-center sm:text-left">
-                      <p className="text-sm font-bold italic text-black">
+                      <p className="text-sm italic text-black">
                         &ldquo;{currentCase.quote}&rdquo;
                       </p>
-                      <p className="text-xs font-black uppercase tracking-wider text-black">
+                      <p className="text-xs font-semibold uppercase tracking-wider text-black">
                         — {currentCase.quoteAuthor}
                       </p>
                     </div>
