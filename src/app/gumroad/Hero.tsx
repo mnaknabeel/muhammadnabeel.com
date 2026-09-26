@@ -11,12 +11,13 @@
 
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Float, RoundedBox, Edges, Sparkles } from "@react-three/drei";
-import { Suspense, useRef, useMemo } from "react";
+import { Suspense, useRef, useMemo, useState } from "react";
 import {
   motion,
   useScroll,
   useTransform,
   useReducedMotion,
+  useMotionValueEvent,
   type MotionValue,
 } from "motion/react";
 import * as THREE from "three";
@@ -275,29 +276,33 @@ function Backdrop({ progress }: { progress: MotionValue<number> | number }) {
 
 /* ── Mini 3D bar chart (inside the dashboard card) ───────── */
 
-const BAR_H = [0.5, 0.75, 0.6, 1.0, 0.8, 1.25, 1.05, 1.6];
+const BAR_H = [0.55, 0.8, 0.65, 1.1, 0.9, 1.35, 1.15, 1.7];
 const LAST = BAR_H.length - 1;
 const barColor = (i: number) =>
-  i === LAST ? lime : i === 4 ? "#ffc900" : "#ffffff";
+  i === LAST ? lime : i === 4 ? "#ffc900" : "#141418";
 
 function MiniBars({ progress }: { progress: MotionValue<number> | number }) {
   const groups = useRef<(THREE.Group | null)[]>([]);
 
   useFrame(({ clock }) => {
     const p = pv(progress);
+    const time = clock.elapsedTime;
     BAR_H.forEach((h, i) => {
       const g = groups.current[i];
       if (!g) return;
-      // each bar grows in sequence as scroll progresses (visible stubs at rest)
-      const t = THREE.MathUtils.clamp(p * 1.7 - i * 0.09, 0.22, 1);
-      g.scale.y += (h * t - g.scale.y) * 0.14;
+      // Gentle breathing idle wave even at rest
+      const idleWave = Math.sin(time * 2.5 + i * 0.7) * 0.04;
+      // Growth driven by scroll progress
+      const scrollGrowth = THREE.MathUtils.clamp(p * 1.8 - i * 0.08, 0.35, 1);
+      const targetScaleY = h * scrollGrowth + idleWave;
+      g.scale.y += (targetScaleY - g.scale.y) * 0.16;
       g.position.y = g.scale.y / 2;
     });
-    // final bar pulses once the chart is complete
+    // final neon-lime bar pulses once the chart is complete
     const last = groups.current[LAST];
     if (last) {
-      const k = THREE.MathUtils.clamp((p - 0.85) / 0.15, 0, 1);
-      const pulse = 1 + Math.sin(clock.elapsedTime * 5) * 0.06 * k;
+      const k = THREE.MathUtils.clamp((p - 0.6) / 0.4, 0, 1);
+      const pulse = 1 + Math.sin(clock.elapsedTime * 6) * 0.08 * k;
       last.scale.x = pulse;
       last.scale.z = pulse;
     }
@@ -317,12 +322,12 @@ function MiniBars({ progress }: { progress: MotionValue<number> | number }) {
           <RoundedBox args={[0.38, 1, 0.38]} radius={0.06} smoothness={3}>
             <meshStandardMaterial
               color={barColor(i)}
-              roughness={0.35}
-              metalness={0.1}
-              emissive={i === LAST ? lime : "#000000"}
-              emissiveIntensity={i === LAST ? 0.35 : 0}
+              roughness={0.25}
+              metalness={0.2}
+              emissive={i === LAST ? lime : i === 4 ? "#ffc900" : "#000000"}
+              emissiveIntensity={i === LAST ? 0.45 : i === 4 ? 0.15 : 0}
             />
-            <Edges color="#0e0e0e" threshold={15} />
+            <Edges color={i === LAST ? "#000000" : "#2a2a2a"} threshold={15} />
           </RoundedBox>
         </group>
       ))}
@@ -338,14 +343,14 @@ function MiniCam() {
 function MiniScene({ progress }: { progress: MotionValue<number> | number }) {
   return (
     <>
-      <ambientLight intensity={1.2} />
-      <directionalLight position={[3, 5, 4]} intensity={1.3} />
+      <ambientLight intensity={1.3} />
+      <directionalLight position={[3, 5, 4]} intensity={1.4} />
       <Suspense fallback={null}>
         <MiniBars progress={progress} />
         <gridHelper
-          args={[8, 8, "#e4e2d8", "#eeece4"]}
+          args={[8, 8, "#dcdad0", "#ebe8de"]}
           material-transparent
-          material-opacity={0.35}
+          material-opacity={0.5}
         />
       </Suspense>
       <MiniCam />
@@ -353,54 +358,78 @@ function MiniScene({ progress }: { progress: MotionValue<number> | number }) {
   );
 }
 
-/* ── Dashboard card (chart + counter) ────────────────────── */
+/* ── Reactive Scroll Counter Component ────────────────────── */
 
-const CSS_H = [10, 16, 13, 22, 18, 28, 22, 36];
-const cssColor = (i: number) =>
-  i === LAST ? "bg-[#c8f603]" : i === 4 ? "bg-[#ffc900]" : "bg-white";
-
-function ChartCard({
+function ScrollCounter({
   progress,
-  counter,
   reduced,
 }: {
   progress: MotionValue<number>;
-  counter: MotionValue<string> | string;
   reduced: boolean;
 }) {
-  const barScale = useTransform(progress, [0, 1], [0.3, 1]);
+  const [display, setDisplay] = useState(reduced ? "$4,000,000+" : "$0");
+
+  useMotionValueEvent(progress, "change", (latest) => {
+    if (reduced) return;
+    // Map scroll progress from 0.02 to 0.70 to values from 0 to 4,000,000
+    const p = Math.min(1, Math.max(0, (latest - 0.02) / 0.68));
+    const current = Math.round(p * 4000000);
+    setDisplay("$" + current.toLocaleString("en-US") + (p >= 0.95 ? "+" : ""));
+  });
+
+  return (
+    <span className="text-[26px] font-black leading-tight tabular-nums text-black">
+      {display}
+    </span>
+  );
+}
+
+/* ── Dashboard card (chart + counter) ────────────────────── */
+
+const CSS_H = [12, 18, 14, 24, 20, 30, 24, 38];
+const cssColor = (i: number) =>
+  i === LAST ? "bg-[#c8f603]" : i === 4 ? "bg-[#ffc900]" : "bg-black";
+
+function ChartCard({
+  progress,
+  reduced,
+}: {
+  progress: MotionValue<number>;
+  reduced: boolean;
+}) {
+  const barScale = useTransform(progress, [0, 1], [0.35, 1]);
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-      className="w-full max-w-[360px] overflow-hidden rounded-[16px_16px_16px_4px] border border-black bg-white shadow-[6px_6px_0_#c8f603]"
+      className="w-full max-w-[360px] overflow-hidden rounded-[16px_16px_16px_4px] border-2 border-black bg-white text-black shadow-[7px_7px_0_#c8f603]"
     >
       {/* header */}
-      <div className="flex items-center justify-between border-b border-black bg-[#f4f4f0] px-4 py-2.5">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.18em]">
+      <div className="flex items-center justify-between border-b-2 border-black bg-[#f4f4f0] px-4 py-2.5">
+        <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-black">
           Revenue engine
         </p>
-        <p className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-widest">
+        <p className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-black">
           <span
-            className="live-blip inline-block h-2 w-2 rounded-full"
+            className="live-blip inline-block h-2.5 w-2.5 rounded-full border border-black"
             style={{ background: lime }}
           />
           Live
         </p>
       </div>
 
-      {/* 3D chart — desktop (contained in card, cannot touch the headline) */}
-      <div className="hidden h-[min(125px,15vh)] border-b border-black bg-[#fafaf6] md:block">
+      {/* 3D chart — desktop */}
+      <div className="hidden h-[min(130px,16vh)] border-b-2 border-black bg-[#fafaf6] md:block">
         <Canvas camera={{ position: [0, 1.05, 2.7], fov: 36 }} dpr={[1, 1.5]}>
           <MiniScene progress={reduced ? 1 : progress} />
         </Canvas>
       </div>
 
       {/* compact 2D bars — mobile keeps the growth, drops the canvas */}
-      <div className="border-b border-black bg-[#fafaf6] px-4 pb-2.5 pt-3 md:hidden">
-        <div className="flex h-9 items-end gap-1.5">
+      <div className="border-b-2 border-black bg-[#fafaf6] px-4 pb-2.5 pt-3 md:hidden">
+        <div className="flex h-10 items-end gap-1.5">
           {CSS_H.map((h, i) => (
             <motion.div
               key={i}
@@ -416,17 +445,17 @@ function ChartCard({
       </div>
 
       {/* footer: scroll-driven count-up */}
-      <div className="flex items-end justify-between px-4 py-3">
+      <div className="flex items-end justify-between bg-white px-4 py-3">
         <div>
-          <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-black">
+          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-neutral-600">
             Cumulative managed
           </p>
-          <motion.p className="text-[26px] font-semibold leading-tight tabular-nums">
-            {counter}
-          </motion.p>
+          <div className="mt-0.5">
+            <ScrollCounter progress={progress} reduced={reduced} />
+          </div>
         </div>
         <span
-          className="rounded-md border border-black px-2 py-1 text-xs font-semibold"
+          className="rounded-md border-2 border-black px-2.5 py-1 text-xs font-black tracking-wide text-black shadow-[2px_2px_0_#000]"
           style={{ background: lime }}
         >
           +122% MoM
@@ -509,16 +538,11 @@ export default function Hero() {
   const imgRotate = useTransform(scrollYProgress, [0, 1], [4, -3]);
   const badgeY = useTransform(scrollYProgress, [0, 1], [0, -10]);
 
-  const rawCount = useTransform(scrollYProgress, [0.05, 1], [0, 4000000]);
-  const counterText = useTransform(
-    rawCount,
-    (v) => "$" + Math.round(v).toLocaleString("en-US")
-  );
 
   return (
     <div
       ref={ref}
-      className={`${favorit.variable} relative md:h-[180vh]`}
+      className={`${favorit.variable} relative h-[175vh] md:h-[195vh]`}
       style={{ fontFamily: "var(--font-favorit), 'ABC Favorit', Avenir, sans-serif" }}
     >
       <style>{`
@@ -529,7 +553,7 @@ export default function Hero() {
         @media (prefers-reduced-motion: reduce) { .ring-wobble, .live-blip { animation: none; } }
       `}</style>
 
-      <div className="relative min-h-[100dvh] bg-[#05080f] text-white md:sticky md:top-0 md:h-screen md:overflow-hidden">
+      <div className="sticky top-0 h-screen overflow-hidden bg-[#05080f] text-white">
         {/* Background Ambience: Subtle Neon Glow */}
         <div
           className="pointer-events-none absolute -top-40 left-1/2 h-[500px] w-[800px] -translate-x-1/2 rounded-full blur-[140px] opacity-15"
@@ -663,7 +687,6 @@ export default function Hero() {
               <div className="order-2 w-full max-w-[340px] sm:max-w-[320px] md:order-1 md:max-w-[360px]">
                 <ChartCard
                   progress={scrollYProgress}
-                  counter={reduced ? "$4,000,000+" : counterText}
                   reduced={!!reduced}
                 />
               </div>

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hanging Cards — Demo</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0b0b0b;
+    color: #f2f2ea;
+    font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+  }
+  .hanging-section {
+    width: 100%;
+    max-width: 1200px;
+    padding: 48px 20px 80px;
+    text-align: center;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .hanging-section h2 {
+    font-size: clamp(26px, 4vw, 42px);
+    letter-spacing: -0.5px;
+    margin-bottom: 10px;
+  }
+  .hanging-section h2 span { color: #CCFF00; }
+  .hanging-section p.sub {
+    color: #9a9a92;
+    margin-bottom: 8px;
+    font-size: 15px;
+  }
+  .rail {
+    height: 6px;
+    background: linear-gradient(90deg, #2a2a2a, #CCFF00, #2a2a2a);
+    border-radius: 3px;
+    margin: 26px auto 0;
+    max-width: 1000px;
+    box-shadow: 0 0 18px rgba(204,255,0,.35);
+  }
+  .stage {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: clamp(10px, 2.5vw, 34px);
+    flex-wrap: wrap;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 6px;
+    cursor: grab;
+    touch-action: pan-y;
+  }
+  .stage.dragging { cursor: grabbing; }
+  .hanger {
+    transform-origin: 50% 0;
+    will-change: transform;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .string {
+    width: 2px;
+    background: linear-gradient(180deg, #CCFF00, #5a5a52);
+    border-radius: 1px;
+  }
+  .hook {
+    width: 14px; height: 14px;
+    border: 3px solid #CCFF00;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+    border-radius: 50%;
+    transform: rotate(45deg);
+    margin-top: -2px;
+  }
+  .hcard {
+    width: clamp(160px, 20vw, 210px);
+    background: #141414;
+    border: 1px solid #2b2b26;
+    border-top: 3px solid #CCFF00;
+    border-radius: 14px;
+    padding: 20px 16px 22px;
+    margin-top: 8px;
+    box-shadow: 0 18px 40px rgba(0,0,0,.55);
+    transition: box-shadow .25s, border-color .25s;
+  }
+  .hcard:hover { border-color: #CCFF00; box-shadow: 0 18px 44px rgba(204,255,0,.14); }
+  .hcard .tag {
+    display: inline-block;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #0b0b0b;
+    background: #CCFF00;
+    border-radius: 20px;
+    padding: 4px 12px;
+    margin-bottom: 12px;
+    font-weight: 700;
+  }
+  .hcard h3 { font-size: 18px; margin-bottom: 6px; }
+  .hcard .price {
+    font-size: 30px;
+    font-weight: 800;
+    color: #CCFF00;
+    margin: 8px 0 4px;
+  }
+  .hcard .price small { font-size: 13px; font-weight: 400; color: #9a9a92; }
+  .hcard p.desc { font-size: 13.5px; color: #b9b9b0; line-height: 1.55; margin-top: 8px; }
+  .cta-row { margin-top: 54px; }
+  .cta-row a {
+    display: inline-block;
+    background: #CCFF00;
+    color: #0b0b0b;
+    font-weight: 800;
+    text-decoration: none;
+    padding: 15px 38px;
+    border-radius: 40px;
+    font-size: 16px;
+    transition: transform .15s;
+  }
+  .cta-row a:hover { transform: translateY(-2px); }
+  .hint { margin-top: 14px; font-size: 12.5px; color: #6f6f68; }
+  @media (max-width: 560px) {
+    .hcard { width: 158px; padding: 16px 12px 18px; }
+    .hcard .price { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<section class="hanging-section" id="hangingCards">
+  <h2>Pick your category. <span>Give it a swing.</span></h2>
+  <p class="sub">Tax filing for Tax Year 2026 — FBR deadline 30 September. Drag any card.</p>
+  <div class="rail"></div>
+  <div class="stage" id="stage"><!-- cards injected by JS --></div>
+  <div class="cta-row">
+    <a href="https://wa.me/923410224988" target="_blank" rel="noopener">File my return on WhatsApp</a>
+    <div class="hint">0341-0224988 &nbsp;·&nbsp; reply within a few hours</div>
+  </div>
+</section>
+
+<script>
+(function () {
+  var CARDS = [
+    { tag: "Most common",  title: "Salaried",               price: "3,500", desc: "One employer, clean salary slip. Filed fast, ATL checked." },
+    { tag: "Side income",  title: "Salaried + Other Income", price: "4,500", desc: "Salary plus rent, bank profit or freelance on the side." },
+    { tag: "IT exports",   title: "Freelancers",             price: "5,000", desc: "Foreign remittances, 154A handled, PSEB-aware filing." },
+    { tag: "Non-resident", title: "Overseas Pakistanis",     price: "7,000", desc: "Living abroad, filing back home. Done fully remote." },
+    { tag: "Full books",   title: "Business",                price: "8,000", desc: "Sole proprietors and AOPs — from records to filed return." }
+  ];
+  var STRING_LENS = [150, 210, 120, 190, 140]; // varied drop lengths, px
+
+  var stage = document.getElementById('stage');
+  var pendulums = [];
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  CARDS.forEach(function (c, i) {
+    var hanger = document.createElement('div');
+    hanger.className = 'hanger';
+    var L = STRING_LENS[i % STRING_LENS.length];
+    hanger.innerHTML =
+      '<div class="string" style="height:' + L + 'px"></div>' +
+      '<div class="hook"></div>' +
+      '<div class="hcard"><span class="tag">' + c.tag + '</span>' +
+      '<h3>' + c.title + '</h3>' +
+      '<div class="price">Rs ' + c.price + ' <small>fixed</small></div>' +
+      '<p class="desc">' + c.desc + '</p></div>';
+    stage.appendChild(hanger);
+    pendulums.push({
+      el: hanger, L: L,
+      angle: (Math.random() - 0.5) * 0.22, // slight random starting tilt
+      vel: 0,
+      dragging: false, lastX: 0
+    });
+  });
+
+  var G = 2600;      // gravity, px/s^2 — higher = snappier swing
+  var DAMPING = 0.55;
+
+  function frame(t) {
+    var dt = Math.min((t - (frame.p || t)) / 1000, 0.033);
+    frame.p = t;
+    for (var i = 0; i < pendulums.length; i++) {
+      var p = pendulums[i];
+      if (!p.dragging && !reduceMotion) {
+        var acc = -(G / (p.L + 220)) * Math.sin(p.angle) - DAMPING * p.vel;
+        p.vel += acc * dt;
+        p.angle += p.vel * dt;
+      }
+      p.el.style.transform = 'rotate(' + p.angle + 'rad)';
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  // Drag a card to swing it, release to let physics take over
+  pendulums.forEach(function (p) {
+    var card = p.el.querySelector('.hcard');
+    card.addEventListener('pointerdown', function (e) {
+      p.dragging = true; p.lastX = e.clientX; p.vel = 0;
+      stage.classList.add('dragging');
+      card.setPointerCapture(e.pointerId);
+    });
+    card.addEventListener('pointermove', function (e) {
+      if (!p.dragging) return;
+      var dx = e.clientX - p.lastX; p.lastX = e.clientX;
+      var target = p.angle + dx / (p.L + 220);
+      target = Math.max(-0.9, Math.min(0.9, target));
+      p.vel = (target - p.angle) * 18; // fling velocity from drag speed
+      p.angle = target;
+    });
+    function release() { p.dragging = false; stage.classList.remove('dragging'); }
+    card.addEventListener('pointerup', release);
+    card.addEventListener('pointercancel', release);
+  });
+
+  // Breeze: moving the mouse across the stage nudges the cards
+  var lastMX = null;
+  stage.addEventListener('mousemove', function (e) {
+    if (reduceMotion) return;
+    if (lastMX !== null) {
+      var push = (e.clientX - lastMX) * 0.0016;
+      pendulums.forEach(function (p, i) { p.vel += push * (0.7 + 0.15 * i); });
+    }
+    lastMX = e.clientX;
+  });
+  stage.addEventListener('mouseleave', function () { lastMX = null; });
+
+  // Entrance: when scrolled into view, cards swing in one by one
+  var seen = false;
+  new IntersectionObserver(function (entries) {
+    if (entries[0].isIntersecting && !seen) {
+      seen = true;
+      pendulums.forEach(function (p, i) {
+        setTimeout(function () { p.vel += (i % 2 ? -1 : 1) * 1.6; }, i * 160);
+      });
+    }
+  }, { threshold: 0.25 }).observe(document.getElementById('hangingCards'));
+
+  // Gentle idle gusts every few seconds
+  if (!reduceMotion) setInterval(function () {
+    var p = pendulums[Math.floor(Math.random() * pendulums.length)];
+    if (!p.dragging) p.vel += (Math.random() - 0.5) * 0.7;
+  }, 4200);
+})();
+</script>
+</body>
+</html>

@@ -7,6 +7,7 @@ import TaxFooter from "@/components/tax/TaxFooter";
 import { favorit } from "@/app/gumroad/fonts";
 import TaxHeroCanvas from "@/components/tax/TaxHeroCanvas";
 import RoadmapAscent from "@/components/tax/RoadmapAscent";
+import HangingPricingCards from "@/components/tax/HangingPricingCards";
 import {
   ScrollReveal,
   TiltCard,
@@ -359,88 +360,8 @@ export default function TaxFilingPage() {
       {/* Cinematic Scroll-Animated Roadmap Ascent Section */}
       <RoadmapAscent />
 
-      {/* Pricing Packages Section */}
-      <section id="pricing" className="border-b border-black bg-white px-5 py-16 sm:px-8 sm:py-24">
-        <div className="mx-auto max-w-6xl">
-          <ScrollReveal className="text-center">
-            <span className="rounded-md border border-black bg-[#c8f603] px-3 py-1 text-xs font-bold uppercase tracking-wider text-black">
-              Transparent Pricing
-            </span>
-            <h2 className="mt-3 text-[clamp(2rem,5vw,3.5rem)] font-bold tracking-tight text-black">
-              Simple, flat-rate filing plans.
-            </h2>
-            <p className="mx-auto mt-3 max-w-xl text-base text-black/75">
-              Clear fees. What you see is what you pay. No consultation fees after the fact, no surprise add-ons.
-            </p>
-          </ScrollReveal>
-
-          <StaggerContainer staggerDelay={0.12} className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {plans.map((p) => {
-              const whatsappPlanText = encodeURIComponent(
-                `Hi Nabeel! I would like to choose the "${p.name}" package (${p.price}) for my Pakistan tax return filing. What documents should I send?`
-              );
-              return (
-                <StaggerItem key={p.name}>
-                  <TiltCard maxTilt={5} className="h-full">
-                    <div
-                      className={`spotlight-card flex h-full flex-col justify-between rounded-[24px_24px_24px_4px] border border-black p-7 transition hover:-translate-y-1 ${
-                        p.highlight
-                          ? "bg-[#f4f4f0] shadow-[7px_7px_0_#000] border-2"
-                          : "bg-white shadow-[5px_5px_0_#000]"
-                      }`}
-                    >
-                      <div>
-                        <div className="flex items-center justify-between">
-                          <h3 className="text-xl font-bold tracking-tight text-black">{p.name}</h3>
-                          {p.tag && (
-                            <span className="rounded-full border border-black bg-[#c8f603] px-2.5 py-0.5 text-xs font-bold text-black">
-                              {p.tag}
-                            </span>
-                          )}
-                        </div>
-                        <p className="mt-2 text-3xl font-black tabular-nums text-black">{p.price}</p>
-                        <p className="mt-3 text-xs leading-relaxed text-black/75">{p.desc}</p>
-
-                        <div className="mt-6 border-t border-black/10 pt-5">
-                          <p className="text-xs font-bold uppercase tracking-wider text-black/60">Includes:</p>
-                          <ul className="mt-3 space-y-2 text-xs">
-                            {p.features.map((feat) => (
-                              <li key={feat} className="flex items-start gap-2 text-black/85">
-                                <Check size={16} weight="bold" className="shrink-0 text-emerald-600 mt-0.5" />
-                                <span>{feat}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
-
-                      <div className="mt-8 pt-4 border-t border-black/10">
-                        <a
-                          href={`https://wa.me/923410224988?text=${whatsappPlanText}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={`magnetic flex w-full items-center justify-center gap-2 rounded-xl border border-black py-3 text-sm font-bold transition ${
-                            p.highlight
-                              ? "bg-[#c8f603] text-black hover:bg-black hover:text-white"
-                              : "bg-black text-white hover:bg-[#c8f603] hover:text-black"
-                          }`}
-                        >
-                          <WhatsappLogo size={18} weight="fill" />
-                          <span>{p.ctaText}</span>
-                        </a>
-                      </div>
-                    </div>
-                  </TiltCard>
-                </StaggerItem>
-              );
-            })}
-          </StaggerContainer>
-
-          <div className="mt-8 rounded-xl border border-black/20 bg-[#f4f4f0] p-4 text-xs text-black/75 text-center">
-            * Note for late filers: FBR charges a statutory surcharge of PKR 1,000 for individuals to appear on the Active Taxpayers List (ATL) after the official deadline. This is an official FBR government fee separate from our service fee.
-          </div>
-        </div>
-      </section>
+      {/* Interactive Hanging Cards Section inspired by demo.html with pendulum physics */}
+      <HangingPricingCards />
 
       {/* Interactive Document Checklist Section */}
       <section id="documents" className="border-b border-black bg-[#f4f4f0] px-5 py-16 sm:px-8 sm:py-24">
