@@ -131,7 +131,7 @@ export default function AboutBlaze() {
               <h3 className="text-xl font-black text-black sm:text-2xl">
                 Bridging Finance, Python &amp; Tax Compliance
               </h3>
-              <p className="mt-3 text-sm leading-relaxed text-neutral-700 sm:text-base">
+              <p className="mt-3 text-sm leading-relaxed text-neutral-900 font-semibold sm:text-base">
                 Over the past 5+ years, I have specialized in transforming neglected ledgers into audit-ready financial reporting systems. Whether you sell on Amazon FBA, operate a regional logistics fleet, or need to file 100% compliant Pakistan income tax returns under Section 116/154A, every transaction is reconciled with mathematical precision.
               </p>
               <div className="mt-4 flex flex-wrap gap-2 pt-2">
@@ -146,7 +146,7 @@ export default function AboutBlaze() {
                 ].map((skill) => (
                   <span
                     key={skill}
-                    className="rounded-full border border-black bg-[#f4f4f0] px-3 py-1 text-xs font-bold text-black"
+                    className="rounded-full border-2 border-black bg-[#f4f4f0] px-3 py-1 text-xs font-black text-black"
                   >
                     {skill}
                   </span>
@@ -164,16 +164,16 @@ export default function AboutBlaze() {
                     className="rounded-[18px] border-2 border-black bg-white p-5 shadow-[4px_4px_0_#000] transition hover:-translate-y-1 hover:shadow-[6px_6px_0_#c8f603]"
                   >
                     <div className="flex items-center justify-between">
-                      <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-black bg-[#c8f603] text-black">
+                      <div className="flex h-9 w-9 items-center justify-center rounded-lg border-2 border-black bg-[#c8f603] text-black">
                         <Icon size={20} weight="bold" />
                       </div>
-                      <span className="rounded border border-black/20 bg-neutral-100 px-2 py-0.5 text-[10px] font-black uppercase tracking-wider text-neutral-600">
+                      <span className="rounded border-2 border-black bg-neutral-100 px-2 py-0.5 text-[10px] font-black uppercase tracking-wider text-black">
                         {c.badge}
                       </span>
                     </div>
                     <h4 className="mt-3 text-base font-black text-black">{c.title}</h4>
-                    <p className="text-xs font-bold text-neutral-500">{c.org}</p>
-                    <p className="mt-2 text-xs leading-relaxed text-neutral-600">
+                    <p className="text-xs font-black text-neutral-800">{c.org}</p>
+                    <p className="mt-2 text-xs leading-relaxed font-bold text-black">
                       {c.desc}
                     </p>
                   </div>

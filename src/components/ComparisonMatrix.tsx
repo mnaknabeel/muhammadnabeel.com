@@ -25,17 +25,17 @@ const COMPARISON_ROWS: ComparisonRow[] = [
   {
     feature: "Section 116 Wealth Reconciliation",
     category: "Audit Safety",
-    diy: { text: "Frequently unbalanced; triggers FBR audit flags", status: "bad" },
+    diy: { text: "Frequently unbalanced; triggers automatic FBR audit flags", status: "bad" },
     typist: { text: "Fabricated cash/expense figures with zero audit trail", status: "bad" },
     agency: { text: "Reconciled, but delegated to junior trainees", status: "warning" },
-    nabeel: { text: "100% mathematically balanced down to the rupee", status: "good", highlight: true },
+    nabeel: { text: "100% mathematically balanced down to the exact rupee", status: "good", highlight: true },
   },
   {
     feature: "Turnaround Time",
     category: "Speed",
     diy: { text: "6–12 hours of frustrating Iris portal errors", status: "bad" },
-    typist: { text: "Unpredictable; ignores messages once paid", status: "bad" },
-    agency: { text: "10 to 14 business days queue", status: "warning" },
+    typist: { text: "Unpredictable; ignores messages once payment is sent", status: "bad" },
+    agency: { text: "10 to 14 business days turnaround queue", status: "warning" },
     nabeel: { text: "Guaranteed 24 to 48-hour delivery", status: "good", highlight: true },
   },
   {
@@ -103,7 +103,7 @@ export default function ComparisonMatrix() {
           <h2 className="mt-4 text-3xl font-black tracking-tight text-black sm:text-4xl lg:text-5xl">
             Why Hire a Finance Engineer vs The Alternatives?
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-base text-neutral-700 sm:text-lg">
+          <p className="mx-auto mt-4 max-w-2xl text-base font-semibold text-neutral-800 sm:text-lg">
             A tax return isn&apos;t just paperwork—it&apos;s your permanent financial record with the state.
             See how precision engineering compares to shortcuts and corporate overhead.
           </p>
@@ -135,69 +135,81 @@ export default function ComparisonMatrix() {
         <div className="mt-12 hidden overflow-hidden rounded-[20px] border-2 border-black bg-white shadow-[8px_8px_0_#000] lg:block">
           <table className="w-full border-collapse text-left text-sm">
             <thead>
-              <tr className="border-b-2 border-black bg-neutral-900 text-white">
-                <th className="p-5 font-bold uppercase tracking-wider text-neutral-300 w-1/4">
+              <tr className="border-b-2 border-black bg-neutral-950 text-white">
+                <th className="p-5 font-black uppercase tracking-wider text-white w-1/4">
                   Feature / Capability
                 </th>
-                <th className="border-l-2 border-black p-5 font-bold uppercase tracking-wider text-neutral-300 w-[22%]">
+                <th className="border-l-2 border-black p-5 font-black uppercase tracking-wider text-white w-[22%]">
                   DIY Iris Filing
                 </th>
-                <th className="border-l-2 border-black p-5 font-bold uppercase tracking-wider text-neutral-300 w-[22%]">
+                <th className="border-l-2 border-black p-5 font-black uppercase tracking-wider text-white w-[22%]">
                   Street Typists / Cheap Agents
                 </th>
-                <th className="border-l-2 border-black p-5 font-bold uppercase tracking-wider text-neutral-300 w-[22%]">
+                <th className="border-l-2 border-black p-5 font-black uppercase tracking-wider text-white w-[22%]">
                   Traditional Large Firm
                 </th>
-                <th className="border-l-2 border-black bg-[#c8f603] p-5 font-black uppercase tracking-wider text-black w-[28%] relative">
-                  <div className="absolute -top-3 right-4 rounded-md border border-black bg-black px-2 py-0.5 text-[10px] font-black uppercase tracking-widest text-[#c8f603] shadow-[1px_1px_0_#fff]">
-                    Recommended
+                <th className="border-l-2 border-black bg-[#c8f603] p-5 text-black w-[28%]">
+                  <div className="flex flex-col items-start gap-1">
+                    <span className="inline-block rounded border border-black bg-black px-2 py-0.5 text-[10px] font-black uppercase tracking-widest text-[#c8f603] shadow-[1px_1px_0_#fff]">
+                      Recommended
+                    </span>
+                    <span className="text-sm font-black uppercase tracking-wider text-black">
+                      Muhammad Nabeel
+                    </span>
                   </div>
-                  Muhammad Nabeel
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y-2 divide-neutral-200">
+            <tbody className="divide-y-2 divide-black/10">
               {filteredRows.map((row, idx) => (
                 <tr
                   key={row.feature}
-                  className={`transition-colors hover:bg-neutral-50/80 ${
-                    idx % 2 === 0 ? "bg-white" : "bg-neutral-50/40"
+                  className={`transition-colors ${
+                    idx % 2 === 0 ? "bg-white" : "bg-[#fbfbf9]"
                   }`}
                 >
-                  <td className="p-4 font-bold text-black flex items-start gap-2">
-                    <span className="mt-0.5 inline-block h-2 w-2 shrink-0 rounded-full bg-black" />
-                    <span>{row.feature}</span>
+                  <td className="p-4 font-black text-black flex items-start gap-2.5">
+                    <span className="mt-1.5 inline-block h-2 w-2 shrink-0 rounded-full bg-black" />
+                    <span className="leading-snug text-sm">{row.feature}</span>
                   </td>
 
                   {/* DIY */}
-                  <td className="border-l-2 border-black p-4 text-xs text-neutral-600 align-top">
-                    <div className="flex items-start gap-2">
-                      <XCircle size={18} className="shrink-0 text-red-500 mt-0.5" weight="fill" />
-                      <span>{row.diy.text}</span>
+                  <td className="border-l-2 border-black p-4 align-top">
+                    <div className="flex items-start gap-2.5">
+                      <XCircle size={20} className="shrink-0 text-red-600 mt-0.5" weight="fill" />
+                      <span className="text-xs sm:text-sm font-bold text-black leading-snug">
+                        {row.diy.text}
+                      </span>
                     </div>
                   </td>
 
                   {/* Cheap Typist */}
-                  <td className="border-l-2 border-black p-4 text-xs text-neutral-600 align-top">
-                    <div className="flex items-start gap-2">
-                      <XCircle size={18} className="shrink-0 text-red-600 mt-0.5" weight="fill" />
-                      <span>{row.typist.text}</span>
+                  <td className="border-l-2 border-black p-4 align-top">
+                    <div className="flex items-start gap-2.5">
+                      <XCircle size={20} className="shrink-0 text-red-600 mt-0.5" weight="fill" />
+                      <span className="text-xs sm:text-sm font-bold text-black leading-snug">
+                        {row.typist.text}
+                      </span>
                     </div>
                   </td>
 
                   {/* Agency */}
-                  <td className="border-l-2 border-black p-4 text-xs text-neutral-600 align-top">
-                    <div className="flex items-start gap-2">
-                      <Info size={18} className="shrink-0 text-amber-500 mt-0.5" weight="fill" />
-                      <span>{row.agency.text}</span>
+                  <td className="border-l-2 border-black p-4 align-top">
+                    <div className="flex items-start gap-2.5">
+                      <Info size={20} className="shrink-0 text-amber-600 mt-0.5" weight="fill" />
+                      <span className="text-xs sm:text-sm font-bold text-black leading-snug">
+                        {row.agency.text}
+                      </span>
                     </div>
                   </td>
 
                   {/* Muhammad Nabeel (Highlighted Column) */}
-                  <td className="border-l-2 border-black bg-[#c8f603]/15 p-4 text-xs font-semibold text-black align-top">
-                    <div className="flex items-start gap-2">
-                      <CheckCircle size={19} className="shrink-0 text-black fill-[#c8f603]" weight="fill" />
-                      <span className="font-extrabold text-black">{row.nabeel.text}</span>
+                  <td className="border-l-2 border-black bg-[#c8f603]/25 p-4 align-top">
+                    <div className="flex items-start gap-2.5">
+                      <CheckCircle size={21} className="shrink-0 text-black fill-[#c8f603]" weight="fill" />
+                      <span className="text-xs sm:text-sm font-black text-black leading-snug">
+                        {row.nabeel.text}
+                      </span>
                     </div>
                   </td>
                 </tr>
@@ -213,11 +225,11 @@ export default function ComparisonMatrix() {
               key={row.feature}
               className="rounded-[16px] border-2 border-black bg-white p-5 shadow-[4px_4px_0_#000]"
             >
-              <div className="flex items-center justify-between border-b border-black/10 pb-3">
-                <span className="text-xs font-black uppercase tracking-wider text-neutral-500">
+              <div className="flex items-center justify-between border-b-2 border-black/10 pb-3">
+                <span className="text-xs font-black uppercase tracking-wider text-neutral-800">
                   {row.category}
                 </span>
-                <span className="rounded bg-black px-2 py-0.5 text-[10px] font-bold text-[#c8f603]">
+                <span className="rounded bg-black px-2 py-0.5 text-[10px] font-black text-[#c8f603]">
                   Comparison
                 </span>
               </div>
@@ -228,25 +240,25 @@ export default function ComparisonMatrix() {
                 <p className="text-[11px] font-black uppercase tracking-wider text-black">
                   Muhammad Nabeel (Finance Engineer)
                 </p>
-                <div className="mt-1.5 flex items-start gap-2 text-xs font-extrabold text-black">
+                <div className="mt-1.5 flex items-start gap-2 text-xs sm:text-sm font-black text-black">
                   <CheckCircle size={18} weight="fill" className="shrink-0 text-black mt-0.5" />
                   <span>{row.nabeel.text}</span>
                 </div>
               </div>
 
               {/* Alternatives List */}
-              <div className="mt-3 space-y-2 text-xs text-neutral-600">
-                <div className="rounded-lg border border-neutral-300 bg-neutral-50 p-2.5">
-                  <span className="font-bold text-neutral-800">DIY Iris: </span>
-                  <span>{row.diy.text}</span>
+              <div className="mt-3 space-y-2 text-xs sm:text-sm">
+                <div className="rounded-lg border-2 border-black/20 bg-neutral-50 p-2.5">
+                  <span className="font-black text-black">DIY Iris: </span>
+                  <span className="font-bold text-neutral-900">{row.diy.text}</span>
                 </div>
-                <div className="rounded-lg border border-neutral-300 bg-neutral-50 p-2.5">
-                  <span className="font-bold text-neutral-800">Cheap Street Typist: </span>
-                  <span>{row.typist.text}</span>
+                <div className="rounded-lg border-2 border-black/20 bg-neutral-50 p-2.5">
+                  <span className="font-black text-black">Cheap Street Typist: </span>
+                  <span className="font-bold text-neutral-900">{row.typist.text}</span>
                 </div>
-                <div className="rounded-lg border border-neutral-300 bg-neutral-50 p-2.5">
-                  <span className="font-bold text-neutral-800">Traditional Firm: </span>
-                  <span>{row.agency.text}</span>
+                <div className="rounded-lg border-2 border-black/20 bg-neutral-50 p-2.5">
+                  <span className="font-black text-black">Traditional Firm: </span>
+                  <span className="font-bold text-neutral-900">{row.agency.text}</span>
                 </div>
               </div>
             </div>
@@ -264,7 +276,7 @@ export default function ComparisonMatrix() {
               <p className="text-lg font-black text-white sm:text-xl">
                 Ready to file with zero guesswork and zero audit risk?
               </p>
-              <p className="text-xs text-neutral-400 sm:text-sm">
+              <p className="text-xs text-neutral-300 sm:text-sm font-medium">
                 Get your Tax Year 2026 return prepared, reconciled, and submitted within 24 hours.
               </p>
             </div>
