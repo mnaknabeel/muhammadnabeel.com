@@ -17,6 +17,13 @@ export const metadata: Metadata = {
   title: "Muhammad Nabeel — Finance Engineer",
   description:
     "I build financial systems, automate workflows, and turn messy data into decisions that drive growth. Finance Team Lead at LeapAI Solution.",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.png", type: "image/png" },
+    ],
+    apple: "/apple-icon.png",
+  },
   openGraph: {
     title: "Muhammad Nabeel — Finance Engineer",
     description:
