@@ -102,6 +102,23 @@ export default function TestimonialsSpotlight() {
 
   return (
     <section className="relative overflow-hidden border-b-2 border-black bg-[#fafaf7] px-5 py-20 sm:px-8 sm:py-28">
+      {/* Background Ambience */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-15"
+        style={{
+          backgroundImage: "radial-gradient(#000000 1px, transparent 1px)",
+          backgroundSize: "28px 28px",
+        }}
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute -top-24 left-1/2 h-[400px] w-[600px] -translate-x-1/2 rounded-full blur-[120px] opacity-15"
+        style={{
+          background: "radial-gradient(circle, #c8f603 0%, transparent 70%)",
+        }}
+        aria-hidden
+      />
+
       <div className="relative mx-auto max-w-5xl">
         {/* Header */}
         <div className="flex flex-col items-center justify-between gap-6 md:flex-row md:items-end">

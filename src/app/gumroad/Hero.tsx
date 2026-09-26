@@ -11,7 +11,7 @@
 
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Float, RoundedBox, Edges, Sparkles } from "@react-three/drei";
-import { Suspense, useRef } from "react";
+import { Suspense, useRef, useMemo } from "react";
 import {
   motion,
   useScroll,
@@ -29,7 +29,145 @@ const lime = "#c8f603";
 const pv = (v: MotionValue<number> | number) =>
   typeof v === "number" ? v : v.get();
 
-/* ── Backdrop 3D scene (kinetic mathematical nodes & particle nebula) ─────── */
+/* ── Backdrop 3D scene (GetLayers Orb / Aurum Peak WebGL Scene) ───────────── */
+
+function OrbParticleSphere({ progress }: { progress: MotionValue<number> | number }) {
+  const pointsRef = useRef<THREE.Points>(null);
+  const { pointer } = useThree();
+
+  const count = 1600;
+  const [positions, origPositions, colors] = useMemo(() => {
+    const pos = new Float32Array(count * 3);
+    const orig = new Float32Array(count * 3);
+    const col = new Float32Array(count * 3);
+
+    const cLime = new THREE.Color(lime);
+    const cGold = new THREE.Color("#ffc900");
+    const cWhite = new THREE.Color("#ffffff");
+
+    for (let i = 0; i < count; i++) {
+      // Golden spiral distribution on sphere
+      const phi = Math.acos(1 - (2 * (i + 0.5)) / count);
+      const theta = Math.PI * (1 + 5 ** 0.5) * (i + 0.5);
+
+      const r = 2.4 + (Math.random() - 0.5) * 0.25;
+      const x = r * Math.sin(phi) * Math.cos(theta);
+      const y = r * Math.sin(phi) * Math.sin(theta);
+      const z = r * Math.cos(phi);
+
+      pos[i * 3] = orig[i * 3] = x;
+      pos[i * 3 + 1] = orig[i * 3 + 1] = y;
+      pos[i * 3 + 2] = orig[i * 3 + 2] = z;
+
+      const rand = Math.random();
+      const chosen = rand > 0.6 ? cLime : rand > 0.25 ? cGold : cWhite;
+      col[i * 3] = chosen.r;
+      col[i * 3 + 1] = chosen.g;
+      col[i * 3 + 2] = chosen.b;
+    }
+    return [pos, orig, col];
+  }, []);
+
+  useFrame(({ clock }) => {
+    if (!pointsRef.current) return;
+    const geom = pointsRef.current.geometry;
+    const posAttr = geom.getAttribute("position") as THREE.BufferAttribute;
+    const t = clock.getElapsedTime();
+    const p = pv(progress);
+
+    // Dynamic rotation & pointer tracking
+    pointsRef.current.rotation.y = t * 0.14 + pointer.x * 0.35;
+    pointsRef.current.rotation.x = t * 0.08 + pointer.y * 0.25;
+
+    const array = posAttr.array as Float32Array;
+    for (let i = 0; i < count; i++) {
+      const idx = i * 3;
+      const ox = origPositions[idx];
+      const oy = origPositions[idx + 1];
+      const oz = origPositions[idx + 2];
+
+      // Procedural Aurum Peak / Orb noise displacement
+      const wave =
+        Math.sin(ox * 2.2 + t * 1.5) *
+        Math.cos(oy * 2.2 + t * 1.2) *
+        Math.sin(oz * 1.8 + t * 0.9) *
+        0.35;
+
+      // Interactive cursor ripple
+      const distToPointer = Math.hypot(ox - pointer.x * 3.5, oy - pointer.y * 3.5);
+      const pointerImpulse = Math.max(0, 1 - distToPointer / 3.2) * 0.4;
+
+      const scale = 1 + wave + pointerImpulse + p * 0.12;
+      array[idx] = ox * scale;
+      array[idx + 1] = oy * scale;
+      array[idx + 2] = oz * scale;
+    }
+    posAttr.needsUpdate = true;
+  });
+
+  return (
+    <group position={[1.6, 0.2, -1.2]}>
+      <points ref={pointsRef}>
+        <bufferGeometry>
+          <bufferAttribute
+            attach="attributes-position"
+            args={[positions, 3]}
+          />
+          <bufferAttribute
+            attach="attributes-color"
+            args={[colors, 3]}
+          />
+        </bufferGeometry>
+        <pointsMaterial
+          size={0.065}
+          vertexColors
+          transparent
+          opacity={0.9}
+          blending={THREE.AdditiveBlending}
+          depthWrite={false}
+        />
+      </points>
+    </group>
+  );
+}
+
+function AurumPeakTerrain() {
+  const meshRef = useRef<THREE.Mesh>(null);
+  useFrame(({ clock }) => {
+    if (!meshRef.current) return;
+    const geom = meshRef.current.geometry;
+    const pos = geom.getAttribute("position") as THREE.BufferAttribute;
+    const t = clock.getElapsedTime() * 0.75;
+    const arr = pos.array as Float32Array;
+    for (let i = 0; i < pos.count; i++) {
+      const x = arr[i * 3];
+      const y = arr[i * 3 + 1];
+      arr[i * 3 + 2] =
+        Math.sin(x * 0.45 + t) * Math.cos(y * 0.45 + t * 0.7) * 0.75 +
+        Math.sin((x + y) * 0.25 + t * 1.1) * 0.45;
+    }
+    pos.needsUpdate = true;
+  });
+
+  return (
+    <mesh
+      ref={meshRef}
+      rotation={[-Math.PI / 2.2, 0, 0]}
+      position={[0, -3.2, -4.5]}
+    >
+      <planeGeometry args={[36, 26, 36, 30]} />
+      <meshStandardMaterial
+        color="#050a14"
+        wireframe
+        wireframeLinewidth={1}
+        emissive={lime}
+        emissiveIntensity={0.22}
+        transparent
+        opacity={0.3}
+      />
+    </mesh>
+  );
+}
 
 function CrystalNode({
   position,
@@ -63,9 +201,9 @@ function CrystalNode({
             <octahedronGeometry args={[0.68, 0]} />
           )}
           <meshStandardMaterial
-            color="#070b12"
+            color="#05080f"
             roughness={0.16}
-            metalness={0.9}
+            metalness={0.92}
           />
           <Edges color={edgeColor} threshold={14} />
         </mesh>
@@ -79,7 +217,7 @@ function CameraDrift({ progress }: { progress: MotionValue<number> | number }) {
   useFrame(({ camera }) => {
     const p = pv(progress);
     camera.position.set(
-      pointer.x * 0.45,
+      pointer.x * 0.5,
       2.2 - p * 0.4 + pointer.y * 0.35,
       9 - p * 0.7
     );
@@ -91,43 +229,42 @@ function CameraDrift({ progress }: { progress: MotionValue<number> | number }) {
 function Backdrop({ progress }: { progress: MotionValue<number> | number }) {
   return (
     <>
-      <ambientLight intensity={1.2} />
-      <directionalLight position={[6, 8, 4]} intensity={1.6} />
+      <ambientLight intensity={1.1} />
+      <directionalLight position={[6, 8, 4]} intensity={1.5} />
       {/* Neon accent point lights */}
-      <pointLight position={[5, 3, -1]} intensity={2.2} color={lime} distance={8} />
-      <pointLight position={[-5, 2, -2]} intensity={1.8} color="#ffc900" distance={8} />
+      <pointLight position={[4, 3, -1]} intensity={2.4} color={lime} distance={9} />
+      <pointLight position={[-4, 2, -2]} intensity={1.8} color="#ffc900" distance={8} />
 
       <Suspense fallback={null}>
+        {/* GetLayers Orb — Electric Fluid Particle Sphere */}
+        <OrbParticleSphere progress={progress} />
+
+        {/* Aurum Peak Undulating Waves Terrain */}
+        <AurumPeakTerrain />
+
         {/* Multifaceted geometric finance nodes */}
         <CrystalNode position={[5.4, 3.2, -1.8]} scale={0.85} speed={1.1} shape="icosahedron" edgeColor={lime} />
         <CrystalNode position={[6.3, 1.2, -2.8]} scale={0.58} speed={1.4} shape="octahedron" edgeColor="#ffc900" />
         <CrystalNode position={[-5.6, 2.7, -2.2]} scale={0.72} speed={1.0} shape="dodecahedron" edgeColor={lime} />
         <CrystalNode position={[-4.2, -0.6, -1.5]} scale={0.48} speed={1.3} shape="octahedron" edgeColor="#00ff66" />
 
-        {/* Faint ledger grid floor */}
-        <gridHelper
-          args={[60, 60, "#d8d8ce", "#e8e6dc"]}
-          material-transparent
-          material-opacity={0.6}
-        />
-
         {/* Dual-layer particle nebula */}
         <Sparkles
-          count={60}
+          count={75}
           scale={[18, 8, 9]}
-          size={2.4}
+          size={2.6}
           speed={0.35}
           color={lime}
-          opacity={0.6}
+          opacity={0.65}
           position={[0, 2.4, -2]}
         />
         <Sparkles
-          count={35}
+          count={40}
           scale={[16, 7, 7]}
-          size={2.0}
+          size={2.2}
           speed={0.25}
           color="#ffc900"
-          opacity={0.45}
+          opacity={0.5}
           position={[1, 2.0, -1.5]}
         />
       </Suspense>
@@ -392,8 +529,17 @@ export default function Hero() {
         @media (prefers-reduced-motion: reduce) { .ring-wobble, .live-blip { animation: none; } }
       `}</style>
 
-      <div className="relative min-h-[100dvh] bg-[#f4f4f0] md:sticky md:top-0 md:h-screen md:overflow-hidden">
-        {/* 3D backdrop — ambience only */}
+      <div className="relative min-h-[100dvh] bg-[#05080f] text-white md:sticky md:top-0 md:h-screen md:overflow-hidden">
+        {/* Background Ambience: Subtle Neon Glow */}
+        <div
+          className="pointer-events-none absolute -top-40 left-1/2 h-[500px] w-[800px] -translate-x-1/2 rounded-full blur-[140px] opacity-15"
+          style={{
+            background: "radial-gradient(circle, #c8f603 0%, transparent 70%)",
+          }}
+          aria-hidden
+        />
+
+        {/* 3D backdrop — GetLayers Orb / Aurum Peak scene */}
         <div className="absolute inset-0">
           <Canvas camera={{ position: [0, 2.2, 9], fov: 42 }} dpr={[1, 1.75]}>
             <Backdrop progress={reduced ? 1 : scrollYProgress} />
@@ -403,21 +549,21 @@ export default function Hero() {
         {/* drifting finance glyphs at the extreme edges */}
         <FloatGlyph
           ch="$"
-          className="left-2 top-[24%] text-5xl text-black/[0.07]"
+          className="left-2 top-[24%] text-5xl text-white/[0.12]"
           drift={-80}
           progress={scrollYProgress}
           reduced={!!reduced}
         />
         <FloatGlyph
           ch="%"
-          className="bottom-[16%] left-5 text-4xl text-black/[0.06]"
+          className="bottom-[16%] left-5 text-4xl text-[#c8f603]/[0.15]"
           drift={-130}
           progress={scrollYProgress}
           reduced={!!reduced}
         />
         <FloatGlyph
           ch="₨"
-          className="right-[6%] top-[13%] hidden text-4xl text-black/[0.06] md:block"
+          className="right-[6%] top-[13%] hidden text-4xl text-white/[0.12] md:block"
           drift={-60}
           progress={scrollYProgress}
           reduced={!!reduced}
@@ -430,19 +576,19 @@ export default function Hero() {
               style={reduced ? undefined : { y: textY, opacity: textOpacity, scale: textScale }}
             >
               <p className="mb-3 text-[15px] md:mb-5">
-                <span className="underline decoration-black/30 underline-offset-4">
+                <span className="text-[#c8f603] font-semibold underline decoration-[#c8f603]/40 underline-offset-4">
                   Bookkeeping · Financial reporting · FP&amp;A
                 </span>{" "}
-                <span className="hidden sm:inline">— remote, for busy owners</span>
+                <span className="hidden sm:inline text-slate-300">— remote, for busy owners</span>
               </p>
-              <h1 className="text-[clamp(2.15rem,9vw,5.25rem)] font-medium leading-[0.98] tracking-[-0.02em] md:text-[clamp(2.6rem,7vw,5.25rem)]">
+              <h1 className="text-[clamp(2.15rem,9vw,5.25rem)] font-medium leading-[0.98] tracking-[-0.02em] text-white md:text-[clamp(2.6rem,7vw,5.25rem)]">
                 I turn messy data into{" "}
                 <span className="relative inline-block whitespace-nowrap">
                   money.
                   <FinanceRing />
                 </span>
               </h1>
-              <p className="mt-4 max-w-xl text-base leading-relaxed text-black sm:mt-7 sm:text-lg">
+              <p className="mt-4 max-w-xl text-base leading-relaxed text-slate-300 sm:mt-7 sm:text-lg">
                 I&apos;m Muhammad Nabeel — a remote bookkeeper and accounting
                 automation guy. QuickBooks, Xero, Amazon settlements, month-end
                 close. Your books stay clean and you get numbers soon enough to
@@ -451,7 +597,7 @@ export default function Hero() {
               <div className="mt-5 flex flex-wrap items-center gap-3 sm:mt-8 sm:gap-4">
                 <a
                   href="#work"
-                  className="inline-flex h-11 items-center gap-2 rounded-md border border-black px-6 text-base font-medium transition hover:-translate-y-px hover:shadow-[4px_4px_0_#000] sm:h-12 sm:px-7"
+                  className="inline-flex h-11 items-center gap-2 rounded-md border border-black px-6 text-base font-semibold text-black transition hover:-translate-y-px hover:shadow-[4px_4px_0_#ffffff] sm:h-12 sm:px-7"
                   style={{ background: lime }}
                 >
                   See the work <span aria-hidden>→</span>
@@ -460,7 +606,7 @@ export default function Hero() {
                   href="https://wa.me/923410224988?text=Hi%20Nabeel%2C%20I%27d%20like%20to%20talk%20about%20outsourcing%20my%20bookkeeping"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex h-11 items-center gap-2 rounded-md border border-black bg-[#25d366] px-6 text-base font-medium transition hover:-translate-y-px hover:shadow-[4px_4px_0_#000] sm:h-12 sm:px-7"
+                  className="inline-flex h-11 items-center gap-2 rounded-md border border-black bg-[#25d366] px-6 text-base font-semibold text-black transition hover:-translate-y-px hover:shadow-[4px_4px_0_#ffffff] sm:h-12 sm:px-7"
                 >
                   <WhatsappLogo size={20} weight="bold" aria-hidden />
                   WhatsApp me
@@ -468,7 +614,7 @@ export default function Hero() {
                 <a
                   href="/Nabeel_Resume_2026.pdf"
                   download
-                  className="inline-flex h-11 items-center rounded-md border border-black bg-white px-6 text-base font-medium transition hover:-translate-y-px hover:shadow-[4px_4px_0_#000] sm:h-12 sm:px-7"
+                  className="inline-flex h-11 items-center rounded-md border border-black bg-white px-6 text-base font-semibold text-black transition hover:-translate-y-px hover:bg-[#c8f603] hover:shadow-[4px_4px_0_#ffffff] sm:h-12 sm:px-7"
                 >
                   Download resume
                 </a>
