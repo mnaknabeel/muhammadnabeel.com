@@ -216,7 +216,7 @@ function ChartCard({
       </div>
 
       {/* 3D chart — desktop (contained in card, cannot touch the headline) */}
-      <div className="hidden h-[min(150px,17vh)] border-b border-black bg-[#fafaf6] md:block">
+      <div className="hidden h-[min(125px,15vh)] border-b border-black bg-[#fafaf6] md:block">
         <Canvas camera={{ position: [0, 1.05, 2.7], fov: 36 }} dpr={[1, 1.5]}>
           <MiniScene progress={reduced ? 1 : progress} />
         </Canvas>
@@ -329,9 +329,9 @@ export default function Hero() {
   const textY = useTransform(scrollYProgress, [0, 1], [0, -160]);
   const textOpacity = useTransform(scrollYProgress, [0, 0.65], [1, 0]);
   const textScale = useTransform(scrollYProgress, [0, 1], [1, 0.92]);
-  const colY = useTransform(scrollYProgress, [0, 1], [0, 70]);
-  const imgRotate = useTransform(scrollYProgress, [0, 1], [5, -4]);
-  const badgeY = useTransform(scrollYProgress, [0, 1], [0, 200]);
+  const colY = useTransform(scrollYProgress, [0, 1], [0, -20]);
+  const imgRotate = useTransform(scrollYProgress, [0, 1], [4, -3]);
+  const badgeY = useTransform(scrollYProgress, [0, 1], [0, -10]);
 
   const rawCount = useTransform(scrollYProgress, [0.05, 1], [0, 4000000]);
   const counterText = useTransform(
@@ -342,7 +342,7 @@ export default function Hero() {
   return (
     <div
       ref={ref}
-      className={`${favorit.variable} relative h-[190vh]`}
+      className={`${favorit.variable} relative md:h-[180vh]`}
       style={{ fontFamily: "var(--font-favorit), 'ABC Favorit', Avenir, sans-serif" }}
     >
       <style>{`
@@ -353,7 +353,7 @@ export default function Hero() {
         @media (prefers-reduced-motion: reduce) { .ring-wobble, .live-blip { animation: none; } }
       `}</style>
 
-      <div className="sticky top-0 h-screen overflow-hidden bg-[#f4f4f0]">
+      <div className="relative min-h-[100dvh] bg-[#f4f4f0] md:sticky md:top-0 md:h-screen md:overflow-hidden">
         {/* 3D backdrop — ambience only */}
         <div className="absolute inset-0">
           <Canvas camera={{ position: [0, 2.2, 9], fov: 42 }} dpr={[1, 1.75]}>
@@ -385,8 +385,8 @@ export default function Hero() {
         />
 
         {/* content */}
-        <div className="relative z-10 flex h-full items-center">
-          <div className="mx-auto grid w-full max-w-6xl items-center gap-5 px-5 pb-6 pt-24 sm:px-8 md:grid-cols-[1.15fr_0.95fr] md:gap-10 md:pb-14 md:pt-16">
+        <div className="relative z-10 flex min-h-[100dvh] items-center md:h-full">
+          <div className="mx-auto grid w-full max-w-6xl items-center gap-8 px-5 pb-12 pt-20 sm:px-8 md:grid-cols-[1.15fr_0.95fr] md:gap-10 md:pb-12 md:pt-14">
             <motion.div
               style={reduced ? undefined : { y: textY, opacity: textOpacity, scale: textScale }}
             >
@@ -438,36 +438,34 @@ export default function Hero() {
 
             {/* right column: dashboard card + profile card */}
             <motion.div
-              className="flex flex-col items-center gap-5 md:items-end"
+              className="flex flex-col items-center gap-6 sm:flex-row sm:items-start sm:justify-center md:flex-col md:items-end md:gap-5"
               style={reduced ? undefined : { y: colY }}
             >
-              <ChartCard
-                progress={scrollYProgress}
-                counter={reduced ? "$4,000,000+" : counterText}
-                reduced={!!reduced}
-              />
-
-              {/* profile — scroll-tilting card */}
+              {/* profile — visible everywhere, never hidden, beautifully framed */}
               <motion.div
-                className="relative w-full max-w-[170px] sm:max-w-[280px] md:max-w-[min(280px,30vh)] [@media(max-height:700px)]:hidden"
+                className="order-1 relative w-full max-w-[220px] sm:max-w-[240px] md:order-2 md:max-w-[min(240px,27vh)] lg:max-w-[265px]"
                 style={reduced ? undefined : { rotateX: imgRotate }}
-                initial={{ opacity: 0, y: 40 }}
+                initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
               >
-                <div className="overflow-hidden rounded-[20px] border border-black bg-white shadow-[8px_8px_0_#c8f603]">
+                <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[20px] border-2 border-black bg-white shadow-[7px_7px_0_#c8f603]">
                   <Image
                     src="/images/profile.jpeg"
                     alt="Muhammad Nabeel — Finance Engineer"
-                    width={680}
-                    height={850}
-                    preload
-                    className="h-auto w-full object-cover"
-                    sizes="(max-width: 768px) 80vw, 280px"
+                    fill
+                    priority
+                    className="object-cover object-top"
+                    sizes="(max-width: 640px) 220px, (max-width: 768px) 240px, 265px"
                   />
+                  {/* Subtle name badge banner at the base of the photo */}
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent p-3 pt-6 text-white">
+                    <p className="text-sm font-bold leading-tight">Muhammad Nabeel</p>
+                    <p className="text-[11px] font-medium text-[#c8f603]">Finance &amp; Automation</p>
+                  </div>
                 </div>
                 <motion.div
-                  className="absolute -right-3 -top-4 rotate-3 rounded-md border border-black bg-white px-3 py-1.5 text-sm font-semibold shadow-[3px_3px_0_#000]"
+                  className="absolute -right-2.5 -top-3 rotate-3 rounded-md border-2 border-black bg-white px-2.5 py-1 text-xs font-semibold shadow-[3px_3px_0_#000] sm:text-sm"
                   style={reduced ? undefined : { y: badgeY }}
                 >
                   <span style={{ background: lime }} className="rounded px-1.5 py-0.5">
@@ -476,6 +474,14 @@ export default function Hero() {
                   managed
                 </motion.div>
               </motion.div>
+
+              <div className="order-2 w-full max-w-[340px] sm:max-w-[320px] md:order-1 md:max-w-[360px]">
+                <ChartCard
+                  progress={scrollYProgress}
+                  counter={reduced ? "$4,000,000+" : counterText}
+                  reduced={!!reduced}
+                />
+              </div>
             </motion.div>
           </div>
         </div>

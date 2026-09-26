@@ -153,7 +153,7 @@ export default function Home() {
       <section className="mx-auto max-w-6xl px-5 pb-16 pt-4">
         <ScrollReveal>
           <TiltCard maxTilt={3}>
-            <div className="spotlight-card spotlight-dark relative overflow-hidden rounded-[24px_24px_24px_4px] border border-black bg-black p-8 text-white shadow-[8px_8px_0_#c8f603] sm:p-12">
+            <div className="spotlight-card spotlight-dark relative overflow-hidden rounded-[24px_24px_24px_4px] border border-black bg-black p-5 text-white shadow-[6px_6px_0_#c8f603] sm:p-10 lg:p-12 sm:shadow-[8px_8px_0_#c8f603]">
               <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-center">
                 <div className="lg:col-span-8">
                   <div className="inline-flex items-center gap-2 rounded-full border border-black bg-[#c8f603] px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-black">
@@ -275,7 +275,7 @@ export default function Home() {
         <ScrollReveal>
           <p
             className="font-medium tracking-[-0.03em] leading-none tabular-nums"
-            style={{ fontSize: "clamp(3.5rem, 13vw, 11rem)" }}
+            style={{ fontSize: "clamp(2.3rem, 11vw, 9rem)" }}
           >
             <AnimatedCounter to={4000000} prefix="$" suffix="+" duration={2.2} />
           </p>
@@ -529,7 +529,7 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-5 pt-10">
           <div
             className="font-semibold tracking-[-0.04em] leading-[0.85] select-none text-center"
-            style={{ fontSize: "clamp(4rem, 17vw, 15rem)" }}
+            style={{ fontSize: "clamp(2.8rem, 16vw, 15rem)" }}
             aria-hidden
           >
             NABEE<span style={{ color: lime }}>L</span>

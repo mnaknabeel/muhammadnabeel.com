@@ -53,7 +53,7 @@ function Card({
           sizes={featured ? "(max-width: 768px) 100vw, 50vw" : "(max-width: 768px) 100vw, 33vw"}
         />
         <span
-          className="absolute bottom-3 right-3 translate-y-2 rounded-md border border-black px-2.5 py-1 text-xs font-semibold opacity-0 transition group-hover:translate-y-0 group-hover:opacity-100"
+          className="absolute bottom-3 right-3 translate-y-0 rounded-md border border-black px-2.5 py-1 text-xs font-semibold opacity-100 transition sm:translate-y-2 sm:opacity-0 sm:group-hover:translate-y-0 sm:group-hover:opacity-100"
           style={{ background: lime }}
         >
           View report →
