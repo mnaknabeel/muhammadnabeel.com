@@ -674,13 +674,16 @@ export default function Hero() {
                   </div>
                 </div>
                 <motion.div
-                  className="absolute -right-2.5 -top-3 rotate-3 rounded-md border-2 border-black bg-white px-2.5 py-1 text-xs font-semibold shadow-[3px_3px_0_#000] sm:text-sm"
+                  className="absolute -right-3 -top-3 z-20 rotate-3 rounded-lg border-2 border-black bg-white px-3 py-1.5 text-xs font-extrabold text-black shadow-[4px_4px_0_#000] sm:text-sm"
                   style={reduced ? undefined : { y: badgeY }}
                 >
-                  <span style={{ background: lime }} className="rounded px-1.5 py-0.5">
+                  <span
+                    style={{ background: lime }}
+                    className="mr-1.5 inline-block rounded border border-black px-1.5 py-0.5 font-black text-black shadow-[1px_1px_0_#000]"
+                  >
                     $4M+
-                  </span>{" "}
-                  managed
+                  </span>
+                  <span className="font-extrabold text-black">managed</span>
                 </motion.div>
               </motion.div>
 
